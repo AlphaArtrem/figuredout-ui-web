@@ -1,0 +1,100 @@
+import type { Config } from "tailwindcss"
+
+const uiPreset: Config = {
+  darkMode: "class",
+  content: [],
+  theme: {
+    extend: {
+      colors: {
+        background: "var(--color-bg)",
+        surface: "var(--color-surface)",
+        "surface-raised": "var(--color-surface-raised)",
+        "surface-sunken": "var(--color-surface-sunken)",
+        fg: "var(--color-fg)",
+        "fg-muted": "var(--color-fg-muted)",
+        "fg-subtle": "var(--color-fg-subtle)",
+        edge: "var(--color-edge)",
+        "edge-strong": "var(--color-edge-strong)",
+        primary: "var(--color-primary)",
+        "primary-hover": "var(--color-primary-hover)",
+        "primary-fg": "var(--color-primary-fg)",
+        "primary-soft": "var(--color-primary-soft)",
+        "focus-ring": "var(--color-focus-ring)",
+        success: "var(--color-success)",
+        "success-soft": "var(--color-success-soft)",
+        warning: "var(--color-warning)",
+        "warning-soft": "var(--color-warning-soft)",
+        danger: "var(--color-danger)",
+        "danger-soft": "var(--color-danger-soft)",
+        info: "var(--color-info)",
+        "info-soft": "var(--color-info-soft)",
+        "chart-cat-1": "var(--chart-cat-1)",
+        "chart-cat-2": "var(--chart-cat-2)",
+        "chart-cat-3": "var(--chart-cat-3)",
+        "chart-cat-4": "var(--chart-cat-4)",
+        "chart-cat-5": "var(--chart-cat-5)",
+        "chart-cat-6": "var(--chart-cat-6)",
+        "chart-seq": "var(--chart-seq)",
+        "chart-grid": "var(--chart-grid)",
+        "chart-axis-label": "var(--chart-axis-label)",
+      },
+      borderColor: {
+        edge: "var(--color-edge)",
+        "edge-strong": "var(--color-edge-strong)",
+      },
+      textColor: {
+        fg: "var(--color-fg)",
+        "fg-muted": "var(--color-fg-muted)",
+        "fg-subtle": "var(--color-fg-subtle)",
+      },
+      backgroundColor: {
+        background: "var(--color-bg)",
+        surface: "var(--color-surface)",
+        "surface-raised": "var(--color-surface-raised)",
+        "surface-sunken": "var(--color-surface-sunken)",
+        primary: "var(--color-primary)",
+        "primary-soft": "var(--color-primary-soft)",
+      },
+      borderRadius: {
+        sm: "var(--radius-sm)",
+        DEFAULT: "var(--radius-md)",
+        md: "var(--radius-md)",
+        lg: "var(--radius-lg)",
+        xl: "var(--radius-xl)",
+      },
+      boxShadow: {
+        raised: "var(--shadow-raised)",
+        overlay: "var(--shadow-overlay)",
+      },
+      transitionDuration: {
+        fast: "var(--motion-fast)",
+        normal: "var(--motion-normal)",
+      },
+      transitionTimingFunction: {
+        standard: "var(--ease-standard)",
+      },
+      fontFamily: {
+        sans: ["var(--font-sans)", "sans-serif"],
+        mono: ["var(--font-mono)", "monospace"],
+      },
+      fontSize: {
+        xs: ["var(--text-xs)", { lineHeight: "var(--leading-xs)" }],
+        sm: ["var(--text-sm)", { lineHeight: "var(--leading-sm)" }],
+        base: ["var(--text-base)", { lineHeight: "var(--leading-base)" }],
+        lg: ["var(--text-lg)", { lineHeight: "var(--leading-lg)" }],
+        xl: ["var(--text-xl)", { lineHeight: "var(--leading-xl)" }],
+        "2xl": ["var(--text-2xl)", { lineHeight: "var(--leading-2xl)" }],
+        "3xl": ["var(--text-3xl)", { lineHeight: "var(--leading-3xl)" }],
+        "4xl": ["var(--text-4xl)", { lineHeight: "var(--leading-4xl)" }],
+      },
+      zIndex: {
+        nav: "var(--z-nav)",
+        overlay: "var(--z-overlay)",
+        toast: "var(--z-toast)",
+      },
+    },
+  },
+  plugins: [],
+}
+
+export default uiPreset
