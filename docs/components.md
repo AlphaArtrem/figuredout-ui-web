@@ -1,6 +1,6 @@
 # UI Components
 
-`@playtohire/ui` is the canonical UI surface for the redesign. App code in `apps/web`
+`@figuredout/ui-web` is the canonical UI surface for FiguredOut web apps. App code
 should compose these components instead of reimplementing local button, form, overlay,
 table, or header styling.
 
@@ -16,12 +16,12 @@ table, or header styling.
 
 ## Experimental
 
-- `packages/ui/src/charts`
+- `src/charts`
   Charts stay experimental until Phase 4 lands the shared chart wrappers and palette
   validation workflow.
 
 ## Rules
 
-- Use only semantic token classes from `@playtohire/ui` foundations.
+- Use only semantic token classes from `@figuredout/ui-web` foundations.
 - Keep these components presentational: props in, callbacks out, no data fetching.
-- Prefer extending this package over adding one-off UI recipes inside `apps/web`.
+- Prefer extending this package over adding one-off UI recipes inside app code.

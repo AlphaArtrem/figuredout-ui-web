@@ -1,10 +1,17 @@
 {
-  "name": "@playtohire/ui",
+  "name": "@figuredout/ui-web",
   "version": "0.0.1",
-  "private": true,
+  "description": "Shared React UI primitives, patterns, charts, icons, and design tokens for FiguredOut web apps.",
+  "license": "UNLICENSED",
   "type": "module",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
+  "sideEffects": [
+    "**/*.css"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
   "exports": {
     ".": {
       "import": "./dist/index.js",
@@ -28,6 +35,8 @@
     "dist",
     "styles",
     "README.md",
+    "COMPONENT_GUIDE.md",
+    "components.manifest.json",
     "docs"
   ],
   "scripts": {
@@ -36,11 +45,18 @@
   },
   "dependencies": {
     "@phosphor-icons/react": "^2.1.10",
+    "recharts": "^3.9.2"
+  },
+  "peerDependencies": {
     "next-themes": "^0.4.6",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "recharts": "^3.9.2",
     "tailwindcss": "^3.4.0"
+  },
+  "peerDependenciesMeta": {
+    "tailwindcss": {
+      "optional": true
+    }
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^6.9.1",
@@ -49,6 +65,10 @@
     "@types/react": "^18.2.0",
     "@types/react-dom": "^18.2.0",
     "jsdom": "^26.1.0",
+    "next-themes": "^0.4.6",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "tailwindcss": "^3.4.0",
     "typescript": "^5.3.0",
     "vitest": "^3.2.4"
   }

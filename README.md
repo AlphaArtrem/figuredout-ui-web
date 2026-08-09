@@ -1,6 +1,37 @@
-# @playtohire/ui
+# @figuredout/ui-web
 
-Shared UI foundations for the PlayToHire redesign.
+Shared React UI foundations for FiguredOut web apps.
+
+## Install
+
+```bash
+npm install @figuredout/ui-web
+```
+
+Import the token stylesheet once in the app shell:
+
+```tsx
+import "@figuredout/ui-web/styles/tokens.css"
+```
+
+Use the Tailwind preset from the consuming app config:
+
+```ts
+import uiPreset from "@figuredout/ui-web/tailwind-preset"
+
+export default {
+  presets: [uiPreset],
+  content: ["./src/**/*.{ts,tsx}", "./node_modules/@figuredout/ui-web/dist/**/*.{js,mjs}"],
+}
+```
+
+## Public imports
+
+- `@figuredout/ui-web` exports primitives and layout/application patterns.
+- `@figuredout/ui-web/icons` exports the approved Phosphor icon surface.
+- `@figuredout/ui-web/charts` exports chart wrappers and color helpers.
+- `@figuredout/ui-web/styles/tokens.css` provides CSS custom properties.
+- `@figuredout/ui-web/tailwind-preset` maps tokens to semantic Tailwind utilities.
 
 ## Visual direction
 
