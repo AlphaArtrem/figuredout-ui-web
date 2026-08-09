@@ -20,19 +20,15 @@ export function StatCard({
   value,
 }: StatCardProps) {
   return (
-    <div className="rounded-xl bg-surface p-1 shadow-raised ring-1 ring-inset ring-edge">
-      <div className="flex h-full flex-col rounded-lg bg-surface-raised px-5 py-4">
-        <div className="flex items-start justify-between gap-3">
-          <div>
-            <p className="text-sm font-medium text-fg-muted">{title}</p>
-            <p className="mt-3 font-mono text-3xl font-semibold tabular-nums text-fg">{value}</p>
-          </div>
-          {icon ? <div className="rounded-full bg-primary-soft p-3 text-primary">{icon}</div> : null}
-        </div>
-        <div className="mt-4 flex items-center gap-2">
-          {delta ? <Badge tone={tone}>{delta}</Badge> : null}
-          {description ? <div className="flex-1 text-sm text-fg-muted">{description}</div> : null}
-        </div>
+    <div className="flex min-w-0 flex-col rounded-lg border border-edge bg-surface-raised p-4 transition duration-normal ease-standard hover:-translate-y-0.5 hover:border-edge-strong hover:shadow-hover motion-reduce:transform-none">
+      <div className="flex items-start justify-between gap-3">
+        <p className="m-0 min-w-0 font-mono text-[0.6875rem] font-semibold uppercase tracking-[0.1em] text-fg-subtle">{title}</p>
+        {icon ? <div className="inline-grid size-8 shrink-0 place-items-center rounded-md border border-primary/30 bg-primary-soft text-primary [&_svg]:size-4">{icon}</div> : null}
+      </div>
+      <p className="mt-2 break-words font-mono text-xl font-semibold leading-snug tabular-nums text-fg">{value}</p>
+      <div className="mt-3 flex items-center gap-2">
+        {delta ? <Badge tone={tone}>{delta}</Badge> : null}
+        {description ? <div className="flex-1 text-[0.8125rem] leading-relaxed text-fg-muted">{description}</div> : null}
       </div>
     </div>
   )

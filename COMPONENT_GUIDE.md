@@ -5,7 +5,7 @@
 ## Import Paths
 
 ```tsx
-import { Button, Card, PageHeader, ToastProvider } from "@figuredout/ui-web"
+import { AppTopBar, Button, Card, PageHeader, ToastProvider } from "@figuredout/ui-web"
 import { BarChart, categoricalColor } from "@figuredout/ui-web/charts"
 import { Gear } from "@figuredout/ui-web/icons"
 import "@figuredout/ui-web/styles/tokens.css"
@@ -27,13 +27,20 @@ Primitives:
 `Badge`, `Button`, `IconButton`, `Card`, `CardHeader`, `CardBody`, `CardFooter`, `Checkbox`, `FormField`, `Input`, `Textarea`, `Select`, `Skeleton`, `Spinner`, `Switch`, `ThemeToggle`
 
 Patterns:
-`Avatar`, `ConfirmDialog`, `DescriptionList`, `Dialog`, `DropdownMenu`, `EmptyState`, `FilterBar`, `PageContent`, `PageHeader`, `Pagination`, `SearchInput`, `Section`, `SettingsSection`, `SidePanel`, `StatCard`, `Stepper`, `Table`, `Tabs`, `ToastProvider`, `Tooltip`, `useToast`
+`AppTopBar`, `Avatar`, `ConfirmDialog`, `DescriptionList`, `Dialog`, `DropdownMenu`, `EmptyState`, `ExpandableTile`, `FilterBar`, `InfoBanner`, `PageContent`, `PageHeader`, `Pagination`, `SearchInput`, `SelectMenu`, `Section`, `SettingsSection`, `SidePanel`, `StatCard`, `Stepper`, `Table`, `TableSection`, `Tabs`, `ToastProvider`, `Tooltip`, `useToast`
+
+## Composition Notes
+
+- Use `StatCard` for compact metric tiles, not as a general content container.
+- Use `Section variant="plain"` for page-level regions with a divider, icon rail, eyebrow, heading, and description.
+- Use `TableSection` for data regions; it renders `Table` in the plain table style by default to avoid nested card shells.
+- Use `Table variant="framed"` only when the table is the standalone focal component and needs its own surface.
 
 Charts:
 `BarChart`, `ChartShell`, `ChartTooltip`, `DonutChart`, `FunnelBars`, `LineChart`, `Sparkline`, `categoricalColor`, `sequentialColor`, `gridColor`, `axisLabelColor`
 
 Icons:
-Approved Phosphor exports are available from `@figuredout/ui-web/icons`, including `Gear`, `List`, `Plus`, `WarningCircle`, and the shared `PhosphorIcon` / `PhosphorIconProps` types.
+Approved Phosphor exports are available from `@figuredout/ui-web/icons`, including `Gear`, `List`, `Pause`, `Plus`, `WarningCircle`, and the shared `PhosphorIcon` / `PhosphorIconProps` types.
 
 ## Usage Rules
 

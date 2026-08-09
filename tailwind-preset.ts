@@ -28,6 +28,10 @@ const uiPreset: Config = {
         "danger-soft": "var(--color-danger-soft)",
         info: "var(--color-info)",
         "info-soft": "var(--color-info-soft)",
+        accent: "var(--color-accent)",
+        "accent-fg": "var(--color-accent-fg)",
+        "banner-fg": "var(--color-banner-fg)",
+        "banner-muted": "var(--color-banner-muted)",
         "chart-cat-1": "var(--chart-cat-1)",
         "chart-cat-2": "var(--chart-cat-2)",
         "chart-cat-3": "var(--chart-cat-3)",
@@ -54,6 +58,7 @@ const uiPreset: Config = {
         "surface-sunken": "var(--color-surface-sunken)",
         primary: "var(--color-primary)",
         "primary-soft": "var(--color-primary-soft)",
+        accent: "var(--color-accent)",
       },
       borderRadius: {
         sm: "var(--radius-sm)",
@@ -64,6 +69,7 @@ const uiPreset: Config = {
       },
       boxShadow: {
         raised: "var(--shadow-raised)",
+        hover: "var(--shadow-hover)",
         overlay: "var(--shadow-overlay)",
       },
       transitionDuration: {

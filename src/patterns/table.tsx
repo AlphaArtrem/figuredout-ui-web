@@ -7,6 +7,7 @@ import { cn } from "../lib/cn.js"
 import { EmptyState } from "./empty-state.js"
 
 type SortDirection = "asc" | "desc"
+export type TableRowTone = "neutral" | "info" | "warning" | "danger" | "success"
 
 export interface TableColumn<T> {
   header: ReactNode
@@ -20,11 +21,37 @@ export interface TableProps<T> {
   columns: TableColumn<T>[]
   data: T[]
   emptyState?: ReactNode
+  rowTone?: (row: T) => TableRowTone | undefined
   rowKey: (row: T) => string
   stickyHeader?: boolean
+  variant?: "framed" | "plain"
 }
 
-export function Table<T>({ columns, data, emptyState, rowKey, stickyHeader = true }: TableProps<T>) {
+const ROW_TONE_STYLES: Record<TableRowTone, string> = {
+  neutral: "",
+  info: "bg-info-soft/40",
+  warning: "bg-warning-soft/50",
+  danger: "bg-danger-soft/50",
+  success: "bg-success-soft/40",
+}
+
+const FIRST_CELL_TONE_STYLES: Record<TableRowTone, string> = {
+  neutral: "",
+  info: "shadow-[inset_3px_0_0_var(--color-info)]",
+  warning: "shadow-[inset_3px_0_0_var(--color-warning)]",
+  danger: "shadow-[inset_3px_0_0_var(--color-danger)]",
+  success: "shadow-[inset_3px_0_0_var(--color-success)]",
+}
+
+export function Table<T>({
+  columns,
+  data,
+  emptyState,
+  rowKey,
+  rowTone,
+  stickyHeader = true,
+  variant = "framed",
+}: TableProps<T>) {
   const sortableColumns = columns.filter((column) => column.sortValue)
   const [sortState, setSortState] = useState<{
     columnId: string
@@ -72,17 +99,25 @@ export function Table<T>({ columns, data, emptyState, rowKey, stickyHeader = tru
   }
 
   return (
-    <div className="overflow-hidden rounded-lg bg-surface p-1 shadow-raised ring-1 ring-inset ring-edge">
+    <div
+      className={cn(
+        "overflow-x-auto",
+        variant === "framed" && "overflow-hidden rounded-lg bg-surface p-1 shadow-raised ring-1 ring-inset ring-edge",
+        variant === "plain" && "rounded-md",
+      )}
+    >
       <div className="overflow-auto">
-        <table className="min-w-full border-separate border-spacing-0">
+        <table className={cn("min-w-full", variant === "framed" ? "border-separate border-spacing-0" : "border-collapse")}>
           <thead>
-            <tr className="bg-surface-raised">
+            <tr className={cn(variant === "framed" && "bg-surface-raised")}>
               {columns.map((column) => (
                 <th
                   key={column.id}
                   scope="col"
                   className={cn(
-                    "border-b border-edge bg-surface-raised px-4 py-3 text-xs font-semibold uppercase tracking-[0.12em] text-fg-subtle",
+                    "border-b px-4 py-3 text-xs font-semibold uppercase text-fg-subtle",
+                    variant === "framed" && "border-edge bg-surface-raised tracking-[0.12em]",
+                    variant === "plain" && "border-edge-strong bg-background font-mono tracking-[0.1em]",
                     stickyHeader && "sticky top-0 z-[1]",
                     column.align === "right" ? "text-right" : "text-left",
                   )}
@@ -114,24 +149,34 @@ export function Table<T>({ columns, data, emptyState, rowKey, stickyHeader = tru
             </tr>
           </thead>
           <tbody>
-            {sortedData.map((row) => (
-              <tr
-                key={rowKey(row)}
-                className="transition duration-fast ease-standard hover:bg-surface-raised"
-              >
-                {columns.map((column) => (
+            {sortedData.map((row) => {
+              const tone = rowTone?.(row) ?? "neutral"
+
+              return (
+                <tr
+                  key={rowKey(row)}
+                  data-row-tone={tone === "neutral" ? undefined : tone}
+                  className={cn(
+                    "transition duration-fast ease-standard hover:bg-surface-raised",
+                    ROW_TONE_STYLES[tone],
+                  )}
+                >
+                  {columns.map((column, columnIndex) => (
                   <td
                     key={column.id}
                     className={cn(
-                      "border-b border-edge px-4 py-3 text-sm text-fg last:border-b-0",
+                      "border-b border-edge px-4 py-3 text-sm text-fg",
+                      variant === "plain" && "align-top",
+                      columnIndex === 0 && FIRST_CELL_TONE_STYLES[tone],
                       column.align === "right" ? "text-right" : "text-left",
                     )}
                   >
                     {column.render(row)}
                   </td>
-                ))}
-              </tr>
-            ))}
+                  ))}
+                </tr>
+              )
+            })}
           </tbody>
         </table>
       </div>

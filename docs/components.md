@@ -9,10 +9,10 @@ table, or header styling.
 - Tier 1 primitives: `Button`, `IconButton`, `Input`, `Textarea`, `Select`, `Checkbox`,
   `Switch`, `FormField`, `Badge`, `Card`, `Spinner`, `Skeleton`, `ThemeToggle`
 - Tier 2 composites: `Table`, `Dialog`, `ConfirmDialog`, `SidePanel`, `Tabs`, `Tooltip`,
-  `DropdownMenu`, `ToastProvider` with `useToast`, `EmptyState`, `SearchInput`,
-  `FilterBar`, `Pagination`
-- Tier 3 patterns: `PageHeader`, `Section`, `SettingsSection`, `StatCard`, `Stepper`,
-  `DescriptionList`, `Avatar`
+  `DropdownMenu`, `SelectMenu`, `ToastProvider` with `useToast`, `EmptyState`,
+  `SearchInput`, `FilterBar`, `Pagination`, `ExpandableTile`
+- Tier 3 patterns: `AppTopBar`, `PageHeader`, `Section`, `SettingsSection`, `StatCard`,
+  `Stepper`, `DescriptionList`, `Avatar`, `InfoBanner`, `TableSection`
 
 ## Experimental
 
@@ -25,3 +25,4 @@ table, or header styling.
 - Use only semantic token classes from `@figuredout/ui-web` foundations.
 - Keep these components presentational: props in, callbacks out, no data fetching.
 - Prefer extending this package over adding one-off UI recipes inside app code.
+- Prefer plain divided sections and plain tables for dense operational dashboards; reserve cards for metrics, repeated tiles, modals, and focused callouts.

@@ -9,15 +9,20 @@ import {
   Dialog,
   DropdownMenu,
   EmptyState,
+  AppTopBar,
+  ExpandableTile,
   FilterBar,
+  InfoBanner,
   Input,
   PageHeader,
   Pagination,
   SearchInput,
+  SelectMenu,
   Section,
   SidePanel,
   StatCard,
   Table,
+  TableSection,
   Tabs,
   useToast,
 } from "../index"
@@ -49,18 +54,32 @@ type Story = StoryObj<typeof meta>
 
 export const WorkspaceHeader: Story = {
   render: () => (
-    <PageHeader
-      eyebrow="Workspace"
-      title="Pipeline overview"
-      description="A page header with semantic surfaces, compact copy, and action slots."
-      breadcrumb="Home / Leads"
-      actions={
-        <div className="flex gap-2">
-          <Button variant="secondary">Export</Button>
-          <Button leadingIcon={<Plus size={16} aria-hidden="true" />}>New lead</Button>
-        </div>
-      }
-    />
+    <div>
+      <AppTopBar
+        logo={<span className="inline-flex h-9 w-9 items-center justify-center rounded-sm bg-primary text-xs font-bold text-primary-fg">FO</span>}
+        title="FiguredOut"
+        subtitle="Workspace"
+        navItems={[
+          { href: "#overview", label: "Overview", active: true },
+          { href: "#accounts", label: "Accounts" },
+          { href: "#activity", label: "Activity" },
+        ]}
+        actions={
+          <>
+            <Button variant="secondary" size="sm">Export</Button>
+            <Button size="sm" leadingIcon={<Plus size={16} aria-hidden="true" />}>New lead</Button>
+          </>
+        }
+      />
+      <main className="mx-auto grid max-w-6xl gap-6 px-4 py-6">
+        <PageHeader
+          eyebrow="Workspace"
+          title="Pipeline overview"
+          description="A page header with semantic surfaces, compact copy, and action slots."
+          breadcrumb="Home / Leads"
+        />
+      </main>
+    </div>
   ),
 }
 
@@ -86,6 +105,17 @@ export const SearchAndFilters: Story = {
           placeholder="Search leads"
         />
         <Input className="md:max-w-44" placeholder="Owner" />
+        <SelectMenu
+          className="md:w-52"
+          label="Stage"
+          value="qualified"
+          onChange={() => undefined}
+          options={[
+            { label: "All stages", value: "" },
+            { label: "Qualified", value: "qualified" },
+            { label: "At risk", value: "risk" },
+          ]}
+        />
       </FilterBar>
     )
   },
@@ -93,9 +123,12 @@ export const SearchAndFilters: Story = {
 
 export const DataTable: Story = {
   render: () => (
-    <Table
+    <TableSection
+      title="Lead table"
+      description="A titled table region with built-in scroll and empty state support."
       data={rows}
       rowKey={(row) => row.id}
+      rowTone={(row) => row.status === "At risk" ? "warning" : undefined}
       columns={[
         {
           id: "name",
@@ -148,6 +181,24 @@ export const SectionsAndStats: Story = {
             { label: "Routing", value: "Owner availability and score" },
           ]}
         />
+      </Section>
+      <Section
+        variant="plain"
+        eyebrow="Controls"
+        title="Review queue"
+        description="Plain sections align page content without adding a card shell."
+      >
+        <div className="grid gap-3">
+          <InfoBanner tone="info" title="Review window" description="New records are checked every 15 minutes." />
+          <ExpandableTile title="Risk checks" description="Open to review the applied qualification thresholds.">
+            <DescriptionList
+              items={[
+                { label: "Minimum score", value: "70%" },
+                { label: "Owner override", value: "Allowed" },
+              ]}
+            />
+          </ExpandableTile>
+        </div>
       </Section>
     </div>
   ),
