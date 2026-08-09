@@ -33,6 +33,22 @@ export default {
 - `@figuredout/ui-web/styles/tokens.css` provides CSS custom properties.
 - `@figuredout/ui-web/tailwind-preset` maps tokens to semantic Tailwind utilities.
 
+## Component surface
+
+Primitives:
+`Badge`, `Button`, `IconButton`, `Card`, `CardHeader`, `CardBody`, `CardFooter`, `Checkbox`, `FormField`, `Input`, `Textarea`, `Select`, `Skeleton`, `Spinner`, `Switch`, `ThemeToggle`
+
+Application patterns:
+`AppTopBar`, `Avatar`, `ConfirmDialog`, `DescriptionList`, `Dialog`, `DropdownMenu`, `EmptyState`, `ExpandableTile`, `FilterBar`, `InfoBanner`, `PageContent`, `PageHeader`, `Pagination`, `SearchInput`, `SelectMenu`, `Section`, `SettingsSection`, `SidePanel`, `StatCard`, `Stepper`, `Table`, `TableSection`, `Tabs`, `ToastProvider`, `Tooltip`, `useToast`
+
+Dashboard composition:
+
+- Use `AppTopBar` for responsive app navigation with primary nav links and right-aligned actions.
+- Use `Section variant="plain"` for page-level dashboard regions that should not create nested card shells.
+- Use `TableSection` for titled data regions; it defaults the inner `Table` to `variant="plain"`.
+- Use `Table rowTone` for semantic row status and `Table variant="framed"` only when the table needs its own container.
+- Use `SelectMenu` for richer single-select controls, `ExpandableTile` for compact disclosure panels, and `InfoBanner` for status or guidance messages.
+
 ## Component Explorer
 
 This repo includes a Storybook preview explorer for viewing and interacting with the React components.

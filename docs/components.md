@@ -26,3 +26,11 @@ table, or header styling.
 - Keep these components presentational: props in, callbacks out, no data fetching.
 - Prefer extending this package over adding one-off UI recipes inside app code.
 - Prefer plain divided sections and plain tables for dense operational dashboards; reserve cards for metrics, repeated tiles, modals, and focused callouts.
+
+## Dashboard Patterns
+
+- `AppTopBar` owns app-level title, subtitle, primary navigation, sticky positioning, and right-aligned actions.
+- `Section variant="plain"` creates divided page regions without adding a raised card surface.
+- `TableSection` combines a region header, optional caption, actions, and a `Table` that defaults to `variant="plain"`.
+- `Table rowTone` provides semantic row states: `info`, `warning`, `danger`, and `success`.
+- `SelectMenu`, `InfoBanner`, and `ExpandableTile` cover dashboard filters, semantic callouts, and collapsible detail rows without local one-off recipes.

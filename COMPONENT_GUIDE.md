@@ -31,9 +31,14 @@ Patterns:
 
 ## Composition Notes
 
+- Use `AppTopBar` for application chrome that must wrap cleanly at small widths while preserving accessible primary navigation.
 - Use `StatCard` for compact metric tiles, not as a general content container.
 - Use `Section variant="plain"` for page-level regions with a divider, icon rail, eyebrow, heading, and description.
+- Use `InfoBanner` for semantic messages; warning and danger tones announce with `role="alert"`.
+- Use `ExpandableTile` for optional detail blocks that can be controlled with `open` / `onOpenChange` or initialized with `defaultOpen`.
+- Use `SelectMenu` when options need descriptions, disabled states, or menu-style keyboard interaction beyond the native `Select`.
 - Use `TableSection` for data regions; it renders `Table` in the plain table style by default to avoid nested card shells.
+- Use `Table rowTone` to mark rows as `info`, `warning`, `danger`, or `success` without custom row styling.
 - Use `Table variant="framed"` only when the table is the standalone focal component and needs its own surface.
 
 Charts:
