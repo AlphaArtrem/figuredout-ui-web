@@ -33,6 +33,23 @@ export default {
 - `@figuredout/ui-web/styles/tokens.css` provides CSS custom properties.
 - `@figuredout/ui-web/tailwind-preset` maps tokens to semantic Tailwind utilities.
 
+## Component Explorer
+
+This repo includes a Storybook preview explorer for viewing and interacting with the React components.
+
+```bash
+npm run storybook
+```
+
+Storybook runs at `http://localhost:6006` by default. Use it to inspect primitives,
+patterns, charts, and icons before changing or publishing the package.
+
+To verify the explorer can be built as a static artifact:
+
+```bash
+npm run build-storybook
+```
+
 ## Visual direction
 
 - Soft Structuralism: warm neutrals, one desaturated teal accent, tinted shadows.
