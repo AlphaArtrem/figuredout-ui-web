@@ -5,6 +5,7 @@ import {
   Badge,
   Button,
   ConfirmDialog,
+  DashboardShell,
   DescriptionList,
   Dialog,
   DropdownMenu,
@@ -81,6 +82,42 @@ export const WorkspaceHeader: Story = {
       </main>
     </div>
   ),
+}
+
+export const DashboardChrome: Story = {
+  render: () => {
+    const [activeItemId, setActiveItemId] = useState("overview")
+    return (
+      <DashboardShell
+        logo={<span className="inline-flex h-8 w-8 items-center justify-center rounded-sm bg-primary text-xs font-bold text-primary-fg">FO</span>}
+        title="FiguredOut"
+        subtitle="Operations"
+        activeItemId={activeItemId}
+        onNavItemSelect={setActiveItemId}
+        status={<Badge tone="success">System online</Badge>}
+        actions={<Button size="sm" leadingIcon={<Plus size={16} aria-hidden="true" />}>New record</Button>}
+        footer={<Avatar name="Mira Kapoor" subtitle="Admin" />}
+        navItems={[
+          { id: "overview", label: "Overview", icon: <Target size={18} aria-hidden="true" /> },
+          { id: "queue", label: "Review queue", icon: <ListChecks size={18} aria-hidden="true" /> },
+          { id: "settings", label: "Settings", icon: <Gear size={18} aria-hidden="true" /> },
+        ]}
+      >
+        <div className="mx-auto grid max-w-6xl gap-5 px-4 py-6 lg:px-6">
+          <PageHeader
+            eyebrow="Dashboard shell"
+            title={`${activeItemId} view`}
+            description="Persistent sidebar navigation, mobile drawer behavior, and sticky actions for operational dashboards."
+          />
+          <div className="grid gap-4 md:grid-cols-3">
+            <StatCard title="Open" value="128" description="records in scope" />
+            <StatCard title="Reviewed" value="42" tone="success" description="today" />
+            <StatCard title="Blocked" value="7" tone="warning" description="needs attention" />
+          </div>
+        </div>
+      </DashboardShell>
+    )
+  },
 }
 
 export const SearchAndFilters: Story = {

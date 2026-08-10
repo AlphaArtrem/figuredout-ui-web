@@ -11,8 +11,9 @@ table, or header styling.
 - Tier 2 composites: `Table`, `Dialog`, `ConfirmDialog`, `SidePanel`, `Tabs`, `Tooltip`,
   `DropdownMenu`, `SelectMenu`, `ToastProvider` with `useToast`, `EmptyState`,
   `SearchInput`, `FilterBar`, `Pagination`, `ExpandableTile`
-- Tier 3 patterns: `AppTopBar`, `PageHeader`, `Section`, `SettingsSection`, `StatCard`,
-  `Stepper`, `DescriptionList`, `Avatar`, `InfoBanner`, `TableSection`
+- Tier 3 patterns: `AppTopBar`, `DashboardShell`, `PageHeader`, `Section`,
+  `SettingsSection`, `StatCard`, `Stepper`, `DescriptionList`, `Avatar`,
+  `InfoBanner`, `TableSection`
 
 ## Experimental
 
@@ -30,6 +31,7 @@ table, or header styling.
 ## Dashboard Patterns
 
 - `AppTopBar` owns app-level title, subtitle, primary navigation, sticky positioning, and right-aligned actions.
+- `DashboardShell` owns persistent dashboard sidebar navigation, mobile drawer behavior, sticky actions, and status slots.
 - `Section variant="plain"` creates divided page regions without adding a raised card surface.
 - `TableSection` combines a region header, optional caption, actions, and a `Table` that defaults to `variant="plain"`.
 - `Table rowTone` provides semantic row states: `info`, `warning`, `danger`, and `success`.

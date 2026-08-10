@@ -1,5 +1,6 @@
 export * from "./avatar.js"
 export * from "./description-list.js"
+export * from "./dashboard-shell.js"
 export * from "./dialog.js"
 export * from "./dropdown-menu.js"
 export * from "./empty-state.js"
