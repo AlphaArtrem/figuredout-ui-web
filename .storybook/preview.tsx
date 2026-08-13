@@ -43,6 +43,22 @@ const preview: Preview = {
     docs: {
       toc: true,
     },
+    /* The sidebar reads in the order a reader needs it: what the system is,
+     * then what it is made of, then what is made from that. */
+    options: {
+      storySort: {
+        order: [
+          "Introduction",
+          "Foundations",
+          "Primitives",
+          "Layout",
+          "Data",
+          "Navigation & input",
+          "Feedback & overlays",
+          "Charts",
+        ],
+      },
+    },
   },
 }
 

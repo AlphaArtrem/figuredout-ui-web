@@ -1,0 +1,96 @@
+import { Meta } from "@storybook/addon-docs/blocks"
+
+<Meta title="Introduction" />
+
+# @figuredout/ui-web
+
+The shared UI surface for FiguredOut web apps. Compose these components instead of reimplementing local
+button, form, overlay, table or header styling — and when something is missing, add it here rather than in
+app code.
+
+```tsx
+import "@figuredout/ui-web/styles/tokens.css"          // once, at the app root
+import { Button, PageBand, SeamGrid } from "@figuredout/ui-web"
+import { BarChart, categoricalColor } from "@figuredout/ui-web/charts"
+import { Gear } from "@figuredout/ui-web/icons"
+```
+
+```ts
+// tailwind.config.ts
+import uiPreset from "@figuredout/ui-web/tailwind-preset"
+
+export default {
+  presets: [uiPreset],
+  content: ["./src/**/*.{ts,tsx}", "./node_modules/@figuredout/ui-web/dist/**/*.{js,mjs}"],
+}
+```
+
+The `content` glob matters: without the `dist` entry, Tailwind never sees the package's own class names and
+every component renders unstyled.
+
+---
+
+## The surface ladder
+
+Light and dark both run four steps, and **which surface a thing sits on is its meaning, not a preference**:
+
+| Token | What sits on it |
+| --- | --- |
+| `surface-sunken` | Holes: inputs, segmented-control tracks, wells |
+| `bg` | The page itself |
+| `surface` | Cards, tables, panels — anything resting on the page |
+| `surface-raised` | Anything lifted: an open tile, a hovered cell, a dialog, a menu, a toast |
+
+White is the *top* of that ladder in light mode, not the resting surface. That is what makes elevation mean
+something: a card on `surface` separates from the page without leaning on its hairline, leaving
+`surface-raised` free to mean lifted.
+
+## The five rules
+
+1. **A hairline is an inset ring, never a border.** Rings do not change an element's size, so nested
+   containers stay aligned. On a container with a banded header or footer, use an overlay pseudo-element —
+   an inset ring is painted *underneath* a child's full-bleed background.
+2. **Three elevation steps, no more.** `shadow-raised` rests, `shadow-hover` is picked up, `shadow-overlay`
+   covers something else. Import `POPOVER_SURFACE` rather than restating the floating surface.
+3. **Mono uppercase captions name values; mono tabular figures are values.** The exception is a form label,
+   which instructs rather than names — that stays sentence-case semibold.
+4. **One duration and one curve**: `duration-normal` with `ease-standard`, or `duration-fast` under 200ms.
+5. **One focus treatment**: a 4px `ring-focus-ring`.
+
+## Choosing a component
+
+| If you are… | Use |
+| --- | --- |
+| showing a row of related figures | `SeamGrid` + `StatCardContent` — one object, not four cards |
+| showing one figure | `StatCard` |
+| showing records | `Table`, or `TableSection` when it needs a title and actions |
+| framing a page region | `Section variant="plain"`, inside a `PageBand` |
+| framing a settings block | `Section variant="card"` / `SettingsSection` |
+| titling a page | `PageHeader` |
+| offering options that need descriptions, or must match the theme | `SelectMenu` |
+| offering a plain list of values | `Select` |
+| hiding optional detail | `ExpandableTile` |
+| interrupting | `Dialog`, or `ConfirmDialog` for a yes/no |
+| showing detail without leaving the page | `SidePanel` |
+| reporting the result of an action | `useToast` |
+| reporting the state of a thing on the page | `InfoBanner` |
+
+## Rules for consuming apps
+
+- Use semantic token classes (`bg-surface`, `text-fg-muted`, `ring-edge`, `shadow-raised`). No raw palette
+  utilities, no hex literals, no black drop shadows, no `linear` or `ease-in-out`.
+- Keep these components presentational: props in, callbacks out, no data fetching.
+- Icons come from `@figuredout/ui-web/icons`, never from `@phosphor-icons/react` directly — otherwise the
+  approved set stops meaning anything.
+- Charts take colours from `categoricalColor()` and the `--chart-*` tokens, and go through `ChartShell` so
+  every chart has the same loading, empty and view-as-table behaviour.
+
+## Where things are
+
+- `styles/tokens.css` — every token, light and dark
+- `tailwind-preset.ts` — the tokens mapped to utilities
+- `COMPONENT_GUIDE.md` — the full export list and composition rules
+- `docs/components.md` — tiers and dashboard patterns
+- `docs/contrast-report.md` — measured contrast for every semantic text pair
+- `hybrid-mockup/` — the standalone reference this system was designed in, with a note per decision. Not
+  built, imported or published; try a change there before it lands in `src/`.

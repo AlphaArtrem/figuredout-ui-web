@@ -80,6 +80,8 @@ Patterns:
 Charts:
 `BarChart`, `ChartShell`, `ChartTooltip`, `DonutChart`, `FunnelBars`, `LineChart`, `Sparkline`, `categoricalColor`, `sequentialColor`, `gridColor`, `axisLabelColor`
 
+Every chart goes through `ChartShell`: it owns the loading, empty and view-as-table states, so no chart is ever the only way to read its own numbers. All four wrappers disable Recharts' entry animation — it ignores `prefers-reduced-motion`, and a line drawn by animation is invisible in a background tab, in print and to screenshot tooling.
+
 Icons:
 Approved Phosphor exports are available from `@figuredout/ui-web/icons`, including `Gear`, `List`, `Pause`, `Plus`, `WarningCircle`, and the shared `PhosphorIcon` / `PhosphorIconProps` types.
 

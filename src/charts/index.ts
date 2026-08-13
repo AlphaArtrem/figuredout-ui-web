@@ -1,4 +1,5 @@
 export * from "./bar-chart.js"
+export * from "./chart-shell.js"
 export * from "./chart-tooltip.js"
 export * from "./donut-chart.js"
 export * from "./funnel-bars.js"

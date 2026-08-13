@@ -36,7 +36,10 @@
   --color-primary-soft: rgba(21, 128, 61, 0.12);
   --color-focus-ring: rgba(21, 128, 61, 0.34);
 
-  --color-success: #16a34a;
+  /* Darkened from #16a34a, which reached only 3.17:1 on `surface` and 2.77:1
+   * on its own soft wash — success text in a Badge or an InfoBanner was below
+   * AA for body copy. This clears 4.5:1 on both. See docs/contrast-report.md. */
+  --color-success: #0f7434;
   --color-success-soft: rgba(22, 163, 74, 0.12);
   --color-warning: #713f12;
   --color-warning-soft: rgba(250, 204, 21, 0.16);

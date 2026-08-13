@@ -94,6 +94,13 @@ export function BarChart<T extends object>({
                 fill={entry.color}
                 radius={[3, 3, 0, 0]}
                 maxBarSize={28}
+                /* Off, like DonutChart and Sparkline already are. Recharts'
+                 * draw-in animation ignores prefers-reduced-motion, and a line
+                 * that only exists once the animation has run is invisible in a
+                 * background tab, in print, and to screenshot tooling — the
+                 * path renders with a near-zero stroke-dasharray and stays
+                 * there while rAF is suspended. */
+                isAnimationActive={false}
               />
             ))}
           </RechartsBarChart>

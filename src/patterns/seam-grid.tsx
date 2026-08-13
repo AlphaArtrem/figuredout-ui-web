@@ -115,7 +115,11 @@ export function SeamGrid({ as: Component = "div", children, className, columns =
         cloneElement(cell, {
           key: cell.key ?? index,
           className: cn(
-            "min-w-0 bg-surface p-5 transition duration-normal ease-standard",
+            /* Each cell is a query container, so a figure inside it can size
+             * against the room it actually has (StatCardContent's `cqi` clamp).
+             * Without this the container units fall back to the viewport and a
+             * long figure renders at its maximum and overflows the cell. */
+            "min-w-0 bg-surface p-5 [container-type:inline-size] transition duration-normal ease-standard",
             "hover:relative hover:z-[1] hover:bg-surface-raised hover:shadow-hover",
             seamCorners(index, total, { base: 1, sm: smColumns, lg: columns }),
             cell.props.className,
