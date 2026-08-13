@@ -1,0 +1,333 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+ * LIGHT THEME CANDIDATES — mockup only.
+ *
+ * The problem this file exists to fix, in the package's light theme today:
+ *
+ *   --color-bg              #fafafa   page
+ *   --color-surface         #ffffff   card        ← 1 step off the page
+ *   --color-surface-raised  #ffffff   raised card ← no step at all
+ *   --color-surface-sunken  #f4f4f5   well
+ *
+ * Two problems fall out of that. A card is separated from the page by a 2%
+ * lightness difference, so the hairline ring is doing all the work — remove it
+ * and the card disappears. And "raised" is not a state: an open tile, a hovered
+ * cell and a dialog all land on the same white the card is already on, which is
+ * why the popped-tile mechanic only reads in dark mode.
+ *
+ * Dark mode does not have this problem, because it has room to go lighter:
+ * #111113 → #18191b → #212225 is three real steps.
+ *
+ * The fix is to stop treating white as the surface and start treating it as the
+ * TOP of a ladder. The page ground drops to a tinted neutral, the card sits
+ * just under white, and white itself is reserved for what is raised:
+ *
+ *   sunken   <   page   <   surface   <   raised (#ffffff)
+ *
+ * Three candidates below, all built on that ladder and differing only in the
+ * hue the neutrals lean toward. Each is a plain class, so it can be applied to
+ * <html> for the whole page or to a single element for a swatch preview —
+ * custom properties resolve per element, so a preview box in dark mode still
+ * renders its own palette correctly.
+ *
+ * `.lt-current` is the package's light theme as it ships, transcribed so the
+ * comparison is honest.
+ *
+ * Contrast was checked against each palette's own --color-surface: every
+ * fg-muted is above 9:1 and every fg-subtle above 6.5:1, so both clear AA for
+ * body text with room to spare. The current theme is higher still (11.4 / 8.6)
+ * because it is measured against pure white — the candidates give some of that
+ * back in exchange for surfaces that can actually be told apart.
+ * ═══════════════════════════════════════════════════════════════════════════ */
+
+/* ── 0. as it ships ─────────────────────────────────────────────────────── */
+
+.lt-current {
+  --color-bg: #fafafa;
+  --color-surface: #ffffff;
+  --color-surface-raised: #ffffff;
+  --color-surface-sunken: #f4f4f5;
+  --color-fg: #111113;
+  --color-fg-muted: #363a3f;
+  --color-fg-subtle: #4b4c52;
+  --color-edge: #e4e4e7;
+  --color-edge-strong: #b7b7ba;
+}
+
+/* ── 1. sage ─────────────────────────────────────────────────────────────
+ * Neutrals with a faint green bias, which is also how callpool's light theme
+ * is built (#f7f8f7 / #eceeec / #dde1dd). The bias is small enough that the
+ * greys still read as greys, and it puts the brand's green on a ground that
+ * agrees with it instead of one that is neutral-to-the-point-of-clinical.
+ *
+ * The default recommendation: it is the closest to what is already there, so
+ * nothing in the product suddenly looks like a different application.
+ */
+.lt-sage {
+  --color-bg: #f1f4f0;
+  --color-surface: #f9fbf8;
+  --color-surface-raised: #ffffff;
+  --color-surface-sunken: #e7ebe5;
+
+  --color-fg: #0f1310;
+  --color-fg-muted: #333c35;
+  --color-fg-subtle: #4e574f;
+  --color-edge: #dbe1d9;
+  --color-edge-strong: #a7b0a5;
+
+  /* Tinted, not black. A pure-black shadow on a tinted ground greys the colour
+   * out underneath it and reads as dirt; a shadow carrying the ground's own hue
+   * reads as depth. */
+  --shadow-raised:
+    0 1px 2px rgba(16, 32, 22, 0.05),
+    0 12px 32px rgba(16, 32, 22, 0.07);
+  --shadow-hover:
+    0 1px 2px rgba(16, 32, 22, 0.07),
+    0 18px 44px rgba(16, 32, 22, 0.11);
+  --shadow-overlay:
+    0 2px 8px rgba(16, 32, 22, 0.08),
+    0 26px 64px rgba(16, 32, 22, 0.16);
+
+  --glow-1: #34d399;
+  --glow-2: #38bdf8;
+  --glow-3: #fbbf24;
+  --glow-4: #a78bfa;
+}
+
+/* ── 2. paper ────────────────────────────────────────────────────────────
+ * A warm greige ground — the editorial option. Reads as printed stock rather
+ * than as a screen, and it is the friendliest of the three on a long page of
+ * dense figures, which is most of this product.
+ *
+ * The cost: the brand green sits slightly cooler than its ground, so the
+ * primary button reads a touch more clinical here than it does on sage.
+ */
+.lt-paper {
+  --color-bg: #f6f4f0;
+  --color-surface: #fdfcfa;
+  --color-surface-raised: #ffffff;
+  --color-surface-sunken: #edeae4;
+
+  --color-fg: #16130e;
+  --color-fg-muted: #3e3930;
+  --color-fg-subtle: #5e584c;
+  --color-edge: #e6e1d8;
+  --color-edge-strong: #b6afa2;
+
+  --shadow-raised:
+    0 1px 2px rgba(46, 36, 20, 0.05),
+    0 12px 32px rgba(46, 36, 20, 0.07);
+  --shadow-hover:
+    0 1px 2px rgba(46, 36, 20, 0.07),
+    0 18px 44px rgba(46, 36, 20, 0.11);
+  --shadow-overlay:
+    0 2px 8px rgba(46, 36, 20, 0.08),
+    0 26px 64px rgba(46, 36, 20, 0.16);
+
+  --glow-1: #f59e0b;
+  --glow-2: #fb7185;
+  --glow-3: #84cc16;
+  --glow-4: #38bdf8;
+}
+
+/* ── 3. slate ────────────────────────────────────────────────────────────
+ * A cool blue-grey ground. The most conventional of the three and the one that
+ * looks most like every other analytics product — which is a reason for it as
+ * much as against it: nothing about it will surprise a new user.
+ */
+.lt-slate {
+  --color-bg: #eef1f5;
+  --color-surface: #f9fafc;
+  --color-surface-raised: #ffffff;
+  --color-surface-sunken: #e4e8ee;
+
+  --color-fg: #0e131a;
+  --color-fg-muted: #333c48;
+  --color-fg-subtle: #4f5a67;
+  --color-edge: #dde2ea;
+  --color-edge-strong: #a4aebb;
+
+  --shadow-raised:
+    0 1px 2px rgba(15, 23, 42, 0.05),
+    0 12px 32px rgba(15, 23, 42, 0.07);
+  --shadow-hover:
+    0 1px 2px rgba(15, 23, 42, 0.07),
+    0 18px 44px rgba(15, 23, 42, 0.11);
+  --shadow-overlay:
+    0 2px 8px rgba(15, 23, 42, 0.08),
+    0 26px 64px rgba(15, 23, 42, 0.16);
+
+  --glow-1: #38bdf8;
+  --glow-2: #818cf8;
+  --glow-3: #2dd4bf;
+  --glow-4: #f472b6;
+}
+
+/* Ordering note: the dark theme is declared at [data-theme="dark"]
+ * (specificity 0,2,0) in tokens-hybrid.css, so it out-ranks these single
+ * classes on the same element and stays in charge when dark is on. The page
+ * only puts a palette class on <html> while it is in light mode anyway. The
+ * swatch previews below are a different case on purpose: a palette class on a
+ * preview box wins for that box's subtree in either theme, because a custom
+ * property set on an element always beats one inherited from an ancestor. */
+
+/* ── the swatch previews ─────────────────────────────────────────────────
+ * Mockup furniture: a palette rendered as its own ladder, plus a miniature of
+ * the three surfaces stacked, so the steps can be seen rather than read.
+ */
+.lt-grid {
+  display: grid;
+  gap: var(--space-5);
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 720px) {
+  .lt-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1100px) {
+  .lt-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+/* Each card paints itself in the palette it is showing, so it is a true
+ * preview in either theme. The outer ring uses the page's own edge token
+ * rather than the palette's, so an unselected card does not disappear into a
+ * dark page. */
+.lt-card {
+  display: grid;
+  gap: var(--space-3);
+  padding: var(--space-4);
+  border-radius: var(--radius-xl);
+  background: var(--color-bg);
+  box-shadow: inset 0 0 0 1px var(--color-edge);
+  min-width: 0;
+}
+
+.lt-card[data-selected="true"] {
+  box-shadow:
+    inset 0 0 0 1px var(--color-edge-strong),
+    0 0 0 3px var(--color-focus-ring);
+}
+
+.lt-name {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-2);
+  margin: 0;
+  font: 700 0.6875rem/1.4 var(--font-mono);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-fg);
+}
+
+.lt-name span {
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  color: var(--color-fg-subtle);
+  text-transform: none;
+}
+
+/* The ladder, as four stacked bars in lightness order. Deliberately not four
+ * chips in a row: the point being made is that these are STEPS, and a row of
+ * equal squares does not say that. */
+.lt-ladder {
+  display: grid;
+  gap: 2px;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+}
+
+.lt-step {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2);
+  padding: 0.55rem 0.7rem;
+  font: 500 0.6875rem/1.2 var(--font-mono);
+  color: var(--color-fg-muted);
+}
+
+.lt-step b {
+  font-weight: 500;
+  color: var(--color-fg-subtle);
+}
+
+.lt-step[data-tone="sunken"] {
+  background: var(--color-surface-sunken);
+}
+
+.lt-step[data-tone="bg"] {
+  background: var(--color-bg);
+}
+
+.lt-step[data-tone="surface"] {
+  background: var(--color-surface);
+}
+
+.lt-step[data-tone="raised"] {
+  background: var(--color-surface-raised);
+}
+
+/* The miniature: a card on the page ground, with a raised tile on top of it.
+ * Every value here comes from the palette, and no rule below sets a border —
+ * the separation you can see is the separation the tokens give you. */
+.lt-demo {
+  padding: var(--space-3);
+  border-radius: var(--radius-lg);
+  background: var(--color-bg);
+}
+
+.lt-demo-card {
+  padding: var(--space-3);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+  box-shadow: var(--shadow-raised);
+}
+
+.lt-demo-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2);
+  font: 600 0.625rem/1.4 var(--font-mono);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-fg-subtle);
+}
+
+.lt-demo-v {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  font-size: var(--text-lg);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: var(--color-fg);
+  text-transform: none;
+}
+
+.lt-demo-raised {
+  margin-top: var(--space-3);
+  padding: var(--space-3);
+  border-radius: var(--radius-md);
+  background: var(--color-surface-raised);
+  box-shadow: var(--shadow-overlay);
+  font-size: 0.8125rem;
+  color: var(--color-fg-muted);
+}
+
+.lt-demo-well {
+  margin-top: var(--space-3);
+  padding: 0.5rem 0.7rem;
+  border-radius: var(--radius-sm);
+  background: var(--color-surface-sunken);
+  font: 500 0.75rem/1.4 var(--font-mono);
+  color: var(--color-fg-subtle);
+}
+
+.lt-pick {
+  justify-self: start;
+}

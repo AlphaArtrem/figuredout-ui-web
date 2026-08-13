@@ -12,12 +12,16 @@ export interface InfoBannerProps extends Omit<HTMLAttributes<HTMLDivElement>, "t
   tone?: InfoBannerTone
 }
 
+/* Each tone gains a bar on its leading edge, so a stack of banners is scannable
+ * by tone without any of them shouting — and so the tone is not carried by
+ * colour alone. The bar is a left border on a rounded box, which curves into
+ * the corners rather than being clipped by them. */
 const TONE_STYLES: Record<InfoBannerTone, string> = {
-  neutral: "border-edge bg-surface-raised text-fg",
-  info: "border-info/30 bg-info-soft text-info",
-  warning: "border-warning/35 bg-warning-soft text-warning",
-  danger: "border-danger/35 bg-danger-soft text-danger",
-  success: "border-success/35 bg-success-soft text-success",
+  neutral: "border-l-edge-strong ring-edge bg-surface-raised text-fg",
+  info: "border-l-info ring-info/30 bg-info-soft text-info",
+  warning: "border-l-warning ring-warning/35 bg-warning-soft text-warning",
+  danger: "border-l-danger ring-danger/35 bg-danger-soft text-danger",
+  success: "border-l-success ring-success/35 bg-success-soft text-success",
 }
 
 export function InfoBanner({
@@ -37,7 +41,7 @@ export function InfoBanner({
     <div
       role={tone === "danger" || tone === "warning" ? "alert" : "status"}
       className={cn(
-        "flex items-start justify-between gap-4 rounded-lg border px-4 py-3",
+        "flex items-start justify-between gap-4 rounded-lg border-0 border-l-4 px-4 py-3 ring-1 ring-inset",
         TONE_STYLES[tone],
         className,
       )}

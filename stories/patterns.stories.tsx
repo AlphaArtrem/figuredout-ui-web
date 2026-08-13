@@ -17,9 +17,13 @@ import {
   Input,
   PageHeader,
   Pagination,
+  Hero,
+  PageBand,
+  SeamGrid,
   SearchInput,
   SelectMenu,
   Section,
+  StatCardContent,
   SidePanel,
   StatCard,
   Table,
@@ -200,11 +204,20 @@ export const DataTable: Story = {
 export const SectionsAndStats: Story = {
   render: () => (
     <div className="grid gap-5">
-      <div className="grid gap-4 md:grid-cols-3">
-        <StatCard title="Qualified" value="128" delta="+12%" tone="success" description="vs previous week" icon={<Target size={18} />} />
-        <StatCard title="Needs review" value="24" delta="-4%" tone="warning" description="manual decisions" icon={<WarningCircle size={18} />} />
-        <StatCard title="Messages" value="842" delta="+31" tone="info" description="sent this week" icon={<ChatCircleDots size={18} />} />
-      </div>
+      {/* Related figures are one object: SeamGrid owns the surface, padding
+          and corners, StatCardContent owns the figure. */}
+      <SeamGrid columns={3}>
+        <div>
+          <StatCardContent title="Qualified" value="128" delta="+12%" tone="success" description="vs previous week" icon={<Target size={18} />} />
+        </div>
+        <div>
+          <StatCardContent title="Needs review" value="24" delta="-4%" tone="warning" description="manual decisions" icon={<WarningCircle size={18} />} />
+        </div>
+        <div>
+          <StatCardContent title="Messages" value="842" delta="+31" tone="info" description="sent this week" icon={<ChatCircleDots size={18} />} />
+        </div>
+      </SeamGrid>
+      <StatCard title="Standalone tile" value="37" delta="+4 this week" tone="primary" description="carries its own surface" icon={<Target size={18} />} className="max-w-xs" />
       <Section
         title="Business profile"
         description="A section wraps related configuration without introducing nested cards."
@@ -340,4 +353,72 @@ export const ToastsAndEmptyState: Story = {
       </div>
     )
   },
+}
+
+export const PageStructure: Story = {
+  parameters: { layout: "fullscreen" },
+  render: () => (
+    <div>
+      <Hero
+        eyebrow="FiguredOut / Platform"
+        title={
+          <>
+            Every number.
+            <br />
+            Traced to <em className="not-italic text-primary">its source.</em>
+          </>
+        }
+        description="One warehouse-backed layer for every metric your teams argue about."
+        art={
+          /* Stands in for a real 1:1 asset — the hero's overlap and copy offset
+             are derived from a square ratio. */
+          <div className="aspect-square w-full rounded-xl bg-[linear-gradient(140deg,var(--color-primary-soft),var(--color-surface-sunken))] ring-1 ring-inset ring-edge" />
+        }
+        card={
+          <div className="overflow-hidden rounded-xl bg-surface shadow-raised ring-1 ring-inset ring-edge">
+            {[
+              ["Events today", "1,284,940"],
+              ["Sources connected", "17"],
+            ].map(([label, value]) => (
+              <div key={label} className="flex items-center justify-between gap-4 border-b border-edge px-5 py-4 last:border-b-0">
+                <span className="font-mono text-[0.6875rem] font-semibold uppercase tracking-[0.1em] text-fg-subtle">
+                  {label}
+                </span>
+                <span className="font-mono text-xl font-semibold tabular-nums text-fg">{value}</span>
+              </div>
+            ))}
+          </div>
+        }
+        actions={
+          <>
+            <Button>Open the dashboard</Button>
+            <Button variant="secondary">See a live example</Button>
+          </>
+        }
+      />
+
+      <PageBand>
+        <Section
+          variant="plain"
+          size="display"
+          eyebrow="Pipeline health"
+          title="Ingestion and freshness"
+          description="Every source, when it last landed, and what it cost to land. The display size is for the two or three regions a page is navigated by."
+          icon={<Target size={20} />}
+        >
+          <SeamGrid columns={3}>
+            <div>
+              <StatCardContent title="Events today" value="1,284,940" delta="+12%" tone="success" />
+            </div>
+            <div>
+              <StatCardContent title="Median latency" value="412 ms" description="p95 is 1.9 s" />
+            </div>
+            <div>
+              <StatCardContent title="Failed syncs" value="3" description="All retried and clear" />
+            </div>
+          </SeamGrid>
+        </Section>
+      </PageBand>
+    </div>
+  ),
 }

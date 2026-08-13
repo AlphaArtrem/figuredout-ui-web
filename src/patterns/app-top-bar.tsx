@@ -28,7 +28,7 @@ export function AppTopBar({
   return (
     <header
       className={cn(
-        "border-b border-edge bg-background/90 backdrop-blur",
+        "border-b border-edge bg-[color-mix(in_srgb,var(--color-bg)_82%,transparent)] backdrop-blur-xl",
         sticky && "sticky top-0 z-nav",
         className,
       )}
@@ -49,8 +49,12 @@ export function AppTopBar({
               <a
                 key={`${item.href ?? ""}-${String(label)}`}
                 className={cn(
-                  "whitespace-nowrap border-b border-transparent py-1 text-[0.8125rem] font-medium text-fg-muted transition duration-fast ease-standard hover:border-primary hover:text-fg focus-visible:border-primary focus-visible:text-fg focus-visible:outline-none",
-                  active && "border-primary text-fg",
+                  /* The active mark is a scaled pseudo-element, not a border:
+                   * a border appearing on hover nudges the label by a pixel. */
+                  "relative whitespace-nowrap py-2 text-[0.8125rem] font-medium text-fg-muted transition duration-fast ease-standard hover:text-fg focus-visible:text-fg focus-visible:outline-none",
+                  "after:absolute after:inset-x-0 after:bottom-0 after:h-0.5 after:rounded-sm after:bg-primary after:transition-transform after:duration-normal after:ease-standard after:content-['']",
+                  "after:scale-x-0 hover:after:scale-x-100 focus-visible:after:scale-x-100",
+                  active && "font-semibold text-fg after:scale-x-100",
                   itemClassName,
                 )}
                 aria-current={active ? "page" : item["aria-current"]}

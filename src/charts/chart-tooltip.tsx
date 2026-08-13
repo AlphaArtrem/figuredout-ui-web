@@ -26,9 +26,13 @@ export function ChartTooltip({
   }
 
   return (
-    <div className="min-w-[8rem] rounded-md bg-surface-raised px-3 py-2 text-xs shadow-overlay ring-1 ring-inset ring-edge">
+    /* The same floating surface as every menu and dialog — raised, overlay
+     * shadow, strong ring — so the card a chart shows on hover agrees with the
+     * table showing the same numbers underneath it. The x value takes the mono
+     * caption role; the series values are tabular figures. */
+    <div className="min-w-[8rem] rounded-md bg-surface-raised px-3 py-2 text-xs shadow-overlay ring-1 ring-inset ring-edge-strong">
       {label ? (
-        <div className="mb-1.5 font-medium text-fg">
+        <div className="mb-1.5 font-mono text-[0.6875rem] font-semibold uppercase tracking-[0.08em] text-fg-subtle">
           {labelFormatter ? labelFormatter(label) : label}
         </div>
       ) : null}

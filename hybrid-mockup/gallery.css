@@ -1,0 +1,2395 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+ * THE COMPONENT LAYER — every component in @figuredout/ui-web, in the hybrid
+ * design system. Mockup only.
+ *
+ * Loaded after tokens-hybrid.css, light-themes.css and hybrid.css, and it
+ * assumes the shared pieces those already define: .btn, .tile, .seam, .head,
+ * .eyebrow, .num, .lede, .note, .card-icon.
+ *
+ * The through-line, and the thing that makes fifty components look like one
+ * system rather than fifty decisions:
+ *
+ *   CONTAINMENT  a hairline is an inset ring, never a border. Borders change
+ *                an element's size and double up where two containers meet;
+ *                a ring does neither, so a card inside a card inside a table
+ *                still lines up.
+ *   ELEVATION    exactly three steps, from the tokens: raised (rests on the
+ *                page), hover (picked up), overlay (dialog, panel, menu,
+ *                toast, popover — anything that covers something else).
+ *   LABELS       every label that names a value — metric captions, table
+ *                headers, description terms, form legends — is mono,
+ *                uppercase, 0.1em. Every value that IS a number is mono and
+ *                tabular. That pairing is the system's voice.
+ *   MOTION       one duration and one curve: --motion-normal, --ease-standard.
+ *                Anything under 200ms uses --motion-fast. Nothing else.
+ *   FOCUS        one treatment everywhere: a 4px --color-focus-ring.
+ * ═══════════════════════════════════════════════════════════════════════════ */
+
+/* ── icons ───────────────────────────────────────────────────────────────
+ * Phosphor regular is a 1.75-weight stroke on a 24 grid with round caps. One
+ * class carries that, so an icon dropped into any control inherits the
+ * control's colour and never arrives with its own.
+ */
+.ico {
+  width: 1.25rem;
+  height: 1.25rem;
+  flex: none;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.75;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.ico-sm {
+  width: 1rem;
+  height: 1rem;
+}
+
+/* The danger button, which hybrid.css does not carry — it only needed the
+ * three marketing variants. Same shape as primary, semantic colour. */
+/* Not --color-primary-fg: that token is the ink for the PRIMARY colour, and in
+ * dark mode it is a near-black green sitting on a light red. Danger carries its
+ * own ink, mixed from its own hue. */
+.btn-danger {
+  background: var(--color-danger);
+  color: var(--color-danger-fg);
+  box-shadow: var(--shadow-raised);
+}
+
+.btn-danger:hover {
+  background: color-mix(in srgb, var(--color-danger) 88%, var(--color-fg));
+}
+
+.btn:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+
+/* Inline code, used throughout the notes. */
+code {
+  font-family: var(--font-mono);
+  font-size: 0.9em;
+  padding: 0.1em 0.35em;
+  border-radius: var(--radius-sm);
+  background: var(--color-surface-sunken);
+  box-shadow: inset 0 0 0 1px var(--color-edge);
+}
+
+/* ── gallery furniture ───────────────────────────────────────────────────
+ * The shell this page is built in. It is the DashboardShell pattern, so the
+ * page is itself an example of the thing it documents.
+ */
+.shell {
+  display: grid;
+  grid-template-columns: 1fr;
+  min-height: 100vh;
+}
+
+@media (min-width: 1024px) {
+  .shell {
+    grid-template-columns: 16rem minmax(0, 1fr);
+  }
+}
+
+.shell-nav {
+  display: none;
+  position: sticky;
+  top: 0;
+  align-self: start;
+  height: 100vh;
+  overflow-y: auto;
+  padding: var(--space-4);
+  background: color-mix(in srgb, var(--color-surface) 70%, transparent);
+  backdrop-filter: blur(12px);
+  border-right: 1px solid var(--color-edge);
+}
+
+@media (min-width: 1024px) {
+  .shell-nav {
+    display: block;
+  }
+}
+
+.shell-brand {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-2) var(--space-2) var(--space-4);
+  border-bottom: 1px solid var(--color-edge);
+  margin-bottom: var(--space-4);
+}
+
+.shell-brand-name {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+}
+
+.shell-brand-name b {
+  font: 600 var(--text-sm) / 1.2 var(--font-mono);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.shell-brand-name span {
+  font-size: var(--text-xs);
+  color: var(--color-fg-muted);
+}
+
+.nav-group {
+  margin: 0 0 var(--space-5);
+  padding: 0;
+  list-style: none;
+}
+
+.nav-group-title {
+  margin: 0 0 var(--space-2);
+  padding-inline: var(--space-2);
+  font: 600 0.625rem/1.4 var(--font-mono);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--color-fg-subtle);
+}
+
+.nav-link {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-height: 2.25rem;
+  padding-inline: var(--space-2);
+  border-radius: var(--radius-sm);
+  font-size: var(--text-sm);
+  color: var(--color-fg-muted);
+  text-decoration: none;
+  transition: background var(--motion-fast) var(--ease-standard),
+    color var(--motion-fast) var(--ease-standard);
+}
+
+.nav-link:hover {
+  background: var(--color-surface-raised);
+  color: var(--color-fg);
+}
+
+/* The active item is marked by a bar on its leading edge, drawn as an inset
+ * shadow so it does not shift the label the way a border would. Same device
+ * the DashboardShell sidebar already uses. */
+.nav-link[aria-current="true"] {
+  background: var(--color-primary-soft);
+  color: var(--color-primary);
+  font-weight: 600;
+  box-shadow: inset 3px 0 0 var(--color-primary);
+}
+
+.shell-main {
+  min-width: 0;
+}
+
+.gallery {
+  max-width: 62rem;
+  margin-inline: auto;
+  padding: var(--space-8) var(--gut) var(--space-12);
+}
+
+/* Each documented component. The heading block is deliberately quiet: on a
+ * page of fifty demos the demos have to be the loud part. */
+.entry {
+  padding-block: var(--space-10);
+  border-top: 1px solid var(--color-edge);
+  min-width: 0;
+}
+
+.entry:first-of-type {
+  border-top: 0;
+}
+
+.entry-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--space-2) var(--space-3);
+  margin-bottom: var(--space-2);
+}
+
+.entry-head h3 {
+  margin: 0;
+  font-size: var(--text-xl);
+  font-weight: 650;
+  letter-spacing: -0.015em;
+}
+
+.entry-path {
+  font: 500 0.6875rem/1.4 var(--font-mono);
+  letter-spacing: 0.06em;
+  color: var(--color-fg-subtle);
+  padding: 0.15rem 0.45rem;
+  border-radius: 999px;
+  box-shadow: inset 0 0 0 1px var(--color-edge);
+}
+
+.entry-note {
+  margin: 0 0 var(--space-5);
+  max-width: 70ch;
+  font-size: var(--text-sm);
+  line-height: 1.6;
+  color: var(--color-fg-muted);
+}
+
+.entry-note b {
+  color: var(--color-fg);
+  font-weight: 600;
+}
+
+/* The stage every demo sits on: the page ground, so anything raised reads as
+ * raised. Without this the demos would sit on whatever the gallery's own
+ * surface happens to be and the elevation story would be invisible. */
+.demo {
+  padding: var(--space-5);
+  border-radius: var(--radius-xl);
+  background: var(--color-bg);
+  box-shadow: inset 0 0 0 1px var(--color-edge);
+  min-width: 0;
+}
+
+.demo + .demo {
+  margin-top: var(--space-3);
+}
+
+.demo-label {
+  margin: 0 0 var(--space-4);
+  font: 600 0.625rem/1.4 var(--font-mono);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-fg-subtle);
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+/* `align-content: start` is load-bearing, not tidiness: a grid whose container
+ * is taller than its rows distributes the slack INTO the auto rows, so in a
+ * two-column demo the shorter column's fields grew and every absolutely centred
+ * adornment — the select caret, the search magnifier — drifted below its
+ * control. Rows keep their content height instead. */
+.stack {
+  display: grid;
+  align-content: start;
+  gap: var(--space-4);
+  min-width: 0;
+}
+
+.grid-2 {
+  display: grid;
+  gap: var(--space-4);
+  grid-template-columns: 1fr;
+  min-width: 0;
+}
+
+@media (min-width: 720px) {
+  .grid-2 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* ── foundations ─────────────────────────────────────────────────────────
+ * Not components, but the reason the components agree with each other.
+ */
+.swatches {
+  display: grid;
+  gap: var(--space-3);
+  grid-template-columns: repeat(auto-fill, minmax(9rem, 1fr));
+}
+
+.swatch {
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  box-shadow: inset 0 0 0 1px var(--color-edge);
+  background: var(--color-surface);
+}
+
+.swatch-chip {
+  height: 3rem;
+}
+
+.swatch-name {
+  display: block;
+  padding: var(--space-2) var(--space-3);
+  font: 500 0.6875rem/1.4 var(--font-mono);
+  color: var(--color-fg-muted);
+}
+
+.swatch-name b {
+  display: block;
+  font-weight: 600;
+  color: var(--color-fg);
+}
+
+.type-row {
+  display: grid;
+  gap: var(--space-1);
+  padding-block: var(--space-3);
+  border-bottom: 1px solid var(--color-edge);
+}
+
+.type-row:last-child {
+  border-bottom: 0;
+}
+
+.type-row small {
+  font: 500 0.625rem/1.4 var(--font-mono);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-fg-subtle);
+}
+
+.elev {
+  display: grid;
+  place-items: center;
+  min-height: 6rem;
+  border-radius: var(--radius-lg);
+  background: var(--color-surface);
+  font: 500 var(--text-sm) / 1 var(--font-mono);
+  color: var(--color-fg-muted);
+}
+
+.elev-raised {
+  box-shadow: var(--shadow-raised), inset 0 0 0 1px var(--color-edge);
+}
+
+.elev-hover {
+  box-shadow: var(--shadow-hover), inset 0 0 0 1px var(--color-edge-strong);
+}
+
+.elev-overlay {
+  background: var(--color-surface-raised);
+  box-shadow: var(--shadow-overlay), inset 0 0 0 1px var(--color-edge-strong);
+}
+
+.icon-wall {
+  display: grid;
+  gap: var(--space-2);
+  grid-template-columns: repeat(auto-fill, minmax(5.5rem, 1fr));
+}
+
+.icon-cell {
+  display: grid;
+  gap: var(--space-2);
+  place-items: center;
+  padding: var(--space-3) var(--space-2);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+  box-shadow: inset 0 0 0 1px var(--color-edge);
+  font: 500 0.625rem/1.2 var(--font-mono);
+  color: var(--color-fg-subtle);
+  text-align: center;
+  /* Phosphor's longest names — MagnifyingGlass, ArrowsLeftRight — are wider
+   * than the cell and have no break opportunity of their own. */
+  overflow-wrap: anywhere;
+}
+
+/* ── badge ───────────────────────────────────────────────────────────────
+ * Unchanged from the package apart from the ring: a pill on a tinted ground
+ * with a same-hue ring rather than the neutral --color-edge, so a success
+ * badge is one object instead of a green fill in a grey outline.
+ */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  padding: 0.2rem 0.6rem;
+  border-radius: 999px;
+  font-size: var(--text-xs);
+  font-weight: 500;
+  line-height: 1.4;
+  white-space: nowrap;
+  background: var(--color-surface-sunken);
+  color: var(--color-fg-muted);
+  box-shadow: inset 0 0 0 1px var(--color-edge);
+}
+
+.badge-primary {
+  background: var(--color-primary-soft);
+  color: var(--color-primary);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--color-primary) 28%, transparent);
+}
+
+.badge-success {
+  background: var(--color-success-soft);
+  color: var(--color-success);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--color-success) 28%, transparent);
+}
+
+.badge-warning {
+  background: var(--color-warning-soft);
+  color: var(--color-warning);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--color-warning) 28%, transparent);
+}
+
+.badge-danger {
+  background: var(--color-danger-soft);
+  color: var(--color-danger);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--color-danger) 28%, transparent);
+}
+
+.badge-info {
+  background: var(--color-info-soft);
+  color: var(--color-info);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--color-info) 28%, transparent);
+}
+
+/* A dot before the label turns a badge into a status. Same 7px dot the hero's
+ * live indicator uses — one idiom for "this is a state", everywhere. */
+.badge-dot::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+  flex: none;
+}
+
+/* ── card ────────────────────────────────────────────────────────────────
+ * The package's Card is a 1px-padded shell with a raised summary block inside
+ * it — a card that contains a card. The hybrid keeps the idea (the summary is
+ * a distinct surface) but drops the padded shell: the summary sits on
+ * surface-raised, the body on surface, and one hairline separates them. Two
+ * surfaces, one object.
+ */
+/* An inset ring is painted above the element's own background but BELOW its
+ * children's — so on any container whose header or footer has a full-bleed
+ * surface of its own (this Card, Section, Dialog, SidePanel, the table frame)
+ * the ring disappears behind them at exactly the edges it exists to draw.
+ *
+ * The fix is one overlay pseudo-element per container: same radius, no hit
+ * test, stacked above the children. Everything that needs a hairline over a
+ * banded interior uses it, which is also why they all look identical.
+ */
+.card,
+.section-card,
+.table-frame,
+.dlg,
+.panel {
+  position: relative;
+}
+
+.card::after,
+.section-card::after,
+.table-frame::after,
+.dlg::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  border-radius: inherit;
+  pointer-events: none;
+  box-shadow: inset 0 0 0 1px var(--color-edge);
+}
+
+.dlg::after {
+  box-shadow: inset 0 0 0 1px var(--color-edge-strong);
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  border-radius: var(--radius-xl);
+  background: var(--color-surface);
+  box-shadow: var(--shadow-raised);
+  overflow: hidden;
+  transition: box-shadow var(--motion-normal) var(--ease-standard),
+    transform var(--motion-normal) var(--ease-standard);
+  min-width: 0;
+}
+
+/* So a footer sits on the bottom edge when a grid stretches one card to match
+ * a taller neighbour, rather than floating halfway down it. */
+.card-body {
+  flex: 1;
+}
+
+.card-hoverable:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-hover);
+}
+
+.card-hoverable:hover::after {
+  box-shadow: inset 0 0 0 1px var(--color-edge-strong);
+}
+
+.card-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-4);
+  padding: var(--space-4) var(--space-5);
+  background: var(--color-surface-raised);
+  border-bottom: 1px solid var(--color-edge);
+}
+
+.card-head-main {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+  min-width: 0;
+}
+
+.card-title {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+}
+
+.card-title b {
+  font-size: var(--text-sm);
+  font-weight: 600;
+}
+
+.card-title small {
+  font-size: var(--text-sm);
+  color: var(--color-fg-muted);
+}
+
+.card-number {
+  font: 700 var(--text-xs) / 1.4 var(--font-mono);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-fg-subtle);
+}
+
+.card-body {
+  padding: var(--space-4) var(--space-5);
+  font-size: var(--text-sm);
+  color: var(--color-fg-muted);
+}
+
+.card-foot {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-5);
+  border-top: 1px solid var(--color-edge);
+  background: var(--color-surface-sunken);
+}
+
+/* Tone is carried by the ring and a bar on the leading edge, not by a tinted
+ * fill: a whole card in danger-soft shouts, and these are usually one card in
+ * a grid of neutral ones. */
+/* The tone bar is its own layer for the same reason the ring is: it has to
+ * cross the header, the body and the footer, which all paint over the card's
+ * own background.
+ *
+ * It is drawn as a LEFT BORDER on a full-size overlay rather than as a 4px
+ * block, because a border follows the border radius: it tapers into the top
+ * and bottom corners and meets the ring on the curve. A block gets clipped by
+ * the corner instead, which reads as a bar that stops short of the edge. */
+.card[class*="card-"]::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  border-radius: inherit;
+  border-left: 4px solid var(--tone, transparent);
+  pointer-events: none;
+}
+
+.card-info {
+  --tone: var(--color-info);
+}
+
+.card-warning {
+  --tone: var(--color-warning);
+}
+
+.card-danger {
+  --tone: var(--color-danger);
+}
+
+.card-success {
+  --tone: var(--color-success);
+}
+
+.card-info::after,
+.card-warning::after,
+.card-danger::after,
+.card-success::after {
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--tone) 34%, var(--color-edge));
+}
+
+/* ── form fields ─────────────────────────────────────────────────────────
+ * One control surface for every input: sunken ground, inset ring, and the
+ * focus ring outside it. Sunken rather than surface is the change — on the new
+ * light ladder a white input on a white card is invisible, and a field is a
+ * hole you type into, not a raised object.
+ */
+.field {
+  /* Block, not the inline-block a form control is by default: inline leaves a
+   * descender's worth of line box under the control, which makes the wrapper
+   * taller than the field and drops any absolutely centred adornment — the
+   * select caret, the search magnifier — a few pixels low. */
+  display: block;
+  width: 100%;
+  min-height: 2.75rem;
+  padding: 0.6rem var(--space-3);
+  border: 0;
+  border-radius: var(--radius-md);
+  background: var(--color-surface-sunken);
+  color: var(--color-fg);
+  font: 400 var(--text-sm) / 1.5 var(--font-sans);
+  box-shadow: inset 0 0 0 1px var(--color-edge);
+  transition: box-shadow var(--motion-normal) var(--ease-standard),
+    background var(--motion-normal) var(--ease-standard);
+}
+
+.field::placeholder {
+  color: var(--color-fg-subtle);
+}
+
+.field:hover:not(:disabled) {
+  box-shadow: inset 0 0 0 1px var(--color-edge-strong);
+}
+
+.field:focus {
+  outline: none;
+  background: var(--color-surface);
+  box-shadow: inset 0 0 0 1px var(--color-primary), 0 0 0 4px var(--color-focus-ring);
+}
+
+.field:disabled {
+  cursor: not-allowed;
+  color: var(--color-fg-subtle);
+  background: var(--color-surface-sunken);
+  opacity: 0.7;
+}
+
+.field-sm {
+  min-height: 2.25rem;
+  padding-block: 0.35rem;
+}
+
+.field-invalid,
+.field[aria-invalid="true"] {
+  box-shadow: inset 0 0 0 1px var(--color-danger);
+}
+
+.field-invalid:focus {
+  box-shadow: inset 0 0 0 1px var(--color-danger), 0 0 0 4px var(--color-danger-soft);
+}
+
+textarea.field {
+  min-height: 7rem;
+  resize: vertical;
+}
+
+/* Hugs its control rather than stretching to the row, for the same reason. */
+.field-wrap {
+  position: relative;
+  align-self: start;
+  min-width: 0;
+}
+
+.field-wrap select.field {
+  appearance: none;
+  padding-right: 2.5rem;
+  cursor: pointer;
+}
+
+/* The native popup is drawn by the OS, and the only levers CSS has on it are
+ * `color-scheme` (inherited from :root, so it already follows the theme) and
+ * the option colours. Both are set here; on the platforms that ignore them the
+ * popup stays a system menu, which is the reason SelectMenu exists. */
+select.field option {
+  background-color: var(--color-surface-raised);
+  color: var(--color-fg);
+}
+
+.field-icon {
+  position: absolute;
+  top: 50%;
+  translate: 0 -50%;
+  color: var(--color-fg-subtle);
+  pointer-events: none;
+  display: inline-flex;
+}
+
+.field-icon-right {
+  right: var(--space-3);
+}
+
+.field-icon-left {
+  left: var(--space-3);
+}
+
+.field-wrap-search .field {
+  padding-left: 2.5rem;
+  padding-right: 2.5rem;
+}
+
+.field-clear {
+  position: absolute;
+  right: var(--space-2);
+  top: 50%;
+  translate: 0 -50%;
+  display: inline-grid;
+  place-items: center;
+  width: 1.75rem;
+  height: 1.75rem;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--color-fg-subtle);
+  cursor: pointer;
+  transition: background var(--motion-fast) var(--ease-standard);
+}
+
+.field-clear:hover {
+  background: var(--color-surface-raised);
+  color: var(--color-fg);
+}
+
+/* FormField: label, control, hint, error. The label is sentence case and
+ * semibold rather than a mono caption — a form label is an instruction, and
+ * the mono caption role is reserved for labels that name a VALUE. */
+.form-field {
+  display: grid;
+  align-content: start;
+  gap: var(--space-2);
+  min-width: 0;
+}
+
+.form-label {
+  font-size: var(--text-sm);
+  font-weight: 600;
+}
+
+.form-label .req {
+  color: var(--color-danger);
+  margin-left: 2px;
+}
+
+.form-hint {
+  margin: 0;
+  font-size: var(--text-sm);
+  color: var(--color-fg-muted);
+}
+
+.form-error {
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--text-sm);
+  color: var(--color-danger);
+}
+
+/* Checkbox and switch, drawn rather than native-with-an-accent-colour, so the
+ * checked state uses the same primary + focus ring as every other control. */
+.cbx {
+  display: inline-flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+  font-size: var(--text-sm);
+  cursor: pointer;
+}
+
+.cbx input {
+  position: absolute;
+  opacity: 0;
+  width: 1px;
+  height: 1px;
+}
+
+.cbx-box {
+  position: relative;
+  flex: none;
+  width: 1.15rem;
+  height: 1.15rem;
+  margin-top: 1px;
+  border-radius: 0.35rem;
+  background: var(--color-surface-sunken);
+  box-shadow: inset 0 0 0 1px var(--color-edge-strong);
+  transition: background var(--motion-fast) var(--ease-standard),
+    box-shadow var(--motion-fast) var(--ease-standard);
+}
+
+.cbx-box::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  width: 0.34rem;
+  height: 0.62rem;
+  border: solid var(--color-primary-fg);
+  border-width: 0 2px 2px 0;
+  rotate: 45deg;
+  translate: 0 -1px;
+  opacity: 0;
+  transition: opacity var(--motion-fast) var(--ease-standard);
+}
+
+.cbx input:checked + .cbx-box,
+.cbx input:indeterminate + .cbx-box {
+  background: var(--color-primary);
+  box-shadow: inset 0 0 0 1px var(--color-primary);
+}
+
+.cbx input:checked + .cbx-box::after {
+  opacity: 1;
+}
+
+.cbx input:indeterminate + .cbx-box::after {
+  opacity: 1;
+  width: 0.55rem;
+  height: 0;
+  rotate: 0deg;
+  translate: 0 0;
+  border-width: 0 0 2px 0;
+}
+
+.cbx input:focus-visible + .cbx-box {
+  box-shadow: inset 0 0 0 1px var(--color-primary), 0 0 0 4px var(--color-focus-ring);
+}
+
+.cbx input:disabled + .cbx-box {
+  opacity: 0.5;
+}
+
+.cbx input:disabled ~ span {
+  color: var(--color-fg-subtle);
+}
+
+.sw {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-3);
+  font-size: var(--text-sm);
+  cursor: pointer;
+}
+
+.sw input {
+  position: absolute;
+  opacity: 0;
+  width: 1px;
+  height: 1px;
+}
+
+.sw-track {
+  position: relative;
+  flex: none;
+  width: 2.75rem;
+  height: 1.5rem;
+  border-radius: 999px;
+  background: var(--color-surface-sunken);
+  box-shadow: inset 0 0 0 1px var(--color-edge-strong);
+  transition: background var(--motion-normal) var(--ease-standard),
+    box-shadow var(--motion-normal) var(--ease-standard);
+}
+
+.sw-track::after {
+  content: "";
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 1.125rem;
+  height: 1.125rem;
+  border-radius: 50%;
+  background: var(--color-surface-raised);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.22);
+  transition: translate var(--motion-normal) var(--ease-standard);
+}
+
+.sw input:checked + .sw-track {
+  background: var(--color-primary);
+  box-shadow: inset 0 0 0 1px var(--color-primary);
+}
+
+.sw input:checked + .sw-track::after {
+  translate: 1.25rem 0;
+}
+
+.sw input:focus-visible + .sw-track {
+  box-shadow: inset 0 0 0 1px var(--color-primary), 0 0 0 4px var(--color-focus-ring);
+}
+
+.sw input:disabled + .sw-track {
+  opacity: 0.5;
+}
+
+/* ── skeleton and spinner ────────────────────────────────────────────── */
+
+.skeleton {
+  border-radius: var(--radius-md);
+  background: linear-gradient(
+    90deg,
+    var(--color-surface-sunken) 0%,
+    color-mix(in srgb, var(--color-surface-sunken) 55%, var(--color-surface-raised)) 50%,
+    var(--color-surface-sunken) 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.6s linear infinite;
+}
+
+/* A sweep rather than a pulse. A pulsing block reads as something asking for
+ * attention; a sweep reads as something still arriving. */
+@keyframes shimmer {
+  from {
+    background-position: 200% 0;
+  }
+  to {
+    background-position: -200% 0;
+  }
+}
+
+.spinner {
+  display: inline-block;
+  width: 1.125rem;
+  height: 1.125rem;
+  border-radius: 50%;
+  border: 2px solid var(--color-primary-soft);
+  border-top-color: var(--color-primary);
+  animation: spin 0.7s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    rotate: 360deg;
+  }
+}
+
+/* ── avatar ─────────────────────────────────────────────────────────── */
+
+.avatar {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-3);
+  min-width: 0;
+}
+
+.avatar-mark {
+  display: inline-grid;
+  place-items: center;
+  flex: none;
+  width: 2.75rem;
+  height: 2.75rem;
+  border-radius: 50%;
+  background: var(--color-primary-soft);
+  color: var(--color-primary);
+  font: 600 var(--text-sm) / 1 var(--font-sans);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--color-primary) 22%, transparent);
+  overflow: hidden;
+}
+
+.avatar-sm .avatar-mark {
+  width: 2.25rem;
+  height: 2.25rem;
+  font-size: var(--text-xs);
+}
+
+.avatar-lg .avatar-mark {
+  width: 3.5rem;
+  height: 3.5rem;
+  font-size: var(--text-base);
+}
+
+.avatar-text {
+  display: grid;
+  gap: 1px;
+  min-width: 0;
+}
+
+.avatar-text b {
+  font-size: var(--text-sm);
+  font-weight: 600;
+}
+
+.avatar-text span {
+  font-size: var(--text-sm);
+  color: var(--color-fg-muted);
+}
+
+/* ── info banner ────────────────────────────────────────────────────────
+ * Tinted ground, same-hue ring, and a leading bar. The bar is what lets a
+ * warning and a danger banner be told apart at a glance in a stack of them,
+ * without either shouting.
+ */
+.banner {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-4);
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius-lg);
+  background: var(--color-surface-raised);
+  box-shadow: inset 0 0 0 1px var(--color-edge), inset 4px 0 0 var(--color-edge-strong);
+}
+
+.banner-main {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+  min-width: 0;
+}
+
+.banner-icon {
+  flex: none;
+  margin-top: 1px;
+  color: var(--color-fg-subtle);
+}
+
+.banner-text {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+}
+
+.banner-text b {
+  font-size: var(--text-sm);
+  font-weight: 600;
+}
+
+.banner-text span {
+  font-size: var(--text-sm);
+  color: var(--color-fg-muted);
+}
+
+.banner-info {
+  background: var(--color-info-soft);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--color-info) 30%, transparent), inset 4px 0 0 var(--color-info);
+}
+
+.banner-info .banner-icon {
+  color: var(--color-info);
+}
+
+.banner-warning {
+  background: var(--color-warning-soft);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--color-warning) 30%, transparent),
+    inset 4px 0 0 var(--color-warning);
+}
+
+.banner-warning .banner-icon {
+  color: var(--color-warning);
+}
+
+.banner-danger {
+  background: var(--color-danger-soft);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--color-danger) 30%, transparent), inset 4px 0 0 var(--color-danger);
+}
+
+.banner-danger .banner-icon {
+  color: var(--color-danger);
+}
+
+.banner-success {
+  background: var(--color-success-soft);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--color-success) 30%, transparent),
+    inset 4px 0 0 var(--color-success);
+}
+
+.banner-success .banner-icon {
+  color: var(--color-success);
+}
+
+/* ── empty state ────────────────────────────────────────────────────── */
+
+.empty {
+  display: grid;
+  justify-items: center;
+  gap: var(--space-2);
+  padding: var(--space-10) var(--space-6);
+  border-radius: var(--radius-xl);
+  background: var(--color-surface);
+  box-shadow: inset 0 0 0 1px var(--color-edge);
+  text-align: center;
+  /* The dashed border is gone. A dashed rectangle says "drop something here",
+   * which is a different component; an empty table is simply empty. */
+}
+
+.empty-icon {
+  display: inline-grid;
+  place-items: center;
+  width: 3rem;
+  height: 3rem;
+  margin-bottom: var(--space-2);
+  border-radius: 50%;
+  background: var(--color-primary-soft);
+  color: var(--color-primary);
+}
+
+.empty h4 {
+  margin: 0;
+  font-size: var(--text-lg);
+  font-weight: 650;
+}
+
+.empty p {
+  margin: 0;
+  max-width: 44ch;
+  font-size: var(--text-sm);
+  color: var(--color-fg-muted);
+}
+
+.empty .btn {
+  margin-top: var(--space-3);
+}
+
+/* ── description list ───────────────────────────────────────────────────
+ * A seam grid, so a set of facts about one thing reads as one block rather
+ * than as a scatter of little cards. Same mechanic as the stat wall.
+ */
+.dl {
+  display: grid;
+  gap: 1px;
+  margin: 0;
+  border-radius: var(--radius-xl);
+  background: var(--seam);
+  box-shadow: inset 0 0 0 1px var(--color-edge);
+  overflow: hidden;
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 640px) {
+  .dl {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.dl > div {
+  padding: var(--space-3) var(--space-4);
+  background: var(--color-surface);
+}
+
+.dl dt {
+  font: 600 0.6875rem/1.4 var(--font-mono);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-fg-subtle);
+}
+
+.dl dd {
+  margin: var(--space-2) 0 0;
+  font-size: var(--text-sm);
+}
+
+/* ── table ───────────────────────────────────────────────────────────────
+ * One table, not two variants. The package's "framed" variant wraps the table
+ * in a padded card and switches the header type; the hybrid gives the frame to
+ * the container that holds it (a Card, a TableSection) and keeps the table
+ * itself constant — so a table looks the same wherever it lands.
+ */
+.table-frame {
+  border-radius: var(--radius-xl);
+  background: var(--color-surface);
+  box-shadow: var(--shadow-raised);
+  overflow: hidden;
+}
+
+/* The scroller clips to a square box of its own, which cut the frame's rounded
+ * corners off and let the last row's tone bar run square into them. Inheriting
+ * the radius makes the clip follow the frame. */
+.table-frame > .table-scroll {
+  border-radius: inherit;
+}
+
+.table-scroll {
+  overflow-x: auto;
+}
+
+table.tbl {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--text-sm);
+}
+
+.tbl thead th {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  padding: var(--space-3) var(--space-4);
+  text-align: left;
+  white-space: nowrap;
+  background: var(--color-surface-raised);
+  border-bottom: 1px solid var(--color-edge-strong);
+  font: 600 0.6875rem/1.4 var(--font-mono);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-fg-subtle);
+}
+
+.tbl th.right,
+.tbl td.right {
+  text-align: right;
+}
+
+.tbl th button {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  border: 0;
+  padding: 0;
+  background: none;
+  font: inherit;
+  color: inherit;
+  letter-spacing: inherit;
+  text-transform: inherit;
+  cursor: pointer;
+  border-radius: var(--radius-sm);
+}
+
+.tbl th button:hover {
+  color: var(--color-fg);
+}
+
+.tbl th[aria-sort] button {
+  color: var(--color-primary);
+}
+
+.tbl tbody td {
+  padding: var(--space-3) var(--space-4);
+  border-bottom: 1px solid var(--color-edge);
+  vertical-align: top;
+}
+
+.tbl tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+/* The corner cell carries the frame's radius so its tone bar — an inset
+ * shadow, which follows border-radius — curves with the frame instead of
+ * poking through it. */
+.table-frame .tbl tbody tr:last-child td:first-child {
+  border-end-start-radius: var(--radius-xl);
+}
+
+.table-frame .tbl tbody tr:last-child td:last-child {
+  border-end-end-radius: var(--radius-xl);
+}
+
+.tbl tbody tr {
+  transition: background var(--motion-fast) var(--ease-standard);
+}
+
+.tbl tbody tr:hover {
+  background: var(--color-surface-raised);
+}
+
+/* Row tone: a bar on the leading cell plus the faintest wash. The wash alone
+ * is not enough at 40% on a tinted ground, and a full-strength wash makes the
+ * text in that row harder to read than in every other row. */
+/* The bar is drawn from the tone directly rather than from currentColor:
+ * tinting the cell's text to feed the shadow also tinted the row's most
+ * important label, which is both a contrast loss and a claim that the text
+ * means something different from the text beside it. */
+.tbl tr[data-tone="info"] {
+  background: color-mix(in srgb, var(--color-info-soft) 55%, transparent);
+}
+
+.tbl tr[data-tone="info"] td:first-child {
+  box-shadow: inset 3px 0 0 var(--color-info);
+}
+
+.tbl tr[data-tone="warning"] {
+  background: color-mix(in srgb, var(--color-warning-soft) 55%, transparent);
+}
+
+.tbl tr[data-tone="warning"] td:first-child {
+  box-shadow: inset 3px 0 0 var(--color-warning);
+}
+
+.tbl tr[data-tone="danger"] {
+  background: color-mix(in srgb, var(--color-danger-soft) 55%, transparent);
+}
+
+.tbl tr[data-tone="danger"] td:first-child {
+  box-shadow: inset 3px 0 0 var(--color-danger);
+}
+
+.tbl tr[data-tone="success"] {
+  background: color-mix(in srgb, var(--color-success-soft) 55%, transparent);
+}
+
+.tbl tr[data-tone="success"] td:first-child {
+  box-shadow: inset 3px 0 0 var(--color-success);
+}
+
+/* Figures in a table are mono and tabular, and right-aligned so their
+ * magnitudes line up — a column of amounts is read down, not across. */
+.tbl .num {
+  font-size: 0.8125rem;
+}
+
+.table-section-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-3);
+  margin-bottom: var(--space-4);
+}
+
+.table-section-title {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+  min-width: 0;
+}
+
+.table-section-title h4 {
+  margin: 0;
+  font-size: var(--text-sm);
+  font-weight: 600;
+}
+
+.table-section-title p {
+  margin: 2px 0 0;
+  font-size: var(--text-sm);
+  color: var(--color-fg-muted);
+}
+
+.table-caption {
+  margin: var(--space-3) 0 0;
+  font-size: var(--text-xs);
+  color: var(--color-fg-subtle);
+}
+
+/* ── tabs ────────────────────────────────────────────────────────────────
+ * A segmented control on a sunken track, with the active tab raised out of it.
+ * The package puts the track on surface-raised and the active tab on surface,
+ * which on the new light ladder is the wrong way round — the track should be
+ * the hole and the tab the thing lifted out of it.
+ */
+.tabs-list {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: var(--space-1);
+  padding: var(--space-1);
+  border-radius: var(--radius-lg);
+  background: var(--color-surface-sunken);
+  box-shadow: inset 0 0 0 1px var(--color-edge);
+}
+
+.tab {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-height: 2.25rem;
+  padding-inline: var(--space-4);
+  border: 0;
+  border-radius: var(--radius-md);
+  background: transparent;
+  color: var(--color-fg-muted);
+  font: 500 var(--text-sm) / 1 var(--font-sans);
+  cursor: pointer;
+  transition: background var(--motion-normal) var(--ease-standard),
+    color var(--motion-normal) var(--ease-standard),
+    box-shadow var(--motion-normal) var(--ease-standard);
+}
+
+.tab:hover:not([disabled]) {
+  color: var(--color-fg);
+}
+
+.tab[aria-selected="true"] {
+  background: var(--color-surface-raised);
+  color: var(--color-fg);
+  font-weight: 600;
+  box-shadow: var(--shadow-raised), inset 0 0 0 1px var(--color-edge);
+}
+
+.tab[disabled] {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.tab-panel {
+  margin-top: var(--space-4);
+  padding: var(--space-5);
+  border-radius: var(--radius-xl);
+  background: var(--color-surface);
+  box-shadow: inset 0 0 0 1px var(--color-edge);
+  font-size: var(--text-sm);
+  color: var(--color-fg-muted);
+}
+
+.tab-panel[hidden] {
+  display: none;
+}
+
+/* ── stepper ─────────────────────────────────────────────────────────────
+ * A seam grid again, with the connection made explicit: steps are a sequence,
+ * and three separate rounded cards do not say "then".
+ */
+.steps {
+  display: grid;
+  gap: 1px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border-radius: var(--radius-xl);
+  background: var(--seam);
+  box-shadow: inset 0 0 0 1px var(--color-edge);
+  overflow: hidden;
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 720px) {
+  .steps {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+.steps > li {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+  padding: var(--space-4);
+  background: var(--color-surface);
+}
+
+.steps > li[data-state="current"] {
+  background: var(--color-primary-soft);
+}
+
+.step-mark {
+  display: inline-grid;
+  place-items: center;
+  flex: none;
+  width: 1.75rem;
+  height: 1.75rem;
+  border-radius: 50%;
+  background: var(--color-surface-sunken);
+  color: var(--color-fg-muted);
+  font: 600 var(--text-xs) / 1 var(--font-mono);
+  box-shadow: inset 0 0 0 1px var(--color-edge-strong);
+}
+
+.steps > li[data-state="current"] .step-mark {
+  background: var(--color-primary);
+  color: var(--color-primary-fg);
+  box-shadow: none;
+}
+
+.steps > li[data-state="done"] .step-mark {
+  background: var(--color-success-soft);
+  color: var(--color-success);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--color-success) 40%, transparent);
+}
+
+.step-text b {
+  display: block;
+  font-size: var(--text-sm);
+  font-weight: 600;
+}
+
+.step-text span {
+  display: block;
+  margin-top: 2px;
+  font-size: var(--text-sm);
+  color: var(--color-fg-muted);
+}
+
+/* ── pagination ─────────────────────────────────────────────────────── */
+
+.pager {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+}
+
+.pager-count {
+  margin: 0;
+  font-size: var(--text-sm);
+  color: var(--color-fg-muted);
+}
+
+.pager-count b {
+  color: var(--color-fg);
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+}
+
+.pager-pages {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+  padding: var(--space-1);
+  border-radius: var(--radius-lg);
+  background: var(--color-surface-sunken);
+  box-shadow: inset 0 0 0 1px var(--color-edge);
+}
+
+.pager-page {
+  min-width: 2.25rem;
+  height: 2.25rem;
+  padding-inline: var(--space-2);
+  border: 0;
+  border-radius: var(--radius-md);
+  background: transparent;
+  color: var(--color-fg-muted);
+  font: 500 var(--text-sm) / 1 var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  cursor: pointer;
+  transition: background var(--motion-fast) var(--ease-standard),
+    color var(--motion-fast) var(--ease-standard);
+}
+
+.pager-page:hover {
+  color: var(--color-fg);
+}
+
+.pager-page[aria-current="page"] {
+  background: var(--color-primary);
+  color: var(--color-primary-fg);
+  font-weight: 600;
+}
+
+.pager-page[disabled] {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* ── filter bar ─────────────────────────────────────────────────────── */
+
+.filter-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-3);
+  border-radius: var(--radius-xl);
+  background: var(--color-surface);
+  box-shadow: inset 0 0 0 1px var(--color-edge);
+}
+
+.filter-bar > .field-wrap,
+.filter-bar > .field {
+  flex: 1 1 12rem;
+  min-width: 0;
+}
+
+.filter-bar-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin-left: auto;
+}
+
+/* ── menus and popovers ──────────────────────────────────────────────────
+ * Dropdown, select menu and any future popover share one surface: raised,
+ * overlay shadow, strong ring, 4px padding so the highlighted item's own
+ * radius sits inside the container's. Nothing that floats looks different
+ * from anything else that floats.
+ */
+.menu {
+  position: absolute;
+  z-index: var(--z-overlay);
+  min-width: 14rem;
+  padding: var(--space-1);
+  border-radius: var(--radius-lg);
+  background: var(--color-surface-raised);
+  box-shadow: var(--shadow-overlay), inset 0 0 0 1px var(--color-edge-strong);
+  animation: menu-in var(--motion-fast) var(--ease-standard);
+}
+
+@keyframes menu-in {
+  from {
+    opacity: 0;
+    translate: 0 -4px;
+  }
+}
+
+.menu[hidden] {
+  display: none;
+}
+
+.menu-anchor {
+  position: relative;
+  display: inline-flex;
+}
+
+/* Which edge the menu hangs from is the caller's choice, because it depends on
+ * where the trigger sits: right-aligned for a control at the end of a row (a
+ * table's row actions), left-aligned for one at the start. Neither is a
+ * default — a menu that runs off its container is the most common overlay bug.
+ */
+.menu-right {
+  right: 0;
+  top: calc(100% + 0.5rem);
+}
+
+.menu-left {
+  left: 0;
+  top: calc(100% + 0.5rem);
+}
+
+.menu-item {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+  width: 100%;
+  padding: var(--space-2) var(--space-3);
+  border: 0;
+  border-radius: var(--radius-md);
+  background: transparent;
+  color: var(--color-fg);
+  font: 500 var(--text-sm) / 1.4 var(--font-sans);
+  text-align: left;
+  cursor: pointer;
+  transition: background var(--motion-fast) var(--ease-standard);
+}
+
+.menu-item:hover:not([disabled]) {
+  background: var(--color-primary-soft);
+}
+
+.menu-item[disabled] {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.menu-item-danger {
+  color: var(--color-danger);
+}
+
+.menu-item-danger:hover:not([disabled]) {
+  background: var(--color-danger-soft);
+}
+
+.menu-item-icon {
+  flex: none;
+  margin-top: 2px;
+  color: var(--color-fg-subtle);
+}
+
+.menu-item-danger .menu-item-icon {
+  color: var(--color-danger);
+}
+
+.menu-item span small {
+  display: block;
+  margin-top: 1px;
+  font-size: var(--text-xs);
+  font-weight: 400;
+  color: var(--color-fg-muted);
+}
+
+.menu-item[aria-selected="true"] {
+  background: var(--color-primary-soft);
+  font-weight: 600;
+}
+
+.select-menu {
+  position: relative;
+  display: grid;
+  gap: var(--space-2);
+  min-width: 0;
+}
+
+.select-trigger {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  width: 100%;
+  min-height: 2.75rem;
+  padding: 0 var(--space-3);
+  border: 0;
+  border-radius: var(--radius-md);
+  background: var(--color-surface-sunken);
+  color: var(--color-fg);
+  font: 400 var(--text-sm) / 1.4 var(--font-sans);
+  text-align: left;
+  cursor: pointer;
+  box-shadow: inset 0 0 0 1px var(--color-edge);
+  transition: box-shadow var(--motion-normal) var(--ease-standard);
+}
+
+.select-trigger:hover {
+  box-shadow: inset 0 0 0 1px var(--color-edge-strong);
+}
+
+.select-trigger[aria-expanded="true"] {
+  background: var(--color-surface);
+  box-shadow: inset 0 0 0 1px var(--color-primary), 0 0 0 4px var(--color-focus-ring);
+}
+
+.select-trigger svg {
+  flex: none;
+  color: var(--color-fg-subtle);
+  transition: rotate var(--motion-fast) var(--ease-standard);
+}
+
+.select-trigger[aria-expanded="true"] svg {
+  rotate: 180deg;
+}
+
+.select-menu .menu {
+  left: 0;
+  right: 0;
+  top: calc(100% + 0.5rem);
+}
+
+/* The compact form used in a toolbar: hugs its label, opens a list wider than
+ * itself, and hangs from the right so it never runs off the top bar's end. */
+.select-menu-inline {
+  display: inline-flex;
+}
+
+.select-menu-inline .select-trigger {
+  width: auto;
+  min-height: 2.25rem;
+  gap: var(--space-2);
+  border-radius: var(--radius-sm);
+  background: var(--color-surface-raised);
+  box-shadow: var(--shadow-raised), inset 0 0 0 1px var(--color-edge);
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.select-menu-inline .select-trigger:hover {
+  background: var(--color-surface-sunken);
+  box-shadow: var(--shadow-raised), inset 0 0 0 1px var(--color-edge-strong);
+}
+
+.select-menu-inline .menu {
+  left: auto;
+  right: 0;
+  min-width: 15rem;
+}
+
+/* The tick column: only the selected row shows one, but the space is always
+ * reserved so the labels do not shift by 28px when the selection moves. */
+.select-menu .menu-item .menu-item-icon {
+  visibility: hidden;
+}
+
+.select-menu .menu-item[aria-selected="true"] .menu-item-icon {
+  visibility: visible;
+  color: var(--color-primary);
+}
+
+/* The mono caption again: this label names a value. */
+.select-label {
+  font: 600 0.6875rem/1.4 var(--font-mono);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-fg-subtle);
+}
+
+/* ── tooltip ────────────────────────────────────────────────────────── */
+
+.tip {
+  position: relative;
+  display: inline-flex;
+}
+
+.tip-bubble {
+  position: absolute;
+  bottom: calc(100% + 0.5rem);
+  left: 50%;
+  translate: -50% 4px;
+  z-index: var(--z-overlay);
+  width: max-content;
+  max-width: 18rem;
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-md);
+  background: var(--color-fg);
+  color: var(--color-bg);
+  font-size: var(--text-xs);
+  line-height: 1.4;
+  box-shadow: var(--shadow-overlay);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--motion-fast) var(--ease-standard),
+    translate var(--motion-fast) var(--ease-standard);
+}
+
+.tip:hover .tip-bubble,
+.tip:focus-within .tip-bubble {
+  opacity: 1;
+  translate: -50% 0;
+}
+
+/* ── overlays: dialog, side panel ───────────────────────────────────── */
+
+.scrim {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-overlay);
+  display: grid;
+  background: color-mix(in srgb, var(--color-fg) 28%, transparent);
+  backdrop-filter: blur(3px);
+  animation: fade-in var(--motion-normal) var(--ease-standard);
+}
+
+.scrim[hidden] {
+  display: none;
+}
+
+.scrim-center {
+  place-items: center;
+  padding: var(--space-4);
+}
+
+.scrim-end {
+  justify-items: end;
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+}
+
+.dlg {
+  position: relative;
+  width: 100%;
+  max-width: 34rem;
+  max-height: calc(100vh - 2rem);
+  display: flex;
+  flex-direction: column;
+  border-radius: var(--radius-xl);
+  background: var(--color-surface);
+  box-shadow: var(--shadow-overlay);
+  overflow: hidden;
+  animation: dlg-in var(--motion-normal) var(--ease-standard);
+}
+
+@keyframes dlg-in {
+  from {
+    opacity: 0;
+    translate: 0 8px;
+    scale: 0.98;
+  }
+}
+
+.panel {
+  position: relative;
+  width: min(32rem, 100%);
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  background: var(--color-surface);
+  box-shadow: var(--shadow-overlay);
+  animation: panel-in var(--motion-normal) var(--ease-standard);
+}
+
+/* Only the leading edge: the other three meet the viewport. */
+.panel::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  box-shadow: inset 1px 0 0 var(--color-edge-strong);
+}
+
+@keyframes panel-in {
+  from {
+    translate: 24px 0;
+    opacity: 0;
+  }
+}
+
+.dlg-head,
+.panel-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-4);
+  padding: var(--space-5);
+  background: var(--color-surface-raised);
+  border-bottom: 1px solid var(--color-edge);
+}
+
+.dlg-head h2,
+.panel-head h2 {
+  margin: 0;
+  font-size: var(--text-xl);
+  font-weight: 650;
+  letter-spacing: -0.01em;
+}
+
+.dlg-head p,
+.panel-head p {
+  margin: var(--space-1) 0 0;
+  font-size: var(--text-sm);
+  color: var(--color-fg-muted);
+}
+
+.dlg-body,
+.panel-body {
+  padding: var(--space-5);
+  overflow-y: auto;
+  font-size: var(--text-sm);
+  color: var(--color-fg-muted);
+  flex: 1;
+  min-height: 0;
+}
+
+.dlg-foot {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: var(--space-3);
+  padding: var(--space-4) var(--space-5);
+  border-top: 1px solid var(--color-edge);
+  background: var(--color-surface-sunken);
+}
+
+/* ── toast ──────────────────────────────────────────────────────────── */
+
+.toast-stack {
+  position: fixed;
+  right: var(--space-4);
+  bottom: var(--space-4);
+  z-index: var(--z-toast);
+  display: grid;
+  gap: var(--space-3);
+  width: min(24rem, calc(100vw - 2rem));
+  pointer-events: none;
+}
+
+/* Title-only toasts centre; a toast with a description top-aligns so the icon
+ * sits on the title rather than floating between the two lines. */
+.toast {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius-lg);
+  background: var(--color-surface-raised);
+  box-shadow: var(--shadow-overlay), inset 0 0 0 1px var(--color-edge-strong);
+  pointer-events: auto;
+  animation: toast-in var(--motion-normal) var(--ease-standard);
+}
+
+@keyframes toast-in {
+  from {
+    opacity: 0;
+    translate: 0 12px;
+  }
+}
+
+.toast.is-leaving {
+  animation: toast-out var(--motion-normal) var(--ease-standard) forwards;
+}
+
+@keyframes toast-out {
+  to {
+    opacity: 0;
+    translate: 12px 0;
+  }
+}
+
+.toast-has-body {
+  align-items: flex-start;
+}
+
+.toast-icon {
+  display: inline-grid;
+  place-items: center;
+  flex: none;
+  width: 1.75rem;
+  height: 1.75rem;
+  border-radius: 50%;
+}
+
+.toast-success .toast-icon {
+  background: var(--color-success-soft);
+  color: var(--color-success);
+}
+
+.toast-info .toast-icon {
+  background: var(--color-info-soft);
+  color: var(--color-info);
+}
+
+.toast-warning .toast-icon {
+  background: var(--color-warning-soft);
+  color: var(--color-warning);
+}
+
+.toast-danger .toast-icon {
+  background: var(--color-danger-soft);
+  color: var(--color-danger);
+}
+
+.toast-text {
+  min-width: 0;
+  flex: 1;
+}
+
+.toast-text b {
+  display: block;
+  font-size: var(--text-sm);
+  font-weight: 600;
+}
+
+.toast-text span {
+  display: block;
+  margin-top: 2px;
+  font-size: var(--text-sm);
+  color: var(--color-fg-muted);
+}
+
+/* ── charts ──────────────────────────────────────────────────────────────
+ * Recharts renders these for real; the shapes here are hand-drawn SVG so the
+ * gallery stays dependency-free. What matters is the FURNITURE around the
+ * plot — legend, axis type, the view-as-table escape hatch — because that is
+ * what the design system owns and what makes a chart look like it belongs to
+ * the same product as the table beside it.
+ */
+.chart {
+  display: grid;
+  gap: var(--space-3);
+  min-width: 0;
+}
+
+.chart-top {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+}
+
+.legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2) var(--space-4);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.legend li {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--text-xs);
+  color: var(--color-fg-muted);
+}
+
+.legend i {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex: none;
+}
+
+.chart-plot {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.chart-axis {
+  font: 500 0.625rem/1 var(--font-mono);
+  fill: var(--chart-axis-label);
+  letter-spacing: 0.04em;
+}
+
+.chart-grid-line {
+  stroke: var(--chart-grid);
+  stroke-width: 1;
+}
+
+/* The tooltip a chart shows on hover is the same object as the page tooltip:
+ * one floating surface, one radius, one shadow. */
+.chart-tip {
+  display: inline-grid;
+  gap: var(--space-1);
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-md);
+  background: var(--color-surface-raised);
+  box-shadow: var(--shadow-overlay), inset 0 0 0 1px var(--color-edge-strong);
+  font-size: var(--text-xs);
+}
+
+.chart-tip b {
+  font: 600 0.6875rem/1.4 var(--font-mono);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-fg-subtle);
+}
+
+.chart-tip-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  color: var(--color-fg);
+}
+
+.chart-tip-row i {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  margin-right: var(--space-2);
+  display: inline-block;
+}
+
+.funnel {
+  display: grid;
+  gap: var(--space-2);
+}
+
+.funnel-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  font-size: var(--text-xs);
+}
+
+.funnel-label {
+  width: 8rem;
+  flex: none;
+  text-align: right;
+  color: var(--color-fg-muted);
+}
+
+.funnel-track {
+  flex: 1;
+  height: 0.625rem;
+  border-radius: 999px;
+  background: var(--color-surface-sunken);
+  box-shadow: inset 0 0 0 1px var(--color-edge);
+  overflow: hidden;
+}
+
+.funnel-fill {
+  display: block;
+  height: 100%;
+  border-radius: 999px;
+  background: var(--chart-seq);
+}
+
+.funnel-value {
+  width: 5.5rem;
+  flex: none;
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+}
+
+.funnel-value small {
+  color: var(--color-fg-subtle);
+}
+
+/* ── page-level patterns ─────────────────────────────────────────────── */
+
+/* PageHeader: the display scale from the hybrid heads, at page level. */
+.page-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--space-4);
+  padding-bottom: var(--space-5);
+  border-bottom: 1px solid var(--color-edge);
+}
+
+.page-header h1 {
+  margin: var(--space-2) 0 0;
+  font-size: clamp(1.75rem, 3.5vw, 2.5rem);
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  line-height: 1.05;
+}
+
+.page-header p {
+  margin: var(--space-3) 0 0;
+  max-width: 60ch;
+  font-size: var(--text-sm);
+  color: var(--color-fg-muted);
+}
+
+.crumbs {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--text-sm);
+  color: var(--color-fg-muted);
+}
+
+.crumbs a {
+  text-decoration: none;
+}
+
+.crumbs a:hover {
+  color: var(--color-fg);
+}
+
+/* Section, card variant: the same two-surface object as Card, so a Section and
+ * a Card are visibly the same family at different sizes. */
+.section-card {
+  border-radius: var(--radius-xl);
+  background: var(--color-surface);
+  box-shadow: var(--shadow-raised);
+  overflow: hidden;
+}
+
+.section-card > header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-4);
+  padding: var(--space-4) var(--space-5);
+  background: var(--color-surface-raised);
+  border-bottom: 1px solid var(--color-edge);
+}
+
+.section-card > header h3 {
+  margin: 0;
+  font-size: var(--text-lg);
+  font-weight: 650;
+}
+
+.section-card > header p {
+  margin: 2px 0 0;
+  font-size: var(--text-sm);
+  color: var(--color-fg-muted);
+}
+
+.section-card > div {
+  padding: var(--space-5);
+}
+
+/* The dashboard shell, shown as a miniature rather than full screen. */
+.shell-demo {
+  display: grid;
+  grid-template-columns: 11rem minmax(0, 1fr);
+  min-height: 18rem;
+  border-radius: var(--radius-xl);
+  background: var(--color-surface);
+  box-shadow: var(--shadow-raised), inset 0 0 0 1px var(--color-edge);
+  overflow: hidden;
+  font-size: var(--text-sm);
+}
+
+.shell-demo-nav {
+  padding: var(--space-3);
+  background: var(--color-surface);
+  border-right: 1px solid var(--color-edge);
+}
+
+.shell-demo-main {
+  display: grid;
+  grid-template-rows: auto 1fr;
+  background: var(--color-bg);
+  min-width: 0;
+}
+
+.shell-demo-bar {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-3);
+  border-bottom: 1px solid var(--color-edge);
+  background: color-mix(in srgb, var(--color-bg) 85%, transparent);
+  backdrop-filter: blur(8px);
+}
+
+.shell-demo-body {
+  padding: var(--space-4);
+  display: grid;
+  gap: var(--space-3);
+  align-content: start;
+}
+
+/* AppTopBar, shown inline rather than stuck to the viewport. */
+.appbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-2) var(--space-4);
+  border-radius: var(--radius-lg);
+  background: color-mix(in srgb, var(--color-surface) 80%, transparent);
+  backdrop-filter: blur(12px);
+  box-shadow: inset 0 0 0 1px var(--color-edge);
+}
+
+.appbar-title {
+  font: 600 var(--text-sm) / 1 var(--font-mono);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.appbar-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-4);
+  margin-left: var(--space-4);
+}
+
+.appbar-nav a {
+  position: relative;
+  padding-block: var(--space-2);
+  font-size: var(--text-sm);
+  color: var(--color-fg-muted);
+  text-decoration: none;
+  transition: color var(--motion-fast) var(--ease-standard);
+}
+
+.appbar-nav a::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 2px;
+  border-radius: 2px;
+  background: var(--color-primary);
+  scale: 0 1;
+  transition: scale var(--motion-normal) var(--ease-standard);
+}
+
+.appbar-nav a:hover {
+  color: var(--color-fg);
+}
+
+.appbar-nav a[aria-current="page"] {
+  color: var(--color-fg);
+  font-weight: 600;
+}
+
+.appbar-nav a[aria-current="page"]::after,
+.appbar-nav a:hover::after {
+  scale: 1 1;
+}
+
+/* ── the gallery's own top bar ───────────────────────────────────────── */
+
+.gallery-bar {
+  position: sticky;
+  top: 0;
+  z-index: var(--z-nav);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--gut);
+  background: color-mix(in srgb, var(--color-bg) 82%, transparent);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--color-edge);
+}
+
+.gallery-bar .bar-tools {
+  margin-left: auto;
+}
+
+@media print {
+  .shell-nav,
+  .gallery-bar {
+    display: none;
+  }
+}

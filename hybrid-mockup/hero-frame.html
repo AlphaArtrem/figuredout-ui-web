@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="light dark" />
+    <title>Hybrid hero — isolated frame</title>
+    <link rel="stylesheet" href="tokens-hybrid.css" />
+    <link rel="stylesheet" href="hybrid.css" />
+    <link rel="stylesheet" href="light-themes.css" />
+    <style>
+      /* Frame-only: the hero normally sits under a sticky bar, and without a
+         little breathing room at the top it reads as clipped in the iframe. */
+      body {
+        padding-top: var(--space-4);
+      }
+    </style>
+  </head>
+  <body>
+    <!--
+      The hero, on its own, so the width simulator on the mockup page can put a
+      real 375px / 768px / 1280px viewport around it. The layout is driven by
+      media queries, which answer to the frame's viewport rather than to a
+      container — an inline "resize the div" demo would show nothing.
+    -->
+    <div class="wrap hero">
+      <div class="hero-art">
+        <img
+          src="hero-art.png"
+          width="890"
+          height="900"
+          alt=""
+          aria-hidden="true"
+          decoding="async"
+          fetchpriority="high"
+        />
+      </div>
+
+      <div class="ledger">
+        <div class="ledger-row">
+          <span class="ledger-k">Events today</span>
+          <span class="ledger-v big num">1,284,940</span>
+        </div>
+        <div class="ledger-row">
+          <span class="ledger-k">Sources connected</span>
+          <span class="ledger-v num">17</span>
+        </div>
+        <div class="ledger-row">
+          <span class="ledger-k">Pipeline</span>
+          <span class="live">Live</span>
+        </div>
+      </div>
+
+      <div class="hero-copy">
+        <p class="eyebrow">FiguredOut / Platform</p>
+        <h1 class="display">
+          <span>Every number.</span><br /><span>Traced to</span><br /><span><em>its source.</em></span>
+        </h1>
+        <p class="hero-sub">
+          One warehouse-backed layer for every metric your teams argue about.
+          <strong>No spreadsheets, no second version of the truth.</strong>
+        </p>
+        <div class="cta-row">
+          <a class="btn btn-primary" href="#">Open the dashboard</a>
+          <a class="btn btn-secondary" href="#">See a live example</a>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // The parent passes its theme and display face down in the query string
+      // and reloads the frame when either changes. Simpler than postMessage,
+      // and it survives someone opening this file on its own.
+      const params = new URLSearchParams(location.search)
+      const theme = params.get("theme")
+      const display = params.get("display")
+      const light = params.get("light")
+      if (theme) document.documentElement.dataset.theme = theme
+      if (display) document.documentElement.dataset.display = display
+      if (light && theme !== "dark") document.documentElement.classList.add(light)
+      if (params.get("glow") === "off") document.body.dataset.glow = "off"
+    </script>
+  </body>
+</html>

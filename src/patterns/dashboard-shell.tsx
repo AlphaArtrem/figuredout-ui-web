@@ -89,7 +89,7 @@ export function DashboardShell({
                 "flex min-h-10 w-full items-center gap-3 rounded-md px-3 text-left text-sm font-medium transition duration-fast ease-standard",
                 "focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-focus-ring active:scale-[0.99]",
                 active
-                  ? "bg-primary-soft text-primary shadow-[inset_3px_0_0_var(--color-primary)]"
+                  ? "bg-primary-soft font-semibold text-primary shadow-[inset_3px_0_0_var(--color-primary)]"
                   : "text-fg-muted hover:bg-surface-raised hover:text-fg",
                 item.disabled && "cursor-not-allowed opacity-45",
               )}
@@ -117,7 +117,7 @@ export function DashboardShell({
           <button
             type="button"
             aria-label="Close navigation overlay"
-            className="absolute inset-0 bg-fg/20 backdrop-blur-sm"
+            className="absolute inset-0 bg-[color-mix(in_srgb,var(--color-fg)_28%,transparent)] backdrop-blur-sm"
             onClick={() => setMobileOpen(false)}
           />
           <aside className="relative z-[1] h-full w-[min(20rem,calc(100vw-2rem))] border-r border-edge shadow-overlay">
@@ -127,7 +127,7 @@ export function DashboardShell({
       ) : null}
 
       <div className="flex min-w-0 flex-1 flex-col">
-        <header className="sticky top-0 z-nav border-b border-edge bg-background/90 backdrop-blur">
+        <header className="sticky top-0 z-nav border-b border-edge bg-[color-mix(in_srgb,var(--color-bg)_82%,transparent)] backdrop-blur-xl">
           <div className="flex min-h-14 items-center gap-3 px-4 py-2 lg:px-6">
             <IconButton
               aria-label="Open navigation"

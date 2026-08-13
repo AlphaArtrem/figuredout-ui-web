@@ -25,6 +25,7 @@ const uiPreset: Config = {
         warning: "var(--color-warning)",
         "warning-soft": "var(--color-warning-soft)",
         danger: "var(--color-danger)",
+        "danger-fg": "var(--color-danger-fg)",
         "danger-soft": "var(--color-danger-soft)",
         info: "var(--color-info)",
         "info-soft": "var(--color-info-soft)",
@@ -45,6 +46,7 @@ const uiPreset: Config = {
       borderColor: {
         edge: "var(--color-edge)",
         "edge-strong": "var(--color-edge-strong)",
+        seam: "var(--seam)",
       },
       textColor: {
         fg: "var(--color-fg)",
@@ -59,6 +61,8 @@ const uiPreset: Config = {
         primary: "var(--color-primary)",
         "primary-soft": "var(--color-primary-soft)",
         accent: "var(--color-accent)",
+        /* The ground a SeamGrid shows through its 1px gaps. */
+        seam: "var(--seam)",
       },
       borderRadius: {
         sm: "var(--radius-sm)",
@@ -76,6 +80,29 @@ const uiPreset: Config = {
         fast: "var(--motion-fast)",
         normal: "var(--motion-normal)",
       },
+      keyframes: {
+        /* A loading placeholder sweeps rather than pulses: a pulse reads as
+         * something asking for attention, a sweep as something still arriving. */
+        shimmer: {
+          from: { backgroundPosition: "200% 0" },
+          to: { backgroundPosition: "-200% 0" },
+        },
+        /* Content arriving in place: an opened tile's body, a menu, a toast. */
+        rise: {
+          from: { opacity: "0", transform: "translateY(-6px)" },
+          to: { opacity: "1", transform: "none" },
+        },
+        /* A sheet arriving from the edge it is anchored to. */
+        "slide-in-right": {
+          from: { opacity: "0", transform: "translateX(24px)" },
+          to: { opacity: "1", transform: "none" },
+        },
+      },
+      animation: {
+        shimmer: "shimmer 1.6s linear infinite",
+        rise: "rise var(--motion-normal) var(--ease-standard)",
+        "slide-in-right": "slide-in-right var(--motion-normal) var(--ease-standard)",
+      },
       transitionTimingFunction: {
         standard: "var(--ease-standard)",
       },
@@ -92,6 +119,13 @@ const uiPreset: Config = {
         "2xl": ["var(--text-2xl)", { lineHeight: "var(--leading-2xl)" }],
         "3xl": ["var(--text-3xl)", { lineHeight: "var(--leading-3xl)" }],
         "4xl": ["var(--text-4xl)", { lineHeight: "var(--leading-4xl)" }],
+        display: ["var(--text-display)", { lineHeight: "var(--leading-display)" }],
+      },
+      maxWidth: {
+        measure: "var(--measure)",
+      },
+      padding: {
+        gut: "var(--gut)",
       },
       zIndex: {
         nav: "var(--z-nav)",

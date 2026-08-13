@@ -1,5 +1,6 @@
 import { Check } from "../icons/index.js"
 import { cn } from "../lib/cn.js"
+import { seamCorners } from "./seam-grid.js"
 
 export interface StepperStep {
   description?: string
@@ -12,39 +13,46 @@ export interface StepperProps {
   steps: StepperStep[]
 }
 
+/* A seam grid, because steps are a sequence: three gapped cards do not say
+ * "then". Current step takes the primary wash, completed steps a success mark,
+ * upcoming steps stay neutral. */
 export function Stepper({ currentStep, steps }: StepperProps) {
   const currentIndex = steps.findIndex((step) => step.id === currentStep)
 
+  // `lg`, not `md`: the corner helper rounds at base / sm / lg, so a grid that
+  // changed column count at any other breakpoint would round its corners at the
+  // wrong width.
   return (
-    <ol className="grid gap-4 md:grid-cols-[repeat(auto-fit,minmax(0,1fr))]">
+    <ol className="m-0 grid list-none gap-px rounded-xl bg-seam p-0 ring-1 ring-inset ring-edge lg:grid-cols-3">
       {steps.map((step, index) => {
         const isComplete = currentIndex > index
         const isCurrent = currentIndex === index
+
         return (
           <li
             key={step.id}
+            aria-current={isCurrent ? "step" : undefined}
             className={cn(
-              "rounded-lg border px-4 py-4 transition duration-fast ease-standard",
-              isCurrent
-                ? "border-primary bg-primary-soft"
-                : isComplete
-                  ? "border-success bg-success-soft"
-                  : "border-edge bg-surface-raised",
+              "flex items-start gap-3 p-4 transition duration-fast ease-standard",
+              isCurrent ? "bg-primary-soft" : "bg-surface",
+              seamCorners(index, steps.length, { base: 1, lg: 3 }),
             )}
           >
-            <div className="flex items-start gap-3">
-              <span
-                className={cn(
-                  "mt-0.5 inline-flex h-7 w-7 items-center justify-center rounded-full text-xs font-semibold",
-                  isCurrent ? "bg-primary text-primary-fg" : isComplete ? "bg-success text-primary-fg" : "bg-surface text-fg-muted",
-                )}
-              >
-                {isComplete ? <Check size={14} aria-hidden="true" /> : index + 1}
-              </span>
-              <div>
-                <p className="text-sm font-semibold text-fg">{step.title}</p>
-                {step.description ? <p className="mt-1 text-sm text-fg-muted">{step.description}</p> : null}
-              </div>
+            <span
+              className={cn(
+                "mt-0.5 inline-grid size-7 shrink-0 place-items-center rounded-full font-mono text-xs font-semibold",
+                isCurrent
+                  ? "bg-primary text-primary-fg"
+                  : isComplete
+                    ? "bg-success-soft text-success ring-1 ring-inset ring-success/40"
+                    : "bg-surface-sunken text-fg-muted ring-1 ring-inset ring-edge-strong",
+              )}
+            >
+              {isComplete ? <Check size={14} aria-hidden="true" /> : index + 1}
+            </span>
+            <div className="min-w-0">
+              <p className="m-0 text-sm font-semibold text-fg">{step.title}</p>
+              {step.description ? <p className="m-0 mt-1 text-sm text-fg-muted">{step.description}</p> : null}
             </div>
           </li>
         )

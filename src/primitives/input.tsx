@@ -10,15 +10,24 @@ interface SharedFieldProps {
   invalid?: boolean
 }
 
+/* A field is a hole you type into, so it sits on surface-sunken. On the light
+ * ladder a white input on a white card had nothing but its border to exist by;
+ * focus fills it back up to `surface` and adds the standard 4px ring.
+ *
+ * `block` rather than the inline-block a form control is by default: inline
+ * leaves a descender's worth of line box under the control, which makes a
+ * wrapper taller than its field and drops any absolutely centred adornment —
+ * the select caret, the search magnifier — a few pixels low. */
 const FIELD_BASE =
-  "w-full rounded-md border border-edge bg-surface px-3 text-sm text-fg shadow-sm transition duration-normal ease-standard placeholder:text-fg-subtle focus:border-primary focus:outline-none focus:ring-4 focus:ring-focus-ring disabled:cursor-not-allowed disabled:bg-surface-sunken disabled:text-fg-subtle"
+  "block w-full rounded-md border-0 bg-surface-sunken px-3 text-sm text-fg shadow-[inset_0_0_0_1px_var(--color-edge)] transition duration-normal ease-standard placeholder:text-fg-subtle hover:shadow-[inset_0_0_0_1px_var(--color-edge-strong)] focus:bg-surface focus:outline-none focus:shadow-[inset_0_0_0_1px_var(--color-primary)] focus:ring-4 focus:ring-focus-ring disabled:cursor-not-allowed disabled:text-fg-subtle disabled:opacity-70"
 
 const FIELD_SIZE: Record<FieldSize, string> = {
   sm: "min-h-9 py-2",
   md: "min-h-11 py-2.5",
 }
 
-const INVALID_STYLE = "border-danger focus:border-danger"
+const INVALID_STYLE =
+  "shadow-[inset_0_0_0_1px_var(--color-danger)] hover:shadow-[inset_0_0_0_1px_var(--color-danger)] focus:shadow-[inset_0_0_0_1px_var(--color-danger)] focus:ring-danger-soft"
 
 export interface InputProps extends InputHTMLAttributes<HTMLInputElement>, SharedFieldProps {}
 
@@ -46,7 +55,7 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(function 
     <textarea
       ref={ref}
       rows={rows}
-      className={cn(FIELD_BASE, "min-h-28 py-3", invalid && INVALID_STYLE, className)}
+      className={cn(FIELD_BASE, "min-h-28 resize-y py-3", invalid && INVALID_STYLE, className)}
       aria-invalid={invalid || undefined}
       {...props}
     />
@@ -55,18 +64,25 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(function 
 
 export interface SelectProps extends SelectHTMLAttributes<HTMLSelectElement>, SharedFieldProps {}
 
+/* The native control. Its POPUP is drawn by the operating system: `color-scheme`
+ * (inherited from the theme) and the option colours below are requests, not
+ * instructions, and several platforms ignore both. Where the list has to match
+ * the theme, use SelectMenu — that is the whole reason it exists.
+ *
+ * `self-start` on the wrapper stops a stretched grid row from making it taller
+ * than the control and dropping the caret below it. */
 export const Select = forwardRef<HTMLSelectElement, SelectProps>(function Select(
   { children, className, fieldSize = "md", invalid = false, ...props },
   ref,
 ) {
   return (
-    <div className="relative">
+    <div className="relative min-w-0 self-start">
       <select
         ref={ref}
         className={cn(
           FIELD_BASE,
           FIELD_SIZE[fieldSize],
-          "appearance-none pr-10",
+          "cursor-pointer appearance-none pr-10 [&>option]:bg-surface-raised [&>option]:text-fg",
           invalid && INVALID_STYLE,
           className,
         )}

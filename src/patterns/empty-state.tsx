@@ -8,26 +8,25 @@ export interface EmptyStateProps extends Omit<HTMLAttributes<HTMLDivElement>, "t
   title: ReactNode
 }
 
-export function EmptyState({
-  action,
-  className,
-  description,
-  icon,
-  title,
-  ...props
-}: EmptyStateProps) {
+/* No dashed border. A dashed rectangle means "drop something here", which is a
+ * different component; an empty table is simply empty. */
+export function EmptyState({ action, className, description, icon, title, ...props }: EmptyStateProps) {
   return (
     <div
       className={cn(
-        "rounded-lg border border-dashed border-edge bg-surface-raised px-6 py-10 text-center",
+        "grid justify-items-center gap-2 rounded-xl bg-surface px-6 py-10 text-center ring-1 ring-inset ring-edge",
         className,
       )}
       {...props}
     >
-      {icon ? <div className="mx-auto mb-4 inline-flex rounded-full bg-primary-soft p-3 text-primary">{icon}</div> : null}
-      <h3 className="text-lg font-semibold text-fg">{title}</h3>
-      <p className="mx-auto mt-2 max-w-md text-sm text-fg-muted">{description}</p>
-      {action ? <div className="mt-5">{action}</div> : null}
+      {icon ? (
+        <div className="mb-2 inline-grid size-12 place-items-center rounded-full bg-primary-soft text-primary">
+          {icon}
+        </div>
+      ) : null}
+      <h3 className="m-0 text-lg font-semibold text-fg">{title}</h3>
+      <p className="m-0 max-w-md text-sm text-fg-muted">{description}</p>
+      {action ? <div className="mt-3">{action}</div> : null}
     </div>
   )
 }

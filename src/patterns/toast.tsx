@@ -79,29 +79,40 @@ export function ToastProvider({ children }: { children: ReactNode }) {
               key={toast.id}
               role="status"
               aria-live="polite"
-              className="pointer-events-auto rounded-lg bg-surface p-1 shadow-overlay ring-1 ring-inset ring-edge"
+              className={cn(
+                "pointer-events-auto flex gap-3 rounded-lg bg-surface-raised px-4 py-3",
+                "shadow-overlay ring-1 ring-inset ring-edge-strong motion-safe:animate-rise",
+                /* With no second line there is nothing to top-align to, so the
+                 * icon and the title centre on each other instead of hanging
+                 * from the top edge. */
+                toast.description ? "items-start" : "items-center",
+              )}
             >
-              <div className="flex items-start gap-3 rounded-md bg-surface-raised px-4 py-3">
-                <span className={cn("mt-0.5 inline-flex rounded-full p-1", TONE_STYLES[tone])}>
-                  <Icon size={16} aria-hidden="true" />
-                </span>
-                <div className="min-w-0 flex-1 space-y-1">
-                  <p className="text-sm font-semibold text-fg">{toast.title}</p>
-                  {toast.description ? <p className="text-sm text-fg-muted">{toast.description}</p> : null}
-                  {toast.action ? (
-                    <Button variant="ghost" size="sm" onClick={toast.action.onClick}>
-                      {toast.action.label}
-                    </Button>
-                  ) : null}
-                </div>
-                <IconButton
-                  aria-label="Dismiss notification"
-                  variant="ghost"
-                  size="sm"
-                  icon={<X size={14} aria-hidden="true" />}
-                  onClick={() => value.dismissToast(toast.id)}
-                />
+              <span
+                className={cn(
+                  "inline-grid size-7 shrink-0 place-items-center rounded-full",
+                  toast.description && "mt-0.5",
+                  TONE_STYLES[tone],
+                )}
+              >
+                <Icon size={16} aria-hidden="true" />
+              </span>
+              <div className="min-w-0 flex-1 space-y-1">
+                <p className="text-sm font-semibold text-fg">{toast.title}</p>
+                {toast.description ? <p className="text-sm text-fg-muted">{toast.description}</p> : null}
+                {toast.action ? (
+                  <Button variant="ghost" size="sm" onClick={toast.action.onClick}>
+                    {toast.action.label}
+                  </Button>
+                ) : null}
               </div>
+              <IconButton
+                aria-label="Dismiss notification"
+                variant="ghost"
+                size="sm"
+                icon={<X size={14} aria-hidden="true" />}
+                onClick={() => value.dismissToast(toast.id)}
+              />
             </div>
           )
         })}

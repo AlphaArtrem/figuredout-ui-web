@@ -19,12 +19,17 @@ export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 const VARIANT_STYLES: Record<ButtonVariant, string> = {
   primary:
     "bg-primary text-primary-fg shadow-raised hover:bg-primary-hover focus-visible:ring-focus-ring",
+  /* On surface-raised — the top of the ladder — so a secondary button reads as
+   * a control on any of the four surfaces. On plain `surface` it was a white
+   * rectangle on a white card. */
   secondary:
-    "bg-surface-raised text-fg shadow-raised ring-1 ring-inset ring-edge hover:bg-surface-sunken focus-visible:ring-focus-ring",
+    "bg-surface-raised text-fg shadow-raised ring-1 ring-inset ring-edge hover:bg-surface-sunken hover:ring-edge-strong focus-visible:ring-focus-ring",
   ghost:
     "bg-transparent text-fg-muted hover:bg-primary-soft hover:text-fg focus-visible:ring-focus-ring",
+  /* text-danger-fg, not text-primary-fg: the latter is the ink for PRIMARY, and
+   * in dark mode it is a near-black green on a light red. */
   danger:
-    "bg-danger text-primary-fg shadow-raised hover:opacity-90 focus-visible:ring-focus-ring",
+    "bg-danger text-danger-fg shadow-raised hover:opacity-90 focus-visible:ring-focus-ring",
 }
 
 const SIZE_STYLES: Record<ButtonSize, string> = {

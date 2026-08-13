@@ -15,7 +15,9 @@ export const SearchInput = forwardRef<HTMLInputElement, SearchInputProps>(functi
   const hasValue = typeof value === "string" ? value.length > 0 : false
 
   return (
-    <div className="relative">
+    /* `self-start` so a stretched grid row cannot make the wrapper taller than
+     * the field and drop the centred adornments below it. */
+    <div className="relative min-w-0 self-start">
       <MagnifyingGlass
         size={16}
         aria-hidden="true"
@@ -26,7 +28,7 @@ export const SearchInput = forwardRef<HTMLInputElement, SearchInputProps>(functi
         <button
           type="button"
           aria-label="Clear search"
-          className="absolute right-3 top-1/2 -translate-y-1/2 rounded-full p-1 text-fg-subtle transition duration-fast ease-standard hover:bg-surface-raised hover:text-fg focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-focus-ring"
+          className="absolute right-2 top-1/2 grid size-7 -translate-y-1/2 place-items-center rounded-full text-fg-subtle transition duration-fast ease-standard hover:bg-surface-raised hover:text-fg focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-focus-ring"
           onClick={onClear}
         >
           <X size={14} aria-hidden="true" />

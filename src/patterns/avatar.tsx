@@ -32,6 +32,7 @@ export function Avatar({ name, size = "md", src, subtitle }: AvatarProps) {
       <div
         className={cn(
           "inline-flex items-center justify-center overflow-hidden rounded-full bg-primary-soft font-semibold text-primary",
+          "ring-1 ring-inset ring-primary/20",
           SIZE_STYLES[size],
         )}
       >

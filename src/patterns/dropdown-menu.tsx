@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react"
 import type { ReactNode } from "react"
 import { CaretDown, Check, DotsThree } from "../icons/index.js"
 import { cn } from "../lib/cn.js"
+import { POPOVER_SURFACE } from "../lib/overlay.js"
 import { Button, IconButton } from "../primitives/button.js"
 
 export interface DropdownMenuItem {
@@ -16,6 +17,8 @@ export interface DropdownMenuItem {
 }
 
 export interface DropdownMenuProps {
+  /** Which edge of the trigger the menu hangs from. */
+  align?: "start" | "end"
   items: DropdownMenuItem[]
   label?: string
   triggerLabel?: ReactNode
@@ -23,6 +26,7 @@ export interface DropdownMenuProps {
 }
 
 export function DropdownMenu({
+  align = "end",
   items,
   label = "Open menu",
   triggerLabel = "Actions",
@@ -77,7 +81,15 @@ export function DropdownMenu({
       {open ? (
         <div
           role="menu"
-          className="absolute right-0 top-[calc(100%+0.5rem)] z-10 min-w-56 rounded-lg bg-surface p-1 shadow-overlay ring-1 ring-inset ring-edge"
+          className={cn(
+            "absolute top-[calc(100%+0.5rem)] min-w-56",
+            /* Which edge it hangs from is the caller's choice, because it
+             * depends on where the trigger sits: right-aligned for a control at
+             * the end of a row, left-aligned for one at the start. A menu that
+             * runs off its container is the most common overlay bug. */
+            align === "end" ? "right-0" : "left-0",
+            POPOVER_SURFACE,
+          )}
         >
           {items.map((item) => (
             <button
@@ -88,9 +100,7 @@ export function DropdownMenu({
               className={cn(
                 "flex w-full items-start gap-3 rounded-md px-3 py-2.5 text-left transition duration-fast ease-standard",
                 "focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-focus-ring",
-                item.tone === "danger"
-                  ? "text-danger hover:bg-danger-soft"
-                  : "text-fg hover:bg-surface-raised",
+                item.tone === "danger" ? "text-danger hover:bg-danger-soft" : "text-fg hover:bg-primary-soft",
                 item.disabled && "cursor-not-allowed opacity-50",
               )}
               onClick={() => {

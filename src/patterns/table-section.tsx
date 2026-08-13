@@ -12,6 +12,8 @@ export interface TableSectionProps<T> extends TableProps<T> {
   title: ReactNode
 }
 
+/* The section is the container, so the table inside it is never framed — that
+ * is the "one table" rule doing its job. */
 export function TableSection<T>({
   actions,
   caption,
@@ -37,7 +39,7 @@ export function TableSection<T>({
         </div>
         {actions ? <div className="flex shrink-0 items-center gap-2">{actions}</div> : null}
       </div>
-      <Table {...tableProps} variant={tableProps.variant ?? "plain"} />
+      <Table {...tableProps} framed={false} />
       {caption ? <p className="m-0 text-xs text-fg-subtle">{caption}</p> : null}
     </section>
   )

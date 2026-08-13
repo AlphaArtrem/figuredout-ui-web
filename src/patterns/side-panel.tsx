@@ -96,7 +96,7 @@ export function SidePanel({
       <button
         type="button"
         aria-label="Close panel overlay"
-        className="absolute inset-0 bg-fg/20 backdrop-blur-sm"
+        className="absolute inset-0 bg-[color-mix(in_srgb,var(--color-fg)_28%,transparent)] backdrop-blur-sm"
         onClick={() => onOpenChange(false)}
       />
       <div
@@ -107,12 +107,16 @@ export function SidePanel({
         aria-describedby={description ? descriptionId : undefined}
         tabIndex={-1}
         className={cn(
-          "relative z-[1] flex h-full w-full flex-col bg-surface p-1 shadow-overlay ring-1 ring-inset ring-edge outline-none",
-          "translate-x-0 transition duration-normal ease-standard",
+          /* The ring is on the leading edge only — the other three sides meet
+           * the viewport, and a ring around all four reads as a floating card
+           * that failed to reach the edge. */
+          "relative z-[1] flex h-full w-full flex-col bg-surface outline-none",
+          "[box-shadow:var(--shadow-overlay),inset_1px_0_0_var(--color-edge-strong)]",
+          "motion-safe:animate-slide-in-right",
           SIZE_STYLES[size],
         )}
       >
-        <div className="flex items-start justify-between gap-4 rounded-lg bg-surface-raised px-6 py-5">
+        <div className="flex items-start justify-between gap-4 border-b border-edge bg-surface-raised px-6 py-5">
           <div className="space-y-1">
             <h2 id={titleId} className="text-xl font-semibold text-fg">
               {title}

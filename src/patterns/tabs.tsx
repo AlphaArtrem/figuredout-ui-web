@@ -43,8 +43,16 @@ export function Tabs({ defaultValue, items, onValueChange, value }: TabsProps) {
 
   return (
     <div className="space-y-4">
-      <div role="tablist" aria-orientation="horizontal" className="flex flex-wrap gap-2 rounded-lg bg-surface-raised p-2">
-        {items.map((item, index) => (
+      {/* A segmented control: the track is the hole and the active tab is the
+       * thing lifted out of it. The package had the track raised and the active
+       * tab on `surface`, which on the light ladder made the selected tab look
+       * recessed — the opposite of what selection means. */}
+      <div
+        role="tablist"
+        aria-orientation="horizontal"
+        className="inline-flex flex-wrap gap-1 rounded-lg bg-surface-sunken p-1 ring-1 ring-inset ring-edge"
+      >
+        {items.map((item) => (
           <button
             key={item.id}
             id={`tab-${item.id}`}
@@ -55,12 +63,12 @@ export function Tabs({ defaultValue, items, onValueChange, value }: TabsProps) {
             tabIndex={item.id === activeValue ? 0 : -1}
             disabled={item.disabled}
             className={cn(
-              "inline-flex min-h-10 items-center gap-2 rounded-md px-4 text-sm font-medium transition duration-normal ease-standard",
+              "inline-flex min-h-9 items-center gap-2 rounded-md px-4 text-sm transition duration-normal ease-standard",
               "focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-focus-ring active:scale-[0.98]",
               item.id === activeValue
-                ? "bg-surface text-fg shadow-raised"
-                : "text-fg-muted hover:bg-surface hover:text-fg",
-              item.disabled && "cursor-not-allowed opacity-50",
+                ? "bg-surface-raised font-semibold text-fg shadow-raised ring-1 ring-inset ring-edge"
+                : "font-medium text-fg-muted hover:text-fg",
+              item.disabled && "cursor-not-allowed opacity-45",
             )}
             onClick={() => updateValue(item.id)}
             onKeyDown={(event) => {
@@ -105,11 +113,9 @@ export function Tabs({ defaultValue, items, onValueChange, value }: TabsProps) {
           id={`panel-${activeTab.id}`}
           role="tabpanel"
           aria-labelledby={`tab-${activeTab.id}`}
-          className="rounded-lg bg-surface-raised p-5"
+          className="rounded-xl bg-surface p-5 ring-1 ring-inset ring-edge"
         >
-          {activeTab.description ? (
-            <p className="mb-3 text-sm text-fg-muted">{activeTab.description}</p>
-          ) : null}
+          {activeTab.description ? <p className="mb-3 text-sm text-fg-muted">{activeTab.description}</p> : null}
           {activeTab.content}
         </div>
       ) : null}

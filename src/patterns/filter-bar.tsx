@@ -5,11 +5,14 @@ export interface FilterBarProps extends HTMLAttributes<HTMLDivElement> {
   actions?: ReactNode
 }
 
+/* A single ringed strip on `surface` holding the controls that scope the view
+ * below it. Because fields are sunken now, the bar reads as a rail with holes
+ * in it rather than as a card containing more cards. */
 export function FilterBar({ actions, children, className, ...props }: FilterBarProps) {
   return (
     <div
       className={cn(
-        "flex flex-col gap-3 rounded-lg bg-surface-raised p-4 ring-1 ring-inset ring-edge md:flex-row md:items-center md:justify-between",
+        "flex flex-col gap-3 rounded-xl bg-surface p-3 ring-1 ring-inset ring-edge md:flex-row md:items-center md:justify-between",
         className,
       )}
       {...props}

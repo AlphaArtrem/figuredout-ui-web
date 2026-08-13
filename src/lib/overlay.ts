@@ -1,3 +1,15 @@
+/**
+ * One surface for everything that floats over the page and holds a list —
+ * DropdownMenu, SelectMenu, and anything added later.
+ *
+ * Raised surface, the overlay elevation, the strong ring, and 4px of padding so
+ * a highlighted row's own radius nests inside the container's instead of
+ * colliding with it. Kept here rather than duplicated per component: the moment
+ * two popovers disagree about their shadow, the app stops looking like one app.
+ */
+export const POPOVER_SURFACE =
+  "z-overlay rounded-lg bg-surface-raised p-1 shadow-overlay ring-1 ring-inset ring-edge-strong motion-safe:animate-rise"
+
 export function getFocusableElements(container: HTMLElement) {
   return Array.from(
     container.querySelectorAll<HTMLElement>(

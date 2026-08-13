@@ -1,0 +1,937 @@
+<!doctype html>
+<html lang="en" data-display="sans">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="light dark" />
+    <title>FiguredOut × callpool — hybrid design system mockup</title>
+    <link rel="stylesheet" href="tokens-hybrid.css" />
+    <link rel="stylesheet" href="hybrid.css" />
+    <link rel="stylesheet" href="light-themes.css" />
+  </head>
+  <body>
+    <!-- ── top bar ─────────────────────────────────────────────────────── -->
+    <div class="topbar">
+      <div class="wrap barrow">
+        <a class="brand" href="#top">
+          <span class="brand-mark" aria-hidden="true">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M4 19V9M10 19V5M16 19v-7M22 19H2" stroke-linecap="round" />
+            </svg>
+          </span>
+          FiguredOut <span style="color: var(--color-fg-subtle); font-weight: 500">/ hybrid mockup</span>
+        </a>
+
+        <div class="bar-tools">
+          <label class="bar-select">
+            <span class="visually-hidden">Light palette</span>
+            <select id="pick-light">
+              <option value="lt-sage">Light: sage</option>
+              <option value="lt-paper">Light: paper</option>
+              <option value="lt-slate">Light: slate</option>
+              <option value="lt-current">Light: as it ships</option>
+            </select>
+          </label>
+          <button class="btn btn-secondary btn-sm" type="button" id="toggle-theme" aria-pressed="false">
+            Dark
+          </button>
+          <button class="btn btn-secondary btn-sm" type="button" id="toggle-display" aria-pressed="false">
+            Condensed caps
+          </button>
+          <label class="bar-select">
+            <span class="visually-hidden">Hue dot density</span>
+            <select id="pick-glow">
+              <option value="many">Dots: many</option>
+              <option value="some">Dots: some</option>
+              <option value="few">Dots: few</option>
+              <option value="off">Dots: off</option>
+            </select>
+          </label>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── the hero, live at this window's width ───────────────────────── -->
+    <header id="top">
+      <div class="wrap hero">
+        <div class="hero-art">
+          <img
+            src="hero-art.png"
+            width="890"
+            height="900"
+            alt=""
+            aria-hidden="true"
+            decoding="async"
+            fetchpriority="high"
+          />
+        </div>
+
+        <div class="ledger">
+          <div class="ledger-row">
+            <span class="ledger-k">Events today</span>
+            <span class="ledger-v big num">1,284,940</span>
+          </div>
+          <div class="ledger-row">
+            <span class="ledger-k">Sources connected</span>
+            <span class="ledger-v num">17</span>
+          </div>
+          <div class="ledger-row">
+            <span class="ledger-k">Pipeline</span>
+            <span class="live">Live</span>
+          </div>
+        </div>
+
+        <div class="hero-copy">
+          <p class="eyebrow">FiguredOut / Platform</p>
+          <h1 class="display">
+            <span>Every number.</span><br /><span>Traced to</span><br /><span><em>its source.</em></span>
+          </h1>
+          <p class="hero-sub">
+            One warehouse-backed layer for every metric your teams argue about.
+            <strong>No spreadsheets, no second version of the truth.</strong>
+          </p>
+          <div class="cta-row">
+            <a class="btn btn-primary" href="#widths">Open the dashboard</a>
+            <a class="btn btn-secondary" href="#widths">See a live example</a>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- ── what this page is ───────────────────────────────────────────── -->
+    <section class="band band-pad">
+      <div class="wrap">
+        <div class="head">
+          <div class="head-rail">
+            <span class="head-icon" aria-hidden="true">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                <circle cx="12" cy="12" r="9" />
+                <path d="M12 8v8M8 12h8" stroke-linecap="round" />
+              </svg>
+            </span>
+            <p class="eyebrow">Read me first</p>
+          </div>
+          <h2>Five mechanics, borrowed and adapted.</h2>
+          <p class="lede">
+            Nothing in <code>src/</code>, <code>styles/</code> or <code>stories/</code> was touched. This folder is a
+            standalone static page: it copies the package's tokens verbatim, adds callpool's mechanics on top, and shows
+            each one beside what the package renders today so the two are comparable against Storybook.
+            <strong>Every borrowed rule is tagged</strong> — <span class="tag tag-cp">CP</span> callpool,
+            <span class="tag tag-fo">FO</span> figuredout, <span class="tag tag-mix">MIX</span> merged.
+          </p>
+        </div>
+
+        <ul class="seam seam-3">
+          <li>
+            <div class="rule-top">
+              <span class="card-icon" aria-hidden="true">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                  <rect x="3" y="4" width="18" height="16" rx="2" />
+                  <path d="M3 10h18" />
+                </svg>
+              </span>
+              <span class="rule-n">01</span>
+            </div>
+            <h3>Tokens mostly stay put</h3>
+            <p>
+              The mechanics only add: four decorative glow hues, a measure, a gutter, and a seam colour. The one place
+              existing values do move is the light theme — see mechanic 06, where that is the entire point.
+            </p>
+          </li>
+          <li>
+            <div class="rule-top">
+              <span class="card-icon" aria-hidden="true">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                  <path d="M12 3v18M3 12h18" stroke-linecap="round" />
+                </svg>
+              </span>
+              <span class="rule-n">02</span>
+            </div>
+            <h3>Product voice wins</h3>
+            <p>
+              callpool's uppercase-mono buttons and 2px radius are marketing choices. The hybrid keeps figuredout's
+              buttons, radii and focus rings — and takes callpool's structure, scale and motion.
+            </p>
+          </li>
+          <li>
+            <div class="rule-top">
+              <span class="card-icon" aria-hidden="true">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                  <path d="M4 17l6-6 4 4 6-8" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+              </span>
+              <span class="rule-n">03</span>
+            </div>
+            <h3>Every number is mono</h3>
+            <p>
+              Both systems already agree here. The hybrid promotes it from a per-component decision to a named type
+              role, so tables and dialogs get tabular figures for free.
+            </p>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ── 1. the hero at three widths ─────────────────────────────────── -->
+    <section class="band band-pad" id="widths">
+      <div class="wrap">
+        <div class="head">
+          <div class="head-rail">
+            <span class="head-icon" aria-hidden="true">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                <rect x="2" y="5" width="20" height="13" rx="2" />
+                <path d="M8 21h8" stroke-linecap="round" />
+              </svg>
+            </span>
+            <p class="eyebrow">Mechanic 01 <span class="tag tag-cp">CP</span></p>
+          </div>
+          <h2>The hero that never lands on its own words.</h2>
+          <p class="lede">
+            The package has no hero at all, so this is a straight lift. Two columns on a laptop — art with a figures card
+            riding up over its bottom quarter, words beside it. Under 880px the art and the words share one grid cell:
+            the art hangs from the top at a capped width, the copy is dropped below the raised arm by an offset computed
+            from the image's own aspect ratio, and the bottom fifth of the picture is masked out so its straight cut
+            does not read as a rule across the page. <strong>Resize the frame and watch the copy stay clear.</strong>
+          </p>
+        </div>
+
+        <div class="viewport-bar">
+          <button class="btn btn-secondary btn-sm" type="button" data-width="375">375 — phone</button>
+          <button class="btn btn-secondary btn-sm" type="button" data-width="768">768 — tablet</button>
+          <button class="btn btn-secondary btn-sm" type="button" data-width="1100" aria-pressed="true">
+            1100 — laptop
+          </button>
+          <span class="note" style="margin-left: auto">The frame is a real viewport; the media queries answer to it.</span>
+        </div>
+
+        <div class="viewport-frame" id="viewport-frame" style="max-width: 1100px">
+          <iframe id="hero-frame" src="hero-frame.html" title="Hybrid hero at an adjustable width" loading="lazy"></iframe>
+        </div>
+
+        <div class="spec">
+          <div class="spec-row">
+            <h4>The overlap is a negative margin, not absolute positioning</h4>
+            <p>
+              <code>margin-top: -25%</code> on the card. A percentage margin resolves against the container's
+              <em>width</em>, and the art is 890×900 — so a quarter of the width is a quarter of the height. The card
+              still occupies its grid row, so the header grows to contain it instead of the card escaping onto the
+              section below.
+            </p>
+          </div>
+          <div class="spec-row">
+            <h4>Source order is the phone's reading order</h4>
+            <p>
+              Art, card, words in the markup; <code>grid-template-areas</code> puts them back into the laptop's
+              arrangement. No <code>order</code>, so the tab sequence never disagrees with the screen.
+            </p>
+          </div>
+          <div class="spec-row">
+            <h4>The numbers are sized by their row, not the viewport</h4>
+            <p>
+              <code>clamp(1.1rem, 8.5cqi, 2rem)</code> with <code>container-type: inline-size</code> on the row. A long
+              figure shrinks to fit the card instead of overflowing it — the same trick the wall cells below use.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── 2. section heads ────────────────────────────────────────────── -->
+    <section class="band band-pad">
+      <div class="wrap">
+        <div class="head">
+          <div class="head-rail">
+            <span class="head-icon" aria-hidden="true">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                <path d="M4 6h16M4 12h10M4 18h7" stroke-linecap="round" />
+              </svg>
+            </span>
+            <p class="eyebrow">Mechanic 02 <span class="tag tag-mix">MIX</span></p>
+          </div>
+          <h2>Section heads, at a scale you can navigate by.</h2>
+          <p class="lede">
+            <code>Section variant="plain"</code> already has the good bones: an icon chip and a mono eyebrow in a 10rem
+            rail, heading and description in the column beside it, a divider above. All the hybrid changes is the
+            <strong>scale</strong> — the h2 goes fluid from 1.875rem up to 3.25rem, and the description becomes a real
+            lede. Every head on this page is the hybrid one.
+          </p>
+        </div>
+
+        <div class="compare">
+          <div class="pane">
+            <p class="pane-label is-now">Today</p>
+            <div class="now-head">
+              <span class="head-icon" aria-hidden="true">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                  <circle cx="12" cy="12" r="9" />
+                </svg>
+              </span>
+              <p class="eyebrow">Pipeline health</p>
+              <h2>Ingestion and freshness</h2>
+              <p>
+                Every source, when it last landed, and what it cost to land. Rows are grouped by connector so a stalled
+                warehouse is visible without scrolling.
+              </p>
+            </div>
+          </div>
+
+          <div class="pane">
+            <p class="pane-label is-hybrid">Hybrid</p>
+            <div class="head" style="margin-bottom: 0">
+              <div class="head-rail">
+                <span class="head-icon" aria-hidden="true">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                    <circle cx="12" cy="12" r="9" />
+                  </svg>
+                </span>
+                <p class="eyebrow">Pipeline health</p>
+              </div>
+              <h2>Ingestion and freshness</h2>
+              <p class="lede">
+                Every source, when it last landed, and what it cost to land. Rows are grouped by connector so a stalled
+                warehouse is visible without scrolling.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── 3. connected cards ──────────────────────────────────────────── -->
+    <section class="band band-pad">
+      <div class="wrap">
+        <div class="head">
+          <div class="head-rail">
+            <span class="head-icon" aria-hidden="true">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                <rect x="3" y="4" width="18" height="16" rx="2" />
+                <path d="M9 4v16M15 4v16" />
+              </svg>
+            </span>
+            <p class="eyebrow">Mechanic 03 <span class="tag tag-mix">MIX</span></p>
+          </div>
+          <h2>Cards in a line read as one object.</h2>
+          <p class="lede">
+            callpool draws the hairline between cards as a <strong>1px gap over a seam-coloured ground</strong> instead
+            of giving each card its own border: no doubled lines where two cards meet, no page showing through the gap.
+            The adaptation is the corners — at a 1rem radius the corner cells have to carry the rounding themselves,
+            because clipping the frame would slice the hover shadow. Hover a cell in either pane.
+          </p>
+        </div>
+
+        <div class="compare">
+          <div class="pane">
+            <p class="pane-label is-now">Today — four StatCards</p>
+            <div class="now-grid now-grid-4">
+              <div class="now-card">
+                <p class="now-k">Events today</p>
+                <p class="now-v">1,284,940</p>
+                <p class="now-note">+12% vs yesterday</p>
+              </div>
+              <div class="now-card">
+                <p class="now-k">Median latency</p>
+                <p class="now-v">412 ms</p>
+                <p class="now-note">p95 is 1.9 s</p>
+              </div>
+              <div class="now-card">
+                <p class="now-k">Failed syncs</p>
+                <p class="now-v">3</p>
+                <p class="now-note">All retried and clear</p>
+              </div>
+              <div class="now-card">
+                <p class="now-k">Cost this month</p>
+                <p class="now-v">$4,120.55</p>
+                <p class="now-note">Budget $6,000</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="pane">
+            <p class="pane-label is-hybrid">Hybrid — one seam grid</p>
+            <div class="seam seam-4">
+              <div>
+                <p class="cell-k">Events today</p>
+                <span class="cell-v num accent">1,284,940</span>
+                <span class="cell-note">+12% vs yesterday</span>
+              </div>
+              <div>
+                <p class="cell-k">Median latency</p>
+                <span class="cell-v num">412 ms</span>
+                <span class="cell-note">p95 is 1.9 s</span>
+              </div>
+              <div>
+                <p class="cell-k">Failed syncs</p>
+                <span class="cell-v num">3</span>
+                <span class="cell-note">All retried and clear</span>
+              </div>
+              <div>
+                <p class="cell-k">Cost this month</p>
+                <span class="cell-v num">$4,120.55</span>
+                <span class="cell-note">Budget $6,000</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="spec">
+          <div class="spec-row">
+            <h4>Cell counts are chosen so every breakpoint divides evenly</h4>
+            <p>
+              Four cells go 4 → 2 → 1, never 3. A hole in a grid of hairlines reads as a missing figure, which is
+              exactly the wrong thing for a wall of numbers to imply.
+            </p>
+          </div>
+          <div class="spec-row">
+            <h4>The hover is a surface change, not a lift</h4>
+            <p>
+              callpool lifts a seam cell 2px and covers the sliver of seam ground with the shadow. At a 1rem radius that
+              sliver shows at the corners, so the hybrid swaps the translate for
+              <code>surface-raised</code> + <code>--shadow-hover</code> + <code>z-index: 1</code>. Standalone cards —
+              the ledger, the tiles — still lift.
+            </p>
+          </div>
+          <div class="spec-row">
+            <h4>Figures are sized by the cell</h4>
+            <p>
+              <code>clamp(1.25rem, 10.5cqi, 2.75rem)</code>. Set from the longest string the slot actually holds; a
+              narrower cell gets smaller digits rather than a second line.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── 4. expandable tiles ─────────────────────────────────────────── -->
+    <section class="band band-pad">
+      <div class="wrap">
+        <div class="head">
+          <div class="head-rail">
+            <span class="head-icon" aria-hidden="true">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                <rect x="3" y="5" width="18" height="6" rx="2" />
+                <rect x="3" y="14" width="18" height="6" rx="2" />
+              </svg>
+            </span>
+            <p class="eyebrow">Mechanic 04 <span class="tag tag-mix">MIX</span></p>
+          </div>
+          <h2>An open tile is an overlay that stayed where it was.</h2>
+          <p class="lede">
+            The package's <code>ExpandableTile</code> keeps the same surface when it opens, so a long page of open tiles
+            flattens into one wall of text. The hybrid gives the open state
+            <strong>the elevation the system already reserves for dialogs</strong> — <code>--shadow-overlay</code>,
+            <code>surface-raised</code>, the strong ring, a 3px lift, and a body that fades in from above. No new token.
+            Open a tile in each pane.
+          </p>
+        </div>
+
+        <div class="compare">
+          <div class="pane">
+            <p class="pane-label is-now">Today — flat on open</p>
+
+            <details class="now-tile">
+              <summary>
+                <span class="tile-title">
+                  <span>What counts as a failed sync?</span>
+                  <small>Retries, partial loads, and schema drift</small>
+                </span>
+                <svg class="now-caret" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                  <path d="M6 9l6 6 6-6" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+              </summary>
+              <div class="tile-body">
+                <p>
+                  A sync is failed once every retry in its window has been used. Partial loads are counted as failures
+                  even when rows landed, because a partial table is the one a dashboard reads without noticing.
+                </p>
+              </div>
+            </details>
+
+            <details class="now-tile">
+              <summary>
+                <span class="tile-title">
+                  <span>Where does the cost number come from?</span>
+                  <small>Warehouse billing, not our estimate</small>
+                </span>
+                <svg class="now-caret" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                  <path d="M6 9l6 6 6-6" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+              </summary>
+              <div class="tile-body">
+                <p>
+                  Pulled from the warehouse's own billing export, lagged by up to four hours. <strong>We never
+                  estimate it</strong> — an invented figure here is worse than a missing one.
+                </p>
+              </div>
+            </details>
+          </div>
+
+          <div class="pane">
+            <p class="pane-label is-hybrid">Hybrid — pops on open</p>
+
+            <details class="tile">
+              <summary>
+                <span class="tile-title">
+                  <span>What counts as a failed sync?</span>
+                  <small>Retries, partial loads, and schema drift</small>
+                </span>
+                <span class="tile-mark" aria-hidden="true"></span>
+              </summary>
+              <div class="tile-body">
+                <p>
+                  A sync is failed once every retry in its window has been used. Partial loads are counted as failures
+                  even when rows landed, because a partial table is the one a dashboard reads without noticing.
+                </p>
+              </div>
+            </details>
+
+            <details class="tile">
+              <summary>
+                <span class="tile-title">
+                  <span>Where does the cost number come from?</span>
+                  <small>Warehouse billing, not our estimate</small>
+                </span>
+                <span class="tile-mark" aria-hidden="true"></span>
+              </summary>
+              <div class="tile-body">
+                <p>
+                  Pulled from the warehouse's own billing export, lagged by up to four hours. <strong>We never
+                  estimate it</strong> — an invented figure here is worse than a missing one.
+                </p>
+              </div>
+            </details>
+
+            <details class="tile" open>
+              <summary>
+                <span class="tile-title">
+                  <span>Why <code>&lt;details&gt;</code> instead of a button?</span>
+                  <small>Open by default, so the popped state is visible</small>
+                </span>
+                <span class="tile-mark" aria-hidden="true"></span>
+              </summary>
+              <div class="tile-body">
+                <p>
+                  Space and Enter, find-in-page opening the right tile, and printing an expanded page all come from the
+                  browser. The package's controlled API (<code>open</code> / <code>onOpenChange</code>) maps onto
+                  <code>&lt;details&gt;</code> without losing any of that.
+                </p>
+              </div>
+            </details>
+          </div>
+        </div>
+
+        <div class="spec">
+          <div class="spec-row">
+            <h4>Something the mockup turned up: light mode has no raised surface</h4>
+            <p>
+              <code>--color-surface</code> and <code>--color-surface-raised</code> are both <code>#ffffff</code> in the
+              light theme, so the open tile's surface change does nothing there and the whole popped state rests on the
+              shadow. Dark mode has a real step (<code>#18191b</code> → <code>#212225</code>). Either the light theme
+              wants a tinted raised surface, or the elevation story is shadow-only in light and should say so.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── 5. the wallpaper ────────────────────────────────────────────── -->
+    <section class="band band-pad">
+      <div class="wrap">
+        <div class="head">
+          <div class="head-rail">
+            <span class="head-icon" aria-hidden="true">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                <circle cx="8" cy="9" r="4" />
+                <circle cx="16" cy="16" r="5" />
+              </svg>
+            </span>
+            <p class="eyebrow">Mechanic 05 <span class="tag tag-cp">CP</span></p>
+          </div>
+          <h2>Faded hue dots, all the way down.</h2>
+          <p class="lede">
+            Twenty radial gradients on a layer behind the content — <code>body::before</code> at
+            <code>z-index: -1</code>, so there is nothing in the hit test and no stacking context to reason about. They
+            scroll with the page, so a reader meets a different circle every screen or so, and each has an explicit rem
+            size so the circles stay circular however long the document gets. Each dot is a named custom property,
+            which is what makes the <strong>density control</strong> in the top bar possible: many, some, few and off
+            compose subsets of the same twenty, so the dots never move — there are simply fewer of them.
+            <strong>You are looking at it right now.</strong>
+          </p>
+        </div>
+
+        <div class="viewport-bar">
+          <button class="btn btn-primary btn-sm" type="button" id="toggle-glow-2">Turn the dots off</button>
+          <span class="note" style="margin-left: auto">Density — many / some / few / off — is in the top bar.</span>
+        </div>
+
+        <div class="spec">
+          <div class="spec-row">
+            <h4>The glow palette is not the semantic palette</h4>
+            <p>
+              Four decorative tokens — <code>--glow-1…4</code> — kept separate on purpose. A status colour changing must
+              never re-tint the wallpaper. They are also lighter and more saturated than their semantic cousins, because
+              figuredout's light-mode hues are dark enough that a 10% wash reads as a grey smudge.
+            </p>
+          </div>
+          <div class="spec-row">
+            <h4>Every stop is far below full opacity</h4>
+            <p>
+              Three named stops, and each theme sets its own: light needs roughly double, because at 10% over a tinted
+              near-white ground a circle is invisible — which is exactly what happened the first time. The dots that
+              pass behind text are always the faintest of the three. Text contrast is untouched in both themes.
+            </p>
+          </div>
+          <div class="spec-row">
+            <h4>Sections arrive in reading order</h4>
+            <p>
+              The scroll reveal is gated behind <code>@supports (animation-timeline: view())</code>, with a one-shot
+              on-load fallback. Without the gate a browser with no view timeline keeps the first keyframe's
+              <code>opacity: 0</code> and hides the page outright. <code>prefers-reduced-motion</code> stops all of it.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── 6. the light theme ──────────────────────────────────────────── -->
+    <section class="band band-pad" id="light">
+      <div class="wrap">
+        <div class="head">
+          <div class="head-rail">
+            <span class="head-icon" aria-hidden="true">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                <circle cx="12" cy="12" r="4.5" />
+                <path d="M12 2v2.5M12 19.5V22M2 12h2.5M19.5 12H22M4.9 4.9l1.8 1.8M17.3 17.3l1.8 1.8M19.1 4.9l-1.8 1.8M6.7 17.3l-1.8 1.8" stroke-linecap="round" />
+              </svg>
+            </span>
+            <p class="eyebrow">Mechanic 06 <span class="tag tag-mix">MIX</span></p>
+          </div>
+          <h2>White is the top of the ladder, not the surface.</h2>
+          <p class="lede">
+            Today the page is <code>#fafafa</code> and both the card and the raised card are <code>#ffffff</code> — a 2%
+            step, then none at all. Every card depends on its hairline to exist, and "raised" is not a state the light
+            theme can express. Dark mode has no such problem: <code>#111113 → #18191b → #212225</code> is three real
+            steps. <strong>The fix is to stop spending white on the resting surface</strong> and reserve it for what is
+            lifted — page ground drops to a tinted neutral, the card sits just under white, white means raised.
+          </p>
+        </div>
+
+        <div class="lt-grid">
+          <div class="lt-card lt-sage" data-selected="true" data-palette="lt-sage">
+            <p class="lt-name">Sage <span>recommended</span></p>
+            <div class="lt-ladder">
+              <div class="lt-step" data-tone="sunken">Sunken <b>#e7ebe5</b></div>
+              <div class="lt-step" data-tone="bg">Page <b>#f1f4f0</b></div>
+              <div class="lt-step" data-tone="surface">Surface <b>#f9fbf8</b></div>
+              <div class="lt-step" data-tone="raised">Raised <b>#ffffff</b></div>
+            </div>
+            <div class="lt-demo">
+              <div class="lt-demo-card">
+                <div class="lt-demo-row"><span>Events today</span></div>
+                <div class="lt-demo-v">1,284,940</div>
+                <div class="lt-demo-raised">A raised tile, on white.</div>
+                <div class="lt-demo-well">a sunken well</div>
+              </div>
+            </div>
+            <button class="btn btn-secondary btn-sm lt-pick" type="button" data-pick="lt-sage">Apply</button>
+          </div>
+
+          <div class="lt-card lt-paper" data-palette="lt-paper">
+            <p class="lt-name">Paper <span>warm</span></p>
+            <div class="lt-ladder">
+              <div class="lt-step" data-tone="sunken">Sunken <b>#edeae4</b></div>
+              <div class="lt-step" data-tone="bg">Page <b>#f6f4f0</b></div>
+              <div class="lt-step" data-tone="surface">Surface <b>#fdfcfa</b></div>
+              <div class="lt-step" data-tone="raised">Raised <b>#ffffff</b></div>
+            </div>
+            <div class="lt-demo">
+              <div class="lt-demo-card">
+                <div class="lt-demo-row"><span>Events today</span></div>
+                <div class="lt-demo-v">1,284,940</div>
+                <div class="lt-demo-raised">A raised tile, on white.</div>
+                <div class="lt-demo-well">a sunken well</div>
+              </div>
+            </div>
+            <button class="btn btn-secondary btn-sm lt-pick" type="button" data-pick="lt-paper">Apply</button>
+          </div>
+
+          <div class="lt-card lt-slate" data-palette="lt-slate">
+            <p class="lt-name">Slate <span>cool</span></p>
+            <div class="lt-ladder">
+              <div class="lt-step" data-tone="sunken">Sunken <b>#e4e8ee</b></div>
+              <div class="lt-step" data-tone="bg">Page <b>#eef1f5</b></div>
+              <div class="lt-step" data-tone="surface">Surface <b>#f9fafc</b></div>
+              <div class="lt-step" data-tone="raised">Raised <b>#ffffff</b></div>
+            </div>
+            <div class="lt-demo">
+              <div class="lt-demo-card">
+                <div class="lt-demo-row"><span>Events today</span></div>
+                <div class="lt-demo-v">1,284,940</div>
+                <div class="lt-demo-raised">A raised tile, on white.</div>
+                <div class="lt-demo-well">a sunken well</div>
+              </div>
+            </div>
+            <button class="btn btn-secondary btn-sm lt-pick" type="button" data-pick="lt-slate">Apply</button>
+          </div>
+
+          <div class="lt-card lt-current" data-palette="lt-current">
+            <p class="lt-name">As it ships <span>today</span></p>
+            <div class="lt-ladder">
+              <div class="lt-step" data-tone="sunken">Sunken <b>#f4f4f5</b></div>
+              <div class="lt-step" data-tone="bg">Page <b>#fafafa</b></div>
+              <div class="lt-step" data-tone="surface">Surface <b>#ffffff</b></div>
+              <div class="lt-step" data-tone="raised">Raised <b>#ffffff</b></div>
+            </div>
+            <div class="lt-demo">
+              <div class="lt-demo-card">
+                <div class="lt-demo-row"><span>Events today</span></div>
+                <div class="lt-demo-v">1,284,940</div>
+                <div class="lt-demo-raised">A raised tile, on white.</div>
+                <div class="lt-demo-well">a sunken well</div>
+              </div>
+            </div>
+            <button class="btn btn-secondary btn-sm lt-pick" type="button" data-pick="lt-current">Apply</button>
+          </div>
+        </div>
+
+        <div class="spec">
+          <div class="spec-row">
+            <h4>The ladder is what makes the rest of the page work</h4>
+            <p>
+              Apply one and switch to light: the seam grid's hover, the popped tile and the hero ledger all start
+              reading in light mode, because <code>surface-raised</code> finally means something. None of those
+              components change — only the four values under them.
+            </p>
+          </div>
+          <div class="spec-row">
+            <h4>Shadows carry the ground's hue, not black</h4>
+            <p>
+              Each palette re-tints <code>--shadow-raised</code> / <code>-hover</code> / <code>-overlay</code> with its
+              own neutral — <code>rgba(16, 32, 22, …)</code> for sage. A pure-black shadow on a tinted ground greys out
+              the colour beneath it and reads as dirt; a hue-matched one reads as depth. It also lets the shadows come
+              down in opacity, because they no longer have to fight a white surface to be seen.
+            </p>
+          </div>
+          <div class="spec-row">
+            <h4>Text contrast, honestly</h4>
+            <p>
+              Against each palette's own surface: <code>fg-muted</code> clears 9:1 and <code>fg-subtle</code> clears
+              6.5:1 in all three, so both are AA for body text with headroom. Today's theme is higher still — 11.4:1 and
+              8.6:1 — because it is measured against pure white. That is the trade: a little contrast headroom back, in
+              exchange for surfaces that can be told apart without a border.
+            </p>
+          </div>
+          <div class="spec-row">
+            <h4>Sage is the recommendation, and it is the conservative one</h4>
+            <p>
+              Its neutrals lean the same way callpool's light theme does (<code>#f7f8f7 / #eceeec / #dde1dd</code>), it
+              agrees with the brand green rather than sitting neutral against it, and it is close enough to today's
+              greys that nothing in the product suddenly looks like a different application. Paper is the one with an
+              opinion; slate is the one nobody will notice.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── what adopting it would take ─────────────────────────────────── -->
+    <section class="band band-pad">
+      <div class="wrap">
+        <div class="head">
+          <div class="head-rail">
+            <span class="head-icon" aria-hidden="true">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                <path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
+            </span>
+            <p class="eyebrow">If you want it</p>
+          </div>
+          <h2>What it would take in the real package.</h2>
+          <p class="lede">
+            Sized against the current <code>src/</code>. Nothing here is written yet — this is the shape of the work, in
+            the order I would do it.
+          </p>
+        </div>
+
+        <div class="seam seam-4">
+          <div>
+            <p class="cell-k">Tokens added</p>
+            <span class="cell-v num accent">+7</span>
+            <span class="cell-note">
+              <code>--glow-1…4</code>, <code>--measure</code>, <code>--gut</code>, <code>--seam</code> added to
+              <code>styles/tokens.css</code> and the Tailwind preset.
+            </span>
+          </div>
+          <div>
+            <p class="cell-k">Tokens re-valued</p>
+            <span class="cell-v num">9</span>
+            <span class="cell-note">
+              The light theme only: four surfaces, three text tones, two edges — plus its three shadows. Dark is
+              untouched.
+            </span>
+          </div>
+          <div>
+            <p class="cell-k">New components</p>
+            <span class="cell-v num">3</span>
+            <span class="cell-note">
+              <code>Hero</code>, <code>SeamGrid</code> and <code>PageBand</code> (the wrap/band pair). None of these has
+              an equivalent today.
+            </span>
+          </div>
+          <div>
+            <p class="cell-k">Changed components</p>
+            <span class="cell-v num">2</span>
+            <span class="cell-note">
+              <code>Section</code> gains a <code>size</code> prop for the display scale; <code>ExpandableTile</code>
+              gains the popped open state. Both opt-in, with today's behaviour as the default.
+            </span>
+          </div>
+        </div>
+
+        <div class="spec">
+          <div class="spec-row">
+            <h4>The one open question</h4>
+            <p>
+              The display face. Sentence-case product sans is the default here because it is figuredout's voice, but the
+              condensed-caps cut is what makes callpool look like callpool — toggle it in the top bar and decide. If you
+              want it, it needs a real webfont, not <code>font-stretch: condensed</code> against a system fallback,
+              which resolves differently on every machine.
+            </p>
+          </div>
+          <div class="spec-row">
+            <h4>The light theme is the only real regression risk</h4>
+            <p>
+              Everything else is additive or opt-in, so Storybook baselines hold. Re-valuing the light surfaces changes
+              every light-mode snapshot in the package at once — which is the point, but it means the palette wants to
+              land as its own commit, with the visual review done in one pass rather than mixed into a component change.
+            </p>
+          </div>
+          <div class="spec-row">
+            <h4>The art is a placeholder</h4>
+            <p>
+              <code>hero-art.png</code> is callpool's mascot, copied in unchanged. It is here because the hero's numbers
+              — the <code>-25%</code> overlap and the <code>64%</code> copy offset — are derived from its 890×900 shape.
+              Swap in a 1:1 asset of your own and they still hold; a different aspect ratio means recomputing both.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer class="page-foot">
+      <div class="wrap">
+        <p class="note">
+          Standalone mockup. Reads nothing from <code>src/</code> and is imported by nothing — delete the folder and the
+          package is untouched. Compare against Storybook with <code>npm run storybook</code>.
+        </p>
+      </div>
+    </footer>
+
+    <script>
+      // ── mockup controls ───────────────────────────────────────────────
+      // Three switches, all of them writing an attribute the CSS reads. The
+      // hero frame is a separate document, so it gets the state through its
+      // query string and reloads.
+      const root = document.documentElement
+      const frame = document.getElementById("hero-frame")
+
+      const state = {
+        theme: matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light",
+        display: "sans",
+        glow: "many",
+        light: "lt-sage",
+      }
+
+      const PALETTES = ["lt-current", "lt-sage", "lt-paper", "lt-slate"]
+
+      function apply() {
+        root.dataset.theme = state.theme
+        root.dataset.display = state.display
+        document.body.dataset.glow = state.glow
+
+        // The palette class only goes on <html> in light mode. In dark it would
+        // do nothing anyway — [data-theme="dark"] out-ranks a single class —
+        // but leaving it off keeps the DOM honest about what is in effect.
+        root.classList.remove(...PALETTES)
+        if (state.theme === "light") root.classList.add(state.light)
+
+        document.getElementById("pick-light").value = state.light
+        for (const card of document.querySelectorAll(".lt-card")) {
+          card.dataset.selected = String(card.dataset.palette === state.light)
+        }
+
+        setToggle("toggle-theme", state.theme === "dark", state.theme === "dark" ? "Light" : "Dark")
+        setToggle(
+          "toggle-display",
+          state.display === "condensed",
+          state.display === "condensed" ? "Product sans" : "Condensed caps",
+        )
+        document.getElementById("pick-glow").value = state.glow
+        document.getElementById("toggle-glow-2").textContent =
+          state.glow === "off" ? "Turn the dots on" : "Turn the dots off"
+
+        // Only reload the frame when its own state actually changed, so
+        // clicking an unrelated toggle does not restart the hero's reveal.
+        const next = `hero-frame.html?theme=${state.theme}&display=${state.display}&glow=${state.glow}&light=${state.light}`
+        if (!frame.getAttribute("src").endsWith(next.split("hero-frame.html")[1])) {
+          frame.setAttribute("src", next)
+        }
+      }
+
+      function setToggle(id, pressed, label) {
+        const el = document.getElementById(id)
+        el.setAttribute("aria-pressed", String(pressed))
+        el.textContent = label
+      }
+
+      document.getElementById("toggle-theme").addEventListener("click", () => {
+        state.theme = state.theme === "dark" ? "light" : "dark"
+        apply()
+      })
+
+      document.getElementById("toggle-display").addEventListener("click", () => {
+        state.display = state.display === "condensed" ? "sans" : "condensed"
+        apply()
+      })
+
+      // Picking a palette means you want to look at it, so it also leaves dark
+      // mode — otherwise the control appears to do nothing.
+      function pickLight(value) {
+        state.light = value
+        state.theme = "light"
+        apply()
+      }
+
+      document.getElementById("pick-light").addEventListener("change", (event) => {
+        pickLight(event.target.value)
+      })
+
+      for (const button of document.querySelectorAll("[data-pick]")) {
+        button.addEventListener("click", () => pickLight(button.dataset.pick))
+      }
+
+      document.getElementById("pick-glow").addEventListener("change", (event) => {
+        state.glow = event.target.value
+        apply()
+      })
+
+      // The in-page control is a plain on/off: "off" remembers nothing, so
+      // turning them back on returns to the densest setting.
+      document.getElementById("toggle-glow-2").addEventListener("click", () => {
+        state.glow = state.glow === "off" ? "many" : "off"
+        apply()
+      })
+
+      // ── the width simulator ───────────────────────────────────────────
+      const widthButtons = document.querySelectorAll("[data-width]")
+      for (const button of widthButtons) {
+        button.addEventListener("click", () => {
+          for (const other of widthButtons) other.setAttribute("aria-pressed", "false")
+          button.setAttribute("aria-pressed", "true")
+          document.getElementById("viewport-frame").style.maxWidth = `${button.dataset.width}px`
+        })
+      }
+
+      apply()
+    </script>
+  </body>
+</html>

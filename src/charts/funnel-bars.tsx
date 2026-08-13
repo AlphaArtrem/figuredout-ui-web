@@ -66,7 +66,12 @@ export function FunnelBars({
             <span className="w-32 shrink-0 truncate text-right text-xs text-fg-muted" role="cell">
               {entry.label}
             </span>
-            <span className="h-2.5 flex-1 overflow-hidden rounded-full bg-surface-sunken" role="cell">
+            {/* The track carries the ring so an empty stage is still a visible
+                row rather than a blank line. */}
+            <span
+              className="h-2.5 flex-1 overflow-hidden rounded-full bg-surface-sunken ring-1 ring-inset ring-edge"
+              role="cell"
+            >
               <span
                 className="block h-full rounded-full"
                 style={{ width: `${pct}%`, backgroundColor: sequentialColor, opacity: intensity }}

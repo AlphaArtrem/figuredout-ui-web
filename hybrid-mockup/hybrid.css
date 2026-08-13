@@ -1,0 +1,1431 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+ * HYBRID COMPONENT LAYER — mockup only.
+ *
+ * Every block is tagged with where the idea came from:
+ *
+ *   [CP]  callpool — the mechanic is lifted, adapted to figuredout's tokens
+ *   [FO]  figuredout — the existing package's rule, kept as-is
+ *   [MIX] genuinely merged: callpool's structure on figuredout's surface
+ *
+ * Hand-written CSS rather than Tailwind classes on purpose: this file is meant
+ * to be read as a spec for what would land in the package, and the utility
+ * soup would hide which decision is which.
+ * ═══════════════════════════════════════════════════════════════════════════ */
+
+/* ── base ───────────────────────────────────────────────────────────────── */
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--color-bg);
+  color: var(--color-fg);
+  font: var(--text-base) / 1.6 var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  /* [CP] `clip`, not `hidden`: `hidden` on the body stops every sticky
+   * descendant from sticking. The hero crops the art at narrow widths and this
+   * is what makes that safe. */
+  overflow-x: clip;
+}
+
+h1,
+h2,
+h3 {
+  margin: 0;
+  line-height: 1.25;
+  text-wrap: balance;
+}
+
+p {
+  margin: 0 0 var(--space-4);
+}
+
+img,
+svg {
+  max-width: 100%;
+}
+
+a {
+  color: inherit;
+}
+
+/* [FO] the package's focus treatment is a 4px soft ring, not an outline. */
+:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 4px var(--color-focus-ring);
+  border-radius: var(--radius-sm);
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ── the wallpaper: faded hue dots ───────────────────────────────────────
+ * [CP] adapted.
+ *
+ * Radial gradients painted on a layer behind the content — `body::before` at
+ * `z-index: -1`, which paints above the page's background and below everything
+ * else, so there is nothing in the hit test and no stacking context to reason
+ * about. The layer is `absolute`, not `fixed`, so it is as tall as the document
+ * and a reader meets a different circle every screen or so.
+ *
+ * Each dot is a named custom property. That is what makes the density control
+ * possible: the level rules below compose a SUBSET of the same twenty dots
+ * rather than restating the gradients, so the dots never move between levels —
+ * there are simply fewer of them.
+ *
+ * Intensity is three named stops rather than a number per dot, and each theme
+ * sets its own. Light mode needs roughly double: at 10% over a tinted near-white
+ * ground a circle is invisible, which is exactly what happened the first time.
+ */
+:root {
+  --g-a: 22%; /* the loud ones, down the left and right edges */
+  --g-b: 16%;
+  --g-c: 11%; /* the ones that pass behind text */
+
+  --dot-1: radial-gradient(24rem 24rem at 6% 6%, color-mix(in srgb, var(--glow-2) var(--g-b), transparent), transparent 70%);
+  --dot-2: radial-gradient(20rem 20rem at 2% 21%, color-mix(in srgb, var(--glow-1) var(--g-b), transparent), transparent 70%);
+  --dot-3: radial-gradient(26rem 26rem at 12% 38%, color-mix(in srgb, var(--glow-1) var(--g-c), transparent), transparent 70%);
+  --dot-4: radial-gradient(18rem 18rem at 4% 54%, color-mix(in srgb, var(--glow-3) var(--g-c), transparent), transparent 70%);
+  --dot-5: radial-gradient(24rem 24rem at 10% 69%, color-mix(in srgb, var(--glow-2) var(--g-b), transparent), transparent 70%);
+  --dot-6: radial-gradient(22rem 22rem at 5% 88%, color-mix(in srgb, var(--glow-4) var(--g-c), transparent), transparent 70%);
+  --dot-7: radial-gradient(30rem 30rem at 93% -2%, color-mix(in srgb, var(--glow-1) var(--g-a), transparent), transparent 70%);
+  --dot-8: radial-gradient(20rem 20rem at 85% 14%, color-mix(in srgb, var(--glow-4) var(--g-c), transparent), transparent 70%);
+  --dot-9: radial-gradient(24rem 24rem at 96% 30%, color-mix(in srgb, var(--glow-2) var(--g-b), transparent), transparent 70%);
+  --dot-10: radial-gradient(18rem 18rem at 87% 46%, color-mix(in srgb, var(--glow-1) var(--g-c), transparent), transparent 70%);
+  --dot-11: radial-gradient(26rem 26rem at 97% 62%, color-mix(in srgb, var(--glow-3) var(--g-c), transparent), transparent 70%);
+  --dot-12: radial-gradient(20rem 20rem at 88% 78%, color-mix(in srgb, var(--glow-2) var(--g-b), transparent), transparent 70%);
+  --dot-13: radial-gradient(24rem 24rem at 95% 96%, color-mix(in srgb, var(--glow-1) var(--g-b), transparent), transparent 70%);
+  --dot-14: radial-gradient(16rem 16rem at 44% 5%, color-mix(in srgb, var(--glow-2) var(--g-c), transparent), transparent 70%);
+  --dot-15: radial-gradient(14rem 14rem at 32% 20%, color-mix(in srgb, var(--glow-1) var(--g-c), transparent), transparent 70%);
+  --dot-16: radial-gradient(18rem 18rem at 58% 33%, color-mix(in srgb, var(--glow-4) var(--g-c), transparent), transparent 70%);
+  --dot-17: radial-gradient(15rem 15rem at 38% 50%, color-mix(in srgb, var(--glow-1) var(--g-c), transparent), transparent 70%);
+  --dot-18: radial-gradient(17rem 17rem at 62% 66%, color-mix(in srgb, var(--glow-3) var(--g-c), transparent), transparent 70%);
+  --dot-19: radial-gradient(14rem 14rem at 30% 80%, color-mix(in srgb, var(--glow-2) var(--g-c), transparent), transparent 70%);
+  --dot-20: radial-gradient(18rem 18rem at 55% 94%, color-mix(in srgb, var(--glow-1) var(--g-c), transparent), transparent 70%);
+}
+
+/* Dark mode carries less: the hues are far brighter than their ground there,
+ * so the same percentage reads as several times louder. */
+:root[data-theme="dark"],
+.dark {
+  --g-a: 13%;
+  --g-b: 9%;
+  --g-c: 6%;
+}
+
+body {
+  position: relative;
+}
+
+body::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background-repeat: no-repeat;
+  background-image: var(--dot-7), var(--dot-1), var(--dot-9), var(--dot-5), var(--dot-13), var(--dot-16);
+}
+
+/* ── density ─────────────────────────────────────────────────────────────
+ * Four levels, and "few" is the base above: the edges only. Each step adds
+ * dots without moving the ones already there.
+ */
+body[data-glow="off"]::before {
+  display: none;
+}
+
+body[data-glow="some"]::before {
+  background-image: var(--dot-7), var(--dot-1), var(--dot-9), var(--dot-5), var(--dot-13), var(--dot-16),
+    var(--dot-2), var(--dot-3), var(--dot-11), var(--dot-12), var(--dot-6), var(--dot-18);
+}
+
+body[data-glow="many"]::before {
+  background-image: var(--dot-1), var(--dot-2), var(--dot-3), var(--dot-4), var(--dot-5), var(--dot-6), var(--dot-7),
+    var(--dot-8), var(--dot-9), var(--dot-10), var(--dot-11), var(--dot-12), var(--dot-13), var(--dot-14),
+    var(--dot-15), var(--dot-16), var(--dot-17), var(--dot-18), var(--dot-19), var(--dot-20);
+}
+
+/* ── layout ──────────────────────────────────────────────────────────────
+ * [CP] Content stays inside the measure; the rules between sections run edge
+ * to edge. That is the whole layout idea, and it is why .band carries the
+ * border while .wrap carries the width.
+ */
+.wrap {
+  max-width: var(--measure);
+  margin-inline: auto;
+  padding-inline: var(--gut);
+}
+
+.band {
+  border-top: 1px solid var(--color-edge);
+}
+
+.band-pad {
+  padding-block: clamp(3rem, 7vw, 6rem);
+}
+
+/* ── type roles ──────────────────────────────────────────────────────────
+ * [MIX] figuredout has no display role at all — its largest heading is
+ * PageHeader's 1.875rem. callpool's display role is condensed heavy caps.
+ *
+ * The hybrid keeps the SCALE (a real display step, fluid, line-height under 1)
+ * and makes the FACE a choice: sentence-case product sans is the default
+ * because that is figuredout's voice, and the condensed-caps cut is one
+ * attribute away for marketing surfaces. Toggle it in the top bar.
+ */
+.display {
+  margin: 0;
+  font-family: var(--font-sans);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 0.95;
+  text-wrap: balance;
+}
+
+:root[data-display="condensed"] .display {
+  font-family: "Helvetica Neue", var(--font-sans);
+  font-stretch: condensed;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: -0.028em;
+  line-height: 0.86;
+}
+
+.display em {
+  font-style: normal;
+  color: var(--color-primary);
+}
+
+/* [MIX] callpool's eyebrow, at figuredout's Section tracking (0.14em, not
+ * 0.22em — the wider one is a poster, this is an app). */
+.eyebrow {
+  margin: 0 0 var(--space-3);
+  font: 600 var(--text-xs) / 1 var(--font-mono);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--color-fg-subtle);
+}
+
+/* [CP] Anything numeric is mono and tabular. figuredout already does this in
+ * StatCard; the hybrid makes it a named role instead of a per-component
+ * decision, because "digits that shift width make a live figure look
+ * unstable" applies to tables and dialogs too. */
+.num {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
+  font-weight: 600;
+}
+
+.lede {
+  margin: var(--space-4) 0 0;
+  max-width: 58ch;
+  font-size: var(--text-lg);
+  line-height: 1.6;
+  color: var(--color-fg-muted);
+}
+
+.lede strong,
+.hero-sub strong {
+  color: var(--color-fg);
+  font-weight: 600;
+}
+
+.note {
+  margin: 0;
+  font-size: var(--text-sm);
+  line-height: 1.5;
+  color: var(--color-fg-subtle);
+  max-width: 68ch;
+}
+
+/* ── the top bar ─────────────────────────────────────────────────────────
+ * [MIX] callpool's sticky translucent band, figuredout's AppTopBar contents.
+ */
+.topbar {
+  position: sticky;
+  top: 0;
+  z-index: var(--z-nav);
+  background: color-mix(in srgb, var(--color-bg) 82%, transparent);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--color-edge);
+}
+
+.barrow {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  min-height: 60px;
+  padding-block: var(--space-2);
+  flex-wrap: wrap;
+}
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.brand-mark {
+  display: inline-grid;
+  place-items: center;
+  width: 1.75rem;
+  height: 1.75rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid color-mix(in srgb, var(--color-primary) 30%, transparent);
+  background: var(--color-primary-soft);
+  color: var(--color-primary);
+  flex: none;
+}
+
+.bar-tools {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin-left: auto;
+  flex-wrap: wrap;
+}
+
+/* ── buttons ─────────────────────────────────────────────────────────────
+ * [FO] the package's Button, transcribed. Sentence case, medium weight, soft
+ * radius — deliberately NOT callpool's uppercase mono pill, which is a
+ * marketing control and would fight every form on a dashboard.
+ */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  min-height: 2.75rem;
+  padding-inline: var(--space-4);
+  border: 0;
+  border-radius: var(--radius-md);
+  font: 500 var(--text-sm) / 1 var(--font-sans);
+  text-decoration: none;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background var(--motion-normal) var(--ease-standard),
+    box-shadow var(--motion-normal) var(--ease-standard),
+    color var(--motion-normal) var(--ease-standard);
+}
+
+.btn:active {
+  transform: scale(0.98);
+}
+
+.btn-primary {
+  background: var(--color-primary);
+  color: var(--color-primary-fg);
+  box-shadow: var(--shadow-raised);
+}
+
+.btn-primary:hover {
+  background: var(--color-primary-hover);
+}
+
+.btn-secondary {
+  background: var(--color-surface-raised);
+  color: var(--color-fg);
+  box-shadow: var(--shadow-raised), inset 0 0 0 1px var(--color-edge);
+}
+
+.btn-secondary:hover {
+  background: var(--color-surface-sunken);
+}
+
+.btn-sm {
+  min-height: 2.25rem;
+  padding-inline: var(--space-3);
+  border-radius: var(--radius-sm);
+}
+
+.btn-ghost {
+  background: transparent;
+  color: var(--color-fg-muted);
+}
+
+.btn-ghost:hover {
+  background: var(--color-primary-soft);
+  color: var(--color-fg);
+}
+
+/* A pressed toggle in the top bar reads as a state, not as a hover. */
+.btn[aria-pressed="true"] {
+  background: var(--color-primary-soft);
+  color: var(--color-fg);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--color-primary) 34%, transparent);
+}
+
+/* The palette picker. A native select rather than a fourth toggle: the top bar
+ * is already three controls wide, and this one has four states. */
+.bar-select select {
+  min-height: 2.25rem;
+  padding: 0 var(--space-3);
+  border: 0;
+  border-radius: var(--radius-sm);
+  background: var(--color-surface-raised);
+  color: var(--color-fg);
+  box-shadow: var(--shadow-raised), inset 0 0 0 1px var(--color-edge);
+  font: 500 var(--text-sm) / 1 var(--font-sans);
+  cursor: pointer;
+}
+
+/* ── the hero ────────────────────────────────────────────────────────────
+ * [CP] the whole mechanic, unchanged in structure. This is the part that has
+ * no equivalent in the package today.
+ *
+ * Art and card stacked in the left column, words in the right. Source order is
+ * art, card, words — the phone's reading order — and the named areas put them
+ * back into the laptop's arrangement without duplicating markup or reaching
+ * for `order`, which would leave the tab sequence disagreeing with the screen.
+ */
+.hero {
+  display: grid;
+  grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr);
+  grid-template-areas:
+    "art  copy"
+    "card copy";
+  grid-template-rows: 1fr auto;
+  column-gap: clamp(2rem, 5vw, 4.5rem);
+  align-items: end;
+  padding-block: clamp(2rem, 4vw, 3.25rem) clamp(2.5rem, 5vw, 4rem);
+}
+
+.hero-art {
+  grid-area: art;
+  min-width: 0;
+}
+
+.hero-art img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.hero-copy {
+  grid-area: copy;
+  min-width: 0;
+}
+
+.hero .ledger {
+  grid-area: card;
+}
+
+/* The overlap: the card rides up over the bottom quarter of the image.
+ *
+ * A negative margin rather than absolute positioning, so the card still
+ * occupies its grid row and the header grows to contain it — an absolutely
+ * positioned card escapes the header at narrow widths and lands on the section
+ * below.
+ *
+ * A percentage margin resolves against the container's WIDTH, not its height,
+ * which is normally the trap here and is exactly why this works: the art is
+ * 890×900, so its rendered height is within 1% of the column width and -25%
+ * covers about a quarter of it. Swap in an image of a different shape and this
+ * number stops meaning what it says. */
+.hero .ledger {
+  position: relative;
+  z-index: 1;
+  margin-top: -25%;
+}
+
+.hero h1 {
+  font-size: clamp(2.5rem, 6.2vw, 4.75rem);
+}
+
+.hero h1 span {
+  white-space: nowrap;
+}
+
+.hero-sub {
+  margin: var(--space-6) 0 0;
+  max-width: 42ch;
+  font-size: var(--text-lg);
+  line-height: 1.6;
+  color: var(--color-fg-muted);
+}
+
+/* [CP] The two calls to action stay on one line at every width. Wrapped, the
+ * second drops under the first and the pair comes out different widths — two
+ * buttons of different sizes on different lines read as a primary action and
+ * an afterthought, which is not what they are. They shrink instead, and their
+ * labels wrap inside them. */
+.cta-row {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: var(--space-3);
+  margin-top: var(--space-8);
+}
+
+.cta-row > .btn {
+  flex: 0 1 auto;
+  min-width: 0;
+  white-space: normal;
+  text-align: center;
+}
+
+/* On a phone the two match exactly rather than one being as wide as its label
+ * happens to be. `flex: 1 1 0` with a zero basis is what makes them equal —
+ * `flex: 1` alone distributes only the SPARE space and leaves the longer label
+ * on the wider button. */
+@media (max-width: 620px) {
+  .cta-row > .btn {
+    flex: 1 1 0;
+  }
+}
+
+@media (max-width: 880px) {
+  /* On a phone there is no room for two columns side by side, so the two share
+   * one cell instead: the art takes the left half of it and the words sit
+   * clear of the raised arm, right-aligned so their ragged edge faces away
+   * from it.
+   *
+   * Both children are assigned the same grid area rather than being absolutely
+   * positioned, so the cell is still sized by whichever is taller and nothing
+   * escapes the header. */
+  .hero {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "stack"
+      "card";
+    grid-template-rows: auto;
+    align-items: start;
+  }
+
+  .hero-art,
+  .hero-copy {
+    grid-area: stack;
+  }
+
+  /* Sized just past the column and pulled left, so only the shoulder is
+   * cropped by the viewport — the body's `overflow-x: clip` is what makes that
+   * safe. The pull is a fixed length rather than a percentage so the amount
+   * cropped stays the same across this range; a percentage keeps widening the
+   * crop after `max-width` has stopped the picture growing.
+   *
+   * The `max-width` is the half that matters most: a bare percentage keeps
+   * growing with the viewport, so between a large phone and a tablet the art
+   * renders over 1000px wide and dwarfs the headline it is meant to sit beside.
+   *
+   * `align-self: start` hangs it from the top of the shared cell rather than
+   * standing it on the bottom. That is what lets the copy below know where the
+   * arm ends: anchored to the bottom, the two heights fight and the art lands
+   * in the middle of the headline at every width. */
+  .hero-art {
+    width: 104%;
+    max-width: 460px;
+    margin-left: -2.5rem;
+    justify-self: start;
+    align-self: start;
+    /* The artwork ends in a straight horizontal cut. Hanging from the top that
+     * edge lands in open space and reads as a rule across the page, so the
+     * last fifth is faded out. */
+    -webkit-mask-image: linear-gradient(to bottom, #000 78%, transparent 100%);
+    mask-image: linear-gradient(to bottom, #000 78%, transparent 100%);
+  }
+
+  .hero-art img {
+    max-width: none;
+  }
+
+  /* Dropped below the fist. The offset tracks the PICTURE, not the type: the
+   * art is 890×900, so its rendered height is within 1% of its rendered width,
+   * and the arm sits about 62% of the way down. 104% × 62% ≈ 64% of the
+   * column — and the min() freezes it once max-width has stopped the art
+   * growing, otherwise the gap keeps opening under a picture that is no longer
+   * getting taller. Reshape the image and this number stops meaning what it
+   * says. */
+  .hero-copy {
+    position: relative;
+    z-index: 1;
+    text-align: right;
+    padding-top: min(64%, 300px);
+  }
+
+  /* Clear of the arm, so the measure runs nearly the full column instead of
+   * being squeezed into the strip beside it. */
+  .hero .eyebrow,
+  .hero h1,
+  .hero .hero-sub {
+    max-width: 92%;
+    margin-left: auto;
+  }
+
+  .cta-row {
+    justify-content: flex-end;
+  }
+
+  .hero .ledger {
+    margin-top: var(--space-6);
+  }
+}
+
+/* ── the hero ledger ─────────────────────────────────────────────────────
+ * [MIX] callpool's overlapping figures card on figuredout's Card surface:
+ * rounded-xl, --shadow-raised, hairline ring, mono tabular values.
+ */
+.ledger {
+  border-radius: var(--radius-xl);
+  background: var(--color-surface);
+  box-shadow: var(--shadow-raised), inset 0 0 0 1px var(--color-edge);
+  overflow: hidden;
+}
+
+.ledger-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  padding: var(--space-4) var(--space-5);
+  border-bottom: 1px solid var(--color-edge);
+  /* [CP] Makes the `cqi` below resolve against this row rather than the
+   * viewport, so the figure is sized by the room it actually has. */
+  container-type: inline-size;
+}
+
+.ledger-row:last-child {
+  border-bottom: 0;
+}
+
+.ledger-k {
+  flex: none;
+  font: 600 0.6875rem/1.3 var(--font-mono);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-fg-subtle);
+}
+
+/* [CP] Fluid against the ROW, not the viewport: `1,284,940 events` at a fixed
+ * size is wider than a phone and runs straight out of the card. `cqi` is 1% of
+ * the row's own width, so the figure shrinks with the room instead of
+ * overflowing, and the clamp stops it collapsing or ballooning. */
+.ledger-v {
+  min-width: 0;
+  font-size: clamp(0.95rem, 6cqi, 1.4rem);
+  text-align: right;
+  white-space: nowrap;
+}
+
+.ledger-v.big {
+  font-size: clamp(1.1rem, 8.5cqi, 2rem);
+  color: var(--color-primary);
+}
+
+.live {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  font: 600 0.6875rem/1 var(--font-mono);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-primary);
+}
+
+.live::before {
+  content: "";
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: currentColor;
+  flex: none;
+  animation: pulse 2.4s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.25;
+  }
+}
+
+/* ── section heads ───────────────────────────────────────────────────────
+ * [MIX] the clearest merge on the page.
+ *
+ * figuredout's Section variant="plain" already has the left rail — an icon
+ * chip and a mono eyebrow in a 10rem column beside the heading. callpool has
+ * the scale: a display-sized h2 and a 58ch lede under an edge-to-edge rule.
+ *
+ * The hybrid is figuredout's rail with callpool's scale, and the h2 tops out
+ * at 3.25rem rather than callpool's 4rem: this is a section head inside a
+ * product, not a poster.
+ */
+.head {
+  display: grid;
+  gap: var(--space-2);
+  margin-bottom: clamp(2rem, 4vw, 3rem);
+}
+
+@media (min-width: 768px) {
+  .head {
+    grid-template-columns: 10rem minmax(0, 1fr);
+    column-gap: var(--space-5);
+    row-gap: var(--space-3);
+  }
+}
+
+.head-rail {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+@media (min-width: 768px) {
+  /* `display: contents` puts the icon and the eyebrow into the head's own grid
+   * — icon in the rail's first row, eyebrow beneath it — while keeping them a
+   * single flex row on a phone. */
+  .head-rail {
+    display: contents;
+  }
+
+  .head-rail .head-icon {
+    grid-column: 1;
+    grid-row: 1;
+  }
+
+  .head-rail .eyebrow {
+    grid-column: 1;
+    grid-row: 2;
+  }
+
+  .head h2,
+  .head .lede {
+    grid-column: 2;
+  }
+
+  .head h2 {
+    grid-row: 1;
+  }
+
+  .head .lede {
+    grid-row: 2;
+  }
+}
+
+.head-icon {
+  display: inline-grid;
+  place-items: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  flex: none;
+  border-radius: var(--radius-lg);
+  border: 1px solid color-mix(in srgb, var(--color-primary) 30%, transparent);
+  background: var(--color-primary-soft);
+  color: var(--color-primary);
+}
+
+.head h2 {
+  margin: 0;
+  font-size: clamp(1.875rem, 4.5vw, 3.25rem);
+  line-height: 1.02;
+  letter-spacing: -0.025em;
+  font-weight: 700;
+}
+
+.head .eyebrow {
+  margin: 0;
+  align-self: start;
+}
+
+/* ── connected cards (the seam grid) ─────────────────────────────────────
+ * [MIX] callpool's mechanic, with the corner problem solved for a system that
+ * has real radii.
+ *
+ * callpool draws the hairlines between cells as a 1px GAP over a --line
+ * ground rather than as per-cell borders. That is what makes a row of cards
+ * read as one object: no doubled borders where two cards meet, and no gap for
+ * the page to show through. At callpool's 2px radius the corners are a
+ * non-issue.
+ *
+ * At figuredout's 1rem radius they are the whole problem. `overflow: hidden`
+ * on the frame would round them, but it also clips the hover shadow, and a
+ * lift that gets sliced at the frame edge looks broken. So the CORNER CELLS
+ * carry the radius themselves, per breakpoint, and the frame stays unclipped.
+ * The nth-child rules below are written out for a 4-cell and a 3-cell grid;
+ * a component would compute them from the column count.
+ *
+ * The second adaptation: no translateY on a seam cell. Lifting a cell opens a
+ * 1px sliver of the seam ground under it, which callpool covers with the
+ * shadow — at a larger radius that sliver shows at the rounded corners. The
+ * cell changes surface and gains a shadow instead, which reads as "picked up"
+ * without moving.
+ */
+.seam {
+  --seam-r: var(--radius-xl);
+  display: grid;
+  gap: 1px;
+  background: var(--seam);
+  border: 1px solid var(--color-edge);
+  border-radius: var(--seam-r);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  /* Not clipped: the hover shadow has to escape. */
+  overflow: visible;
+}
+
+.seam > * {
+  background: var(--color-surface);
+  padding: var(--space-6) var(--space-5);
+  min-width: 0;
+  /* [CP] `cqi` inside a cell resolves against the cell, so a figure is sized
+   * by the room it actually has. */
+  container-type: inline-size;
+  transition: background var(--motion-normal) var(--ease-standard),
+    box-shadow var(--motion-normal) var(--ease-standard);
+}
+
+/* One column: first and last cell round top and bottom. */
+.seam > :first-child {
+  border-radius: var(--seam-r) var(--seam-r) 0 0;
+}
+
+.seam > :last-child {
+  border-radius: 0 0 var(--seam-r) var(--seam-r);
+}
+
+.seam-4 {
+  grid-template-columns: 1fr;
+}
+
+.seam-3 {
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 640px) {
+  /* Four cells go to 2×2 — never 3, which leaves a quarter of the frame empty,
+   * and a hole in a grid of hairlines reads as a missing figure. Every step is
+   * an exact divisor of the cell count. */
+  .seam-4 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .seam-4 > :nth-child(1) {
+    border-radius: var(--seam-r) 0 0 0;
+  }
+  .seam-4 > :nth-child(2) {
+    border-radius: 0 var(--seam-r) 0 0;
+  }
+  .seam-4 > :nth-child(3) {
+    border-radius: 0 0 0 var(--seam-r);
+  }
+  .seam-4 > :nth-child(4) {
+    border-radius: 0 0 var(--seam-r) 0;
+  }
+}
+
+@media (min-width: 900px) {
+  .seam-4 {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .seam-4 > :nth-child(1) {
+    border-radius: var(--seam-r) 0 0 var(--seam-r);
+  }
+  .seam-4 > :nth-child(2),
+  .seam-4 > :nth-child(3) {
+    border-radius: 0;
+  }
+  .seam-4 > :nth-child(4) {
+    border-radius: 0 var(--seam-r) var(--seam-r) 0;
+  }
+
+  /* Three fixed columns rather than auto-fit: a set of three always reads as
+   * one row, and auto-fit wraps the third onto its own line at middling widths
+   * and leaves the empty half of that line behind it. */
+  .seam-3 {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .seam-3 > :nth-child(1) {
+    border-radius: var(--seam-r) 0 0 var(--seam-r);
+  }
+  .seam-3 > :nth-child(2) {
+    border-radius: 0;
+  }
+  .seam-3 > :nth-child(3) {
+    border-radius: 0 var(--seam-r) var(--seam-r) 0;
+  }
+}
+
+@media (hover: hover) {
+  .seam > *:hover {
+    position: relative;
+    z-index: 1;
+    background: var(--color-surface-raised);
+    box-shadow: var(--shadow-hover);
+  }
+}
+
+/* the figures inside a seam cell — [MIX] StatCard's contents, callpool's scale */
+.cell-k {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin: 0 0 var(--space-3);
+  font: 600 0.6875rem/1.3 var(--font-mono);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-fg-subtle);
+}
+
+/* [CP] Sized from the LONGEST string the slot actually holds, against the
+ * cell rather than the viewport: a narrow cell gets smaller digits instead of
+ * a second line. */
+.cell-v {
+  display: block;
+  margin: 0;
+  font-size: clamp(1.25rem, 10.5cqi, 2.75rem);
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.cell-v.accent {
+  color: var(--color-primary);
+}
+
+.cell-note {
+  display: block;
+  margin: var(--space-3) 0 0;
+  font-size: var(--text-sm);
+  color: var(--color-fg-muted);
+}
+
+/* the numbered rule cards */
+.rule-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  margin-bottom: var(--space-4);
+}
+
+.rule-n {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  font-size: 2.5rem;
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: -0.03em;
+  color: var(--color-primary);
+}
+
+.card-icon {
+  display: inline-grid;
+  place-items: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  flex: none;
+  border-radius: var(--radius-lg);
+  border: 1px solid color-mix(in srgb, var(--color-primary) 30%, transparent);
+  background: var(--color-primary-soft);
+  color: var(--color-primary);
+}
+
+.seam h3 {
+  margin: 0 0 var(--space-2);
+  font-size: var(--text-base);
+  font-weight: 600;
+}
+
+.seam p {
+  margin: 0;
+  font-size: var(--text-sm);
+  color: var(--color-fg-muted);
+}
+
+/* ── expandable tiles ────────────────────────────────────────────────────
+ * [MIX] figuredout's ExpandableTile behaviour, callpool's open state.
+ *
+ * The package's tile stays flat when it opens: same surface, same border, a
+ * hairline and a body. callpool's reads as a card that has been picked up —
+ * and the hybrid pushes that further, which is the "pop dialog" feel:
+ *
+ *   closed  surface, hairline ring, no shadow
+ *   hover   ring brightens, --shadow-hover, 2px lift
+ *   OPEN    surface-raised, strong ring, --shadow-overlay (the token the
+ *           package already uses for Dialog and SidePanel), 3px lift, and the
+ *           body fades in from above
+ *
+ * Using --shadow-overlay rather than a bigger --shadow-hover is the point: an
+ * open tile IS an overlay in everything but position, so it borrows the
+ * elevation the system already reserves for overlays and needs no new token.
+ *
+ * <details> rather than a button + hidden div: Space/Enter, the open state in
+ * find-in-page, and printing all come from the browser. The package's version
+ * is controllable (open / onOpenChange), which <details> can also do.
+ */
+.tile {
+  border-radius: var(--radius-lg);
+  background: var(--color-surface);
+  box-shadow: inset 0 0 0 1px var(--color-edge);
+  transition: transform var(--motion-normal) var(--ease-standard),
+    box-shadow var(--motion-normal) var(--ease-standard),
+    background-color var(--motion-normal) var(--ease-standard);
+}
+
+.tile + .tile {
+  margin-top: var(--space-3);
+}
+
+.tile > summary {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-4);
+  list-style: none;
+  cursor: pointer;
+  padding: var(--space-4) var(--space-5);
+  border-radius: var(--radius-lg);
+  font-size: var(--text-sm);
+  font-weight: 600;
+}
+
+.tile > summary::-webkit-details-marker {
+  display: none;
+}
+
+.tile-title {
+  display: grid;
+  gap: var(--space-1);
+  min-width: 0;
+}
+
+.tile-title small {
+  font-size: var(--text-sm);
+  font-weight: 400;
+  color: var(--color-fg-muted);
+}
+
+/* [CP] +/− rather than a rotating caret. The caret says "there is more below";
+ * the sign says "this opens and closes", which is what an optional detail
+ * block is. Kept in mono so the two glyphs are the same width and the marker
+ * does not shift when the state changes. */
+.tile-mark {
+  display: inline-grid;
+  place-items: center;
+  width: 1.5rem;
+  height: 1.5rem;
+  flex: none;
+  border-radius: var(--radius-sm);
+  font: 600 var(--text-base) / 1 var(--font-mono);
+  color: var(--color-primary);
+  background: var(--color-primary-soft);
+  transition: background var(--motion-fast) var(--ease-standard);
+}
+
+.tile-mark::before {
+  content: "+";
+}
+
+.tile[open] .tile-mark::before {
+  content: "\2013";
+}
+
+.tile-body {
+  padding: var(--space-4) var(--space-5) var(--space-5);
+  border-top: 1px solid var(--color-edge);
+  font-size: var(--text-sm);
+  color: var(--color-fg-muted);
+}
+
+.tile-body > *:last-child {
+  margin-bottom: 0;
+}
+
+.tile-body strong {
+  color: var(--color-fg);
+}
+
+@media (hover: hover) {
+  .tile:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-hover), inset 0 0 0 1px var(--color-edge-strong);
+  }
+}
+
+.tile[open] {
+  position: relative;
+  z-index: 1;
+  background: var(--color-surface-raised);
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-overlay), inset 0 0 0 1px var(--color-edge-strong);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .tile[open] > .tile-body {
+    animation: tile-open var(--motion-normal) var(--ease-standard) both;
+  }
+}
+
+@keyframes tile-open {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* ── the same components as they are today ───────────────────────────────
+ * [FO] transcribed from src/, so the two panes in each comparison are honest.
+ * Nothing here is a hybrid proposal — it is what Storybook renders now.
+ */
+.now-card {
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--color-edge);
+  background: var(--color-surface-raised);
+  padding: var(--space-4);
+  transition: transform var(--motion-normal) var(--ease-standard),
+    border-color var(--motion-normal) var(--ease-standard),
+    box-shadow var(--motion-normal) var(--ease-standard);
+}
+
+.now-card:hover {
+  transform: translateY(-2px);
+  border-color: var(--color-edge-strong);
+  box-shadow: var(--shadow-hover);
+}
+
+.now-grid {
+  display: grid;
+  gap: var(--space-4);
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 640px) {
+  .now-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 900px) {
+  .now-grid-4 {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .now-grid-3 {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+.now-k {
+  margin: 0;
+  font: 600 0.6875rem/1.3 var(--font-mono);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-fg-subtle);
+}
+
+.now-v {
+  margin: var(--space-2) 0 0;
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  font-size: var(--text-xl);
+  font-weight: 600;
+  line-height: 1.35;
+  color: var(--color-fg);
+}
+
+.now-note {
+  margin: var(--space-3) 0 0;
+  font-size: 0.8125rem;
+  color: var(--color-fg-muted);
+}
+
+/* the package's ExpandableTile, flat on open */
+.now-tile {
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--color-edge);
+  background: var(--color-surface);
+  transition: border-color var(--motion-normal) var(--ease-standard),
+    box-shadow var(--motion-normal) var(--ease-standard);
+}
+
+.now-tile + .now-tile {
+  margin-top: var(--space-3);
+}
+
+.now-tile:hover {
+  border-color: var(--color-edge-strong);
+  box-shadow: var(--shadow-hover);
+}
+
+.now-tile > summary {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-4);
+  list-style: none;
+  cursor: pointer;
+  padding: var(--space-3) var(--space-4);
+  font-size: var(--text-sm);
+  font-weight: 600;
+}
+
+.now-tile > summary::-webkit-details-marker {
+  display: none;
+}
+
+.now-caret {
+  flex: none;
+  margin-top: 2px;
+  color: var(--color-fg-subtle);
+  transition: transform var(--motion-fast) var(--ease-standard);
+}
+
+.now-tile[open] .now-caret {
+  transform: rotate(180deg);
+}
+
+.now-tile .tile-body {
+  padding: var(--space-3) var(--space-4);
+}
+
+/* the package's Section variant="plain" head */
+.now-head {
+  display: grid;
+  gap: var(--space-2);
+  margin-bottom: var(--space-6);
+}
+
+@media (min-width: 768px) {
+  .now-head {
+    grid-template-columns: 10rem minmax(0, 1fr);
+    column-gap: var(--space-5);
+    row-gap: var(--space-3);
+  }
+
+  .now-head .head-icon {
+    grid-column: 1;
+    grid-row: 1;
+  }
+
+  .now-head .eyebrow {
+    grid-column: 1;
+    grid-row: 2;
+  }
+
+  .now-head h2,
+  .now-head p {
+    grid-column: 2;
+  }
+
+  .now-head h2 {
+    grid-row: 1;
+  }
+
+  .now-head p {
+    grid-row: 2;
+  }
+}
+
+.now-head h2 {
+  margin: 0;
+  font-size: var(--text-2xl);
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+.now-head p {
+  margin: 0;
+  font-size: var(--text-base);
+  line-height: 1.6;
+  color: var(--color-fg-muted);
+}
+
+/* ── the comparison harness ──────────────────────────────────────────────
+ * Mockup furniture. None of this is a design proposal.
+ */
+.compare {
+  display: grid;
+  gap: var(--space-6);
+  grid-template-columns: 1fr;
+  align-items: start;
+}
+
+@media (min-width: 1000px) {
+  .compare {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-8);
+  }
+}
+
+.pane {
+  min-width: 0;
+}
+
+.pane-label {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin: 0 0 var(--space-4);
+  padding: 0.2rem 0.6rem;
+  border-radius: 999px;
+  font: 700 0.625rem/1.6 var(--font-mono);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  border: 1px solid currentColor;
+}
+
+.pane-label.is-now {
+  color: var(--color-fg-subtle);
+}
+
+.pane-label.is-hybrid {
+  color: var(--color-primary);
+}
+
+/* the provenance key used through the page */
+.tag {
+  display: inline-block;
+  margin-left: var(--space-2);
+  padding: 0.05rem 0.4rem;
+  border-radius: 999px;
+  border: 1px solid currentColor;
+  font: 700 0.625rem/1.5 var(--font-sans);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  vertical-align: middle;
+  white-space: nowrap;
+}
+
+.tag-cp {
+  color: var(--color-info);
+}
+
+.tag-fo {
+  color: var(--color-primary);
+}
+
+.tag-mix {
+  color: var(--color-accent);
+}
+
+/* the viewport simulator */
+.viewport-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2);
+  margin-bottom: var(--space-4);
+}
+
+.viewport-frame {
+  width: 100%;
+  max-width: 100%;
+  margin-inline: auto;
+  border-radius: var(--radius-xl);
+  background: var(--color-surface);
+  box-shadow: var(--shadow-raised), inset 0 0 0 1px var(--color-edge);
+  overflow: hidden;
+  transition: max-width var(--motion-normal) var(--ease-standard);
+}
+
+.viewport-frame iframe {
+  display: block;
+  width: 100%;
+  height: 640px;
+  border: 0;
+}
+
+.spec {
+  display: grid;
+  gap: var(--space-4);
+  margin-top: var(--space-8);
+}
+
+.spec-row {
+  display: grid;
+  gap: var(--space-1);
+  padding: var(--space-4) var(--space-5);
+  border-radius: var(--radius-lg);
+  background: var(--color-surface-sunken);
+  box-shadow: inset 0 0 0 1px var(--color-edge);
+}
+
+.spec-row h4 {
+  margin: 0;
+  font-size: var(--text-sm);
+  font-weight: 600;
+}
+
+.spec-row p {
+  margin: 0;
+  font-size: var(--text-sm);
+  color: var(--color-fg-muted);
+}
+
+.spec-row code {
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  color: var(--color-fg);
+}
+
+footer.page-foot {
+  border-top: 1px solid var(--color-edge);
+  padding-block: var(--space-10) var(--space-12);
+  color: var(--color-fg-subtle);
+  font-size: var(--text-sm);
+}
+
+/* ── scroll reveal ───────────────────────────────────────────────────────
+ * [CP] Sections arrive in reading order. The scroll-linked version is gated
+ * behind @supports on purpose: without the gate, a browser with no view()
+ * timeline keeps the `from` keyframe's opacity: 0 and hides the page outright.
+ * The ungated fallback is a one-shot on load, which every browser runs.
+ */
+@media (prefers-reduced-motion: no-preference) {
+  .band-pad > .wrap > * {
+    animation: rise 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+
+  @supports (animation-timeline: view()) {
+    .band-pad > .wrap > * {
+      animation: rise linear both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 45%;
+    }
+  }
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+    scroll-behavior: auto !important;
+  }
+}

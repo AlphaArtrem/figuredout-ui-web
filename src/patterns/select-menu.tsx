@@ -4,6 +4,7 @@ import { useEffect, useId, useMemo, useRef, useState } from "react"
 import type { ReactNode } from "react"
 import { CaretDown, Check } from "../icons/index.js"
 import { cn } from "../lib/cn.js"
+import { POPOVER_SURFACE } from "../lib/overlay.js"
 
 export interface SelectMenuOption {
   description?: ReactNode
@@ -99,7 +100,7 @@ export function SelectMenu({
   return (
     <div ref={containerRef} className={cn("relative grid gap-1.5", className)}>
       {label ? (
-        <label htmlFor={buttonId} className="text-xs font-semibold uppercase tracking-normal text-fg-subtle">
+        <label htmlFor={buttonId} className="font-mono text-[0.6875rem] font-semibold uppercase tracking-[0.1em] text-fg-subtle">
           {label}
         </label>
       ) : null}
@@ -111,8 +112,12 @@ export function SelectMenu({
         aria-expanded={open}
         aria-controls={listboxId}
         className={cn(
-          "flex min-h-11 w-full items-center justify-between gap-3 rounded-md border border-edge bg-surface px-3 py-2.5 text-left text-sm text-fg shadow-sm transition duration-normal ease-standard",
-          "focus:border-primary focus:outline-none focus:ring-4 focus:ring-focus-ring disabled:cursor-not-allowed disabled:bg-surface-sunken disabled:text-fg-subtle",
+          /* The same sunken control surface as Input: this is a field, and a
+           * field is a hole you type into whether or not it takes a caret. */
+          "flex min-h-11 w-full items-center justify-between gap-3 rounded-md border-0 bg-surface-sunken px-3 py-2.5 text-left text-sm text-fg transition duration-normal ease-standard",
+          "shadow-[inset_0_0_0_1px_var(--color-edge)] hover:shadow-[inset_0_0_0_1px_var(--color-edge-strong)]",
+          "focus:bg-surface focus:shadow-[inset_0_0_0_1px_var(--color-primary)] focus:outline-none focus:ring-4 focus:ring-focus-ring",
+          "disabled:cursor-not-allowed disabled:text-fg-subtle disabled:opacity-70",
         )}
         onClick={() => {
           const nextIndex = selectedIndex >= 0 ? selectedIndex : firstEnabledIndex
@@ -140,7 +145,7 @@ export function SelectMenu({
           id={listboxId}
           role="listbox"
           aria-labelledby={buttonId}
-          className="absolute left-0 right-0 top-[calc(100%+0.5rem)] z-overlay max-h-72 overflow-auto rounded-lg bg-surface p-1 shadow-overlay ring-1 ring-inset ring-edge"
+          className={cn("absolute left-0 right-0 top-[calc(100%+0.5rem)] max-h-72 overflow-auto", POPOVER_SURFACE)}
           onKeyDown={(event) => {
             if (event.key === "Escape") {
               event.preventDefault()
@@ -185,7 +190,7 @@ export function SelectMenu({
               className={cn(
                 "flex w-full items-start justify-between gap-3 rounded-md px-3 py-2.5 text-left text-sm transition duration-fast ease-standard",
                 "focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-focus-ring",
-                option.value === value ? "bg-primary-soft text-fg" : "text-fg hover:bg-surface-raised",
+                option.value === value ? "bg-primary-soft font-semibold text-fg" : "text-fg hover:bg-primary-soft",
                 option.disabled && "cursor-not-allowed opacity-50",
               )}
               onClick={() => selectOption(option)}
@@ -201,7 +206,11 @@ export function SelectMenu({
                 <span className="truncate font-medium">{option.label}</span>
                 {option.description ? <span className="text-xs text-fg-muted">{option.description}</span> : null}
               </span>
-              {option.value === value ? <Check size={16} className="mt-0.5 shrink-0 text-primary" aria-hidden="true" /> : null}
+              <Check
+                size={16}
+                aria-hidden="true"
+                className={cn("mt-0.5 shrink-0 text-primary", option.value !== value && "invisible")}
+              />
             </button>
           ))}
         </div>

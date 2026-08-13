@@ -118,7 +118,7 @@ export function Dialog({
       <button
         type="button"
         aria-label="Close dialog overlay"
-        className="absolute inset-0 bg-fg/20 backdrop-blur-sm"
+        className="absolute inset-0 bg-[color-mix(in_srgb,var(--color-fg)_28%,transparent)] backdrop-blur-sm"
         onClick={() => {
           if (closeOnOverlayClick) {
             onOpenChange(false)
@@ -133,12 +133,17 @@ export function Dialog({
         aria-describedby={description ? descriptionId : undefined}
         tabIndex={-1}
         className={cn(
-          "relative z-[1] w-full rounded-xl bg-surface p-1 text-fg shadow-overlay ring-1 ring-inset ring-edge",
-          "max-h-[calc(100vh-2rem)] overflow-hidden outline-none",
+          /* Three surfaces, one object: header on raised, body on surface,
+           * footer on sunken — the same anatomy as Card, at overlay elevation.
+           * The hairline is an overlay because the header paints its own
+           * full-bleed surface over an inset ring. */
+          "relative z-[1] flex w-full flex-col rounded-xl bg-surface text-fg shadow-overlay",
+          "after:pointer-events-none after:absolute after:inset-0 after:z-[2] after:rounded-[inherit] after:ring-1 after:ring-inset after:ring-edge-strong after:content-['']",
+          "max-h-[calc(100vh-2rem)] overflow-hidden outline-none motion-safe:animate-rise",
           SIZE_STYLES[size],
         )}
       >
-        <div className="flex items-start justify-between gap-4 rounded-lg bg-surface-raised px-6 py-5">
+        <div className="flex items-start justify-between gap-4 border-b border-edge bg-surface-raised px-6 py-5">
           <div className="space-y-1">
             <h2 id={titleId} className="text-xl font-semibold text-fg">
               {title}
@@ -157,8 +162,8 @@ export function Dialog({
             onClick={() => onOpenChange(false)}
           />
         </div>
-        <div className="max-h-[calc(100vh-12rem)] overflow-y-auto px-6 py-5">{children}</div>
-        {footer ? <div className="border-t border-edge px-6 py-4">{footer}</div> : null}
+        <div className="min-h-0 flex-1 overflow-y-auto px-6 py-5">{children}</div>
+        {footer ? <div className="border-t border-edge bg-surface-sunken px-6 py-4">{footer}</div> : null}
       </div>
     </div>,
     document.body,

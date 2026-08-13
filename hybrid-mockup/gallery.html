@@ -1,0 +1,2129 @@
+<!doctype html>
+<html lang="en" data-display="sans" class="lt-sage" data-theme="light">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="light dark" />
+    <title>Component gallery — hybrid design system</title>
+    <link rel="stylesheet" href="tokens-hybrid.css" />
+    <link rel="stylesheet" href="hybrid.css" />
+    <link rel="stylesheet" href="light-themes.css" />
+    <link rel="stylesheet" href="gallery.css" />
+  </head>
+  <body>
+    <!--
+      The icon set, once. Phosphor regular at 1.75 stroke — the package exports
+      44 of these; twenty representative ones are drawn here.
+    -->
+    <svg width="0" height="0" style="position: absolute" aria-hidden="true" focusable="false">
+      <defs>
+        <g id="i-house"><path d="M4 10.5 12 4l8 6.5V20a1 1 0 0 1-1 1h-4v-6H9v6H5a1 1 0 0 1-1-1z" /></g>
+        <g id="i-chart"><path d="M4 20h16M7 20v-7M12 20V6M17 20v-10" /></g>
+        <g id="i-table"><rect x="3" y="4" width="18" height="16" rx="2" /><path d="M3 10h18M9 10v10" /></g>
+        <g id="i-gear"><circle cx="12" cy="12" r="3" /><path d="M12 2.8v2.4M12 18.8v2.4M4.5 7.5l2 1.2M17.5 15.3l2 1.2M4.5 16.5l2-1.2M17.5 8.7l2-1.2" /></g>
+        <g id="i-users"><circle cx="9" cy="9" r="3" /><path d="M3.5 19a5.5 5.5 0 0 1 11 0M16 6.5a3 3 0 0 1 0 5.8M17 19a5.5 5.5 0 0 0-2-4.3" /></g>
+        <g id="i-plus"><path d="M12 5v14M5 12h14" /></g>
+        <g id="i-check"><path d="M5 13l4 4L19 7" /></g>
+        <g id="i-check-circle"><circle cx="12" cy="12" r="9" /><path d="M8.5 12.5l2.5 2.5 4.5-5" /></g>
+        <g id="i-warning"><circle cx="12" cy="12" r="9" /><path d="M12 7.5v5.5" /><circle cx="12" cy="16.2" r="0.6" fill="currentColor" stroke="none" /></g>
+        <g id="i-info"><circle cx="12" cy="12" r="9" /><path d="M12 16.5V11" /><circle cx="12" cy="7.9" r="0.6" fill="currentColor" stroke="none" /></g>
+        <g id="i-x"><path d="M6 6l12 12M18 6L6 18" /></g>
+        <g id="i-caret-down"><path d="M6 9.5l6 6 6-6" /></g>
+        <g id="i-caret-left"><path d="M14.5 6l-6 6 6 6" /></g>
+        <g id="i-caret-right"><path d="M9.5 6l6 6-6 6" /></g>
+        <g id="i-search"><circle cx="10.5" cy="10.5" r="6" /><path d="M15 15l4.5 4.5" /></g>
+        <g id="i-dots"><circle cx="6" cy="12" r="1.1" fill="currentColor" stroke="none" /><circle cx="12" cy="12" r="1.1" fill="currentColor" stroke="none" /><circle cx="18" cy="12" r="1.1" fill="currentColor" stroke="none" /></g>
+        <g id="i-sort"><path d="M7 4v13M4 14l3 3 3-3M17 20V7M14 10l3-3 3 3" /></g>
+        <g id="i-trash"><path d="M4.5 7h15M9.5 7V5h5v2M6.5 7l1 13h9l1-13" /></g>
+        <g id="i-pencil"><path d="M4 20l1-4L16.5 4.5a2.1 2.1 0 0 1 3 3L8 19z" /></g>
+        <g id="i-list"><path d="M4 7h16M4 12h16M4 17h10" /></g>
+        <g id="i-sun"><circle cx="12" cy="12" r="4" /><path d="M12 3v2M12 19v2M3 12h2M19 12h2M5.6 5.6l1.4 1.4M17 17l1.4 1.4M18.4 5.6L17 7M7 17l-1.4 1.4" /></g>
+        <g id="i-moon"><path d="M20 14.5A8.2 8.2 0 0 1 9.5 4 8.5 8.5 0 1 0 20 14.5" /></g>
+        <g id="i-clock"><circle cx="12" cy="12" r="9" /><path d="M12 7v5.3l3.3 2" /></g>
+        <g id="i-sparkle"><path d="M12 4l1.9 5.1L19 11l-5.1 1.9L12 18l-1.9-5.1L5 11l5.1-1.9z" /></g>
+        <g id="i-tray"><path d="M4 14h4l1.5 3h5L16 14h4M4 14l2.5-8h11L20 14v4a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2z" /></g>
+      </defs>
+    </svg>
+
+    <div class="shell">
+      <!-- ── sidebar: the DashboardShell nav, doing a real job ─────────── -->
+      <nav class="shell-nav" aria-label="Components">
+        <div class="shell-brand">
+          <span class="brand-mark" aria-hidden="true">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><use href="#i-chart" /></svg>
+          </span>
+          <span class="shell-brand-name">
+            <b>UI-Web</b>
+            <span>hybrid gallery</span>
+          </span>
+        </div>
+
+        <p class="nav-group-title">Foundations</p>
+        <ul class="nav-group">
+          <li><a class="nav-link" href="#color">Color</a></li>
+          <li><a class="nav-link" href="#type">Typography</a></li>
+          <li><a class="nav-link" href="#elevation">Elevation &amp; radius</a></li>
+          <li><a class="nav-link" href="#icons">Icons</a></li>
+        </ul>
+
+        <p class="nav-group-title">Primitives</p>
+        <ul class="nav-group">
+          <li><a class="nav-link" href="#button">Button</a></li>
+          <li><a class="nav-link" href="#badge">Badge</a></li>
+          <li><a class="nav-link" href="#card">Card</a></li>
+          <li><a class="nav-link" href="#input">Input, Textarea, Select</a></li>
+          <li><a class="nav-link" href="#form-field">FormField</a></li>
+          <li><a class="nav-link" href="#checkbox">Checkbox</a></li>
+          <li><a class="nav-link" href="#switch">Switch</a></li>
+          <li><a class="nav-link" href="#skeleton">Skeleton</a></li>
+          <li><a class="nav-link" href="#spinner">Spinner</a></li>
+          <li><a class="nav-link" href="#theme-toggle">ThemeToggle</a></li>
+        </ul>
+
+        <p class="nav-group-title">Layout</p>
+        <ul class="nav-group">
+          <li><a class="nav-link" href="#app-top-bar">AppTopBar</a></li>
+          <li><a class="nav-link" href="#dashboard-shell">DashboardShell</a></li>
+          <li><a class="nav-link" href="#page-header">PageHeader</a></li>
+          <li><a class="nav-link" href="#section">Section</a></li>
+          <li><a class="nav-link" href="#page-content">PageContent</a></li>
+        </ul>
+
+        <p class="nav-group-title">Data</p>
+        <ul class="nav-group">
+          <li><a class="nav-link" href="#stat-card">StatCard</a></li>
+          <li><a class="nav-link" href="#description-list">DescriptionList</a></li>
+          <li><a class="nav-link" href="#table">Table</a></li>
+          <li><a class="nav-link" href="#table-section">TableSection</a></li>
+          <li><a class="nav-link" href="#pagination">Pagination</a></li>
+          <li><a class="nav-link" href="#empty-state">EmptyState</a></li>
+        </ul>
+
+        <p class="nav-group-title">Navigation &amp; input</p>
+        <ul class="nav-group">
+          <li><a class="nav-link" href="#tabs">Tabs</a></li>
+          <li><a class="nav-link" href="#filter-bar">FilterBar</a></li>
+          <li><a class="nav-link" href="#search-input">SearchInput</a></li>
+          <li><a class="nav-link" href="#select-menu">SelectMenu</a></li>
+          <li><a class="nav-link" href="#dropdown-menu">DropdownMenu</a></li>
+          <li><a class="nav-link" href="#stepper">Stepper</a></li>
+          <li><a class="nav-link" href="#expandable-tile">ExpandableTile</a></li>
+        </ul>
+
+        <p class="nav-group-title">Feedback &amp; overlays</p>
+        <ul class="nav-group">
+          <li><a class="nav-link" href="#info-banner">InfoBanner</a></li>
+          <li><a class="nav-link" href="#tooltip">Tooltip</a></li>
+          <li><a class="nav-link" href="#dialog">Dialog</a></li>
+          <li><a class="nav-link" href="#confirm-dialog">ConfirmDialog</a></li>
+          <li><a class="nav-link" href="#side-panel">SidePanel</a></li>
+          <li><a class="nav-link" href="#toast">Toast</a></li>
+          <li><a class="nav-link" href="#avatar">Avatar</a></li>
+        </ul>
+
+        <p class="nav-group-title">Charts</p>
+        <ul class="nav-group">
+          <li><a class="nav-link" href="#line-chart">LineChart</a></li>
+          <li><a class="nav-link" href="#bar-chart">BarChart</a></li>
+          <li><a class="nav-link" href="#donut-chart">DonutChart</a></li>
+          <li><a class="nav-link" href="#sparkline">Sparkline</a></li>
+          <li><a class="nav-link" href="#funnel-bars">FunnelBars</a></li>
+          <li><a class="nav-link" href="#chart-shell">ChartShell</a></li>
+          <li><a class="nav-link" href="#chart-tooltip">ChartTooltip</a></li>
+        </ul>
+      </nav>
+
+      <div class="shell-main">
+        <!-- ── the gallery's own controls ─────────────────────────────── -->
+        <div class="gallery-bar">
+          <strong style="font-size: var(--text-sm)">Component gallery</strong>
+          <span class="badge badge-primary badge-dot">hybrid</span>
+          <div class="bar-tools">
+            <!--
+              Both pickers are the themed listbox, not a native <select>: the OS
+              popup is drawn by the OS and stays light on a dark page, which is
+              exactly the thing these controls are here to demonstrate.
+            -->
+            <div class="select-menu select-menu-inline" id="pick-light">
+              <button class="select-trigger" type="button" aria-haspopup="listbox" aria-expanded="false">
+                <svg class="ico ico-sm" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-sun" /></svg>
+                <span data-role="value">Sage</span>
+                <svg class="ico ico-sm" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-caret-down" /></svg>
+              </button>
+              <div class="menu menu-right" role="listbox" aria-label="Light palette" hidden>
+                <button class="menu-item" role="option" type="button" data-value="lt-sage" aria-selected="true"><span class="menu-item-icon"><svg class="ico ico-sm" viewBox="0 0 24 24"><use href="#i-check" /></svg></span><span>Sage<small>Green-biased neutrals</small></span></button>
+                <button class="menu-item" role="option" type="button" data-value="lt-paper" aria-selected="false"><span class="menu-item-icon"><svg class="ico ico-sm" viewBox="0 0 24 24"><use href="#i-check" /></svg></span><span>Paper<small>Warm greige</small></span></button>
+                <button class="menu-item" role="option" type="button" data-value="lt-slate" aria-selected="false"><span class="menu-item-icon"><svg class="ico ico-sm" viewBox="0 0 24 24"><use href="#i-check" /></svg></span><span>Slate<small>Cool blue-grey</small></span></button>
+                <button class="menu-item" role="option" type="button" data-value="lt-current" aria-selected="false"><span class="menu-item-icon"><svg class="ico ico-sm" viewBox="0 0 24 24"><use href="#i-check" /></svg></span><span>As it ships<small>Two shades of white</small></span></button>
+              </div>
+            </div>
+
+            <div class="select-menu select-menu-inline" id="pick-glow">
+              <button class="select-trigger" type="button" aria-haspopup="listbox" aria-expanded="false">
+                <svg class="ico ico-sm" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-sparkle" /></svg>
+                <span data-role="value">Dots: many</span>
+                <svg class="ico ico-sm" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-caret-down" /></svg>
+              </button>
+              <div class="menu menu-right" role="listbox" aria-label="Hue dot density" hidden>
+                <button class="menu-item" role="option" type="button" data-value="many" aria-selected="true"><span class="menu-item-icon"><svg class="ico ico-sm" viewBox="0 0 24 24"><use href="#i-check" /></svg></span><span>Dots: many<small>20 circles</small></span></button>
+                <button class="menu-item" role="option" type="button" data-value="some" aria-selected="false"><span class="menu-item-icon"><svg class="ico ico-sm" viewBox="0 0 24 24"><use href="#i-check" /></svg></span><span>Dots: some<small>12 circles</small></span></button>
+                <button class="menu-item" role="option" type="button" data-value="few" aria-selected="false"><span class="menu-item-icon"><svg class="ico ico-sm" viewBox="0 0 24 24"><use href="#i-check" /></svg></span><span>Dots: few<small>6 circles, edges only</small></span></button>
+                <button class="menu-item" role="option" type="button" data-value="off" aria-selected="false"><span class="menu-item-icon"><svg class="ico ico-sm" viewBox="0 0 24 24"><use href="#i-check" /></svg></span><span>Dots: off<small>Flat ground</small></span></button>
+              </div>
+            </div>
+
+            <button class="btn btn-secondary btn-sm" type="button" id="toggle-theme">
+              <svg class="ico ico-sm" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-moon" /></svg>Dark
+            </button>
+          </div>
+        </div>
+
+        <main class="gallery">
+          <header style="padding-block: var(--space-6) var(--space-8)">
+            <p class="eyebrow">@figuredout/ui-web</p>
+            <h1 class="display" style="font-size: clamp(2rem, 4.5vw, 3.25rem)">
+              Every component, in one system.
+            </h1>
+            <p class="lede">
+              All 46 exports, restyled on the hybrid tokens — including the ones that did not change, so you can put
+              this beside Storybook and check that nothing drifted. Each entry names its Storybook path and says in one
+              line what moved and why. <b>Themes are not preserved</b>: where the old rule fought the new surfaces, the
+              new rule wins.
+            </p>
+            <div class="row" style="margin-top: var(--space-6)">
+              <button class="btn btn-primary" type="button" id="tour-toast">Fire a toast</button>
+              <button class="btn btn-secondary" type="button" data-open="dialog">Open a dialog</button>
+              <button class="btn btn-secondary" type="button" data-open="panel">Open a side panel</button>
+            </div>
+          </header>
+
+          <!-- ══ FOUNDATIONS ══════════════════════════════════════════ -->
+
+          <article class="entry" id="color">
+            <div class="entry-head">
+              <h3>Color</h3>
+              <span class="entry-path">styles/tokens.css</span>
+            </div>
+            <p class="entry-note">
+              Same semantic names, new light values: the surfaces now form a ladder
+              (<code>sunken &lt; page &lt; surface &lt; raised</code>) instead of two shades of white. Dark is
+              unchanged. Chart colours are unchanged in both themes.
+            </p>
+            <div class="demo">
+              <p class="demo-label">Surfaces &amp; text</p>
+              <div class="swatches">
+                <div class="swatch"><div class="swatch-chip" style="background: var(--color-bg)"></div><span class="swatch-name"><b>bg</b>page</span></div>
+                <div class="swatch"><div class="swatch-chip" style="background: var(--color-surface-sunken)"></div><span class="swatch-name"><b>surface-sunken</b>wells, inputs</span></div>
+                <div class="swatch"><div class="swatch-chip" style="background: var(--color-surface)"></div><span class="swatch-name"><b>surface</b>cards</span></div>
+                <div class="swatch"><div class="swatch-chip" style="background: var(--color-surface-raised)"></div><span class="swatch-name"><b>surface-raised</b>lifted, overlays</span></div>
+                <div class="swatch"><div class="swatch-chip" style="background: var(--color-fg)"></div><span class="swatch-name"><b>fg</b>body</span></div>
+                <div class="swatch"><div class="swatch-chip" style="background: var(--color-fg-muted)"></div><span class="swatch-name"><b>fg-muted</b>secondary</span></div>
+                <div class="swatch"><div class="swatch-chip" style="background: var(--color-fg-subtle)"></div><span class="swatch-name"><b>fg-subtle</b>captions</span></div>
+                <div class="swatch"><div class="swatch-chip" style="background: var(--color-edge)"></div><span class="swatch-name"><b>edge</b>hairline</span></div>
+                <div class="swatch"><div class="swatch-chip" style="background: var(--color-edge-strong)"></div><span class="swatch-name"><b>edge-strong</b>emphasis</span></div>
+              </div>
+            </div>
+            <div class="demo">
+              <p class="demo-label">Semantic</p>
+              <div class="swatches">
+                <div class="swatch"><div class="swatch-chip" style="background: var(--color-primary)"></div><span class="swatch-name"><b>primary</b>brand action</span></div>
+                <div class="swatch"><div class="swatch-chip" style="background: var(--color-success)"></div><span class="swatch-name"><b>success</b></span></div>
+                <div class="swatch"><div class="swatch-chip" style="background: var(--color-warning)"></div><span class="swatch-name"><b>warning</b></span></div>
+                <div class="swatch"><div class="swatch-chip" style="background: var(--color-danger)"></div><span class="swatch-name"><b>danger</b></span></div>
+                <div class="swatch"><div class="swatch-chip" style="background: var(--color-info)"></div><span class="swatch-name"><b>info</b></span></div>
+                <div class="swatch"><div class="swatch-chip" style="background: var(--color-accent)"></div><span class="swatch-name"><b>accent</b></span></div>
+              </div>
+            </div>
+            <div class="demo">
+              <p class="demo-label">Chart categorical</p>
+              <div class="swatches">
+                <div class="swatch"><div class="swatch-chip" style="background: var(--chart-cat-1)"></div><span class="swatch-name"><b>cat-1</b></span></div>
+                <div class="swatch"><div class="swatch-chip" style="background: var(--chart-cat-2)"></div><span class="swatch-name"><b>cat-2</b></span></div>
+                <div class="swatch"><div class="swatch-chip" style="background: var(--chart-cat-3)"></div><span class="swatch-name"><b>cat-3</b></span></div>
+                <div class="swatch"><div class="swatch-chip" style="background: var(--chart-cat-4)"></div><span class="swatch-name"><b>cat-4</b></span></div>
+                <div class="swatch"><div class="swatch-chip" style="background: var(--chart-cat-5)"></div><span class="swatch-name"><b>cat-5</b></span></div>
+                <div class="swatch"><div class="swatch-chip" style="background: var(--chart-cat-6)"></div><span class="swatch-name"><b>cat-6</b></span></div>
+              </div>
+            </div>
+          </article>
+
+          <article class="entry" id="type">
+            <div class="entry-head">
+              <h3>Typography</h3>
+              <span class="entry-path">Foundations/Type</span>
+            </div>
+            <p class="entry-note">
+              The scale gains a <b>display</b> step above <code>text-4xl</code> — the package's largest type was
+              PageHeader's 1.875rem, which is why every page read at the same volume. Two roles carry the system's
+              voice: <b>captions</b> (mono, uppercase, 0.1em) name values, and <b>figures</b> (mono, tabular) are values.
+            </p>
+            <div class="demo">
+              <div class="type-row"><small>display / clamp(2rem, 4.5vw, 3.25rem) / 700</small><span class="display" style="font-size: 2.25rem">Every number, traced</span></div>
+              <div class="type-row"><small>text-3xl / 1.875rem / 650</small><span style="font-size: var(--text-3xl); font-weight: 650; letter-spacing: -0.02em">Page heading</span></div>
+              <div class="type-row"><small>text-xl / 1.25rem / 650</small><span style="font-size: var(--text-xl); font-weight: 650">Section heading</span></div>
+              <div class="type-row"><small>text-base / 1rem / 400</small><span>Body copy sets the measure at 58–70 characters and never runs the full width of a dashboard.</span></div>
+              <div class="type-row"><small>text-sm / 0.875rem / 400</small><span style="font-size: var(--text-sm); color: var(--color-fg-muted)">Secondary copy, the default inside components.</span></div>
+              <div class="type-row"><small>caption / mono 0.6875rem / 600 / 0.1em</small><span class="cell-k" style="margin: 0">Events today</span></div>
+              <div class="type-row"><small>figure / mono tabular / 600</small><span class="num" style="font-size: var(--text-2xl)">1,284,940</span></div>
+              <div class="type-row"><small>eyebrow / mono 0.75rem / 0.14em</small><p class="eyebrow" style="margin: 0">Pipeline health</p></div>
+            </div>
+          </article>
+
+          <article class="entry" id="elevation">
+            <div class="entry-head">
+              <h3>Elevation &amp; radius</h3>
+              <span class="entry-path">Foundations/Elevation</span>
+            </div>
+            <p class="entry-note">
+              Three shadow tokens, each with one job. Anything that covers something else uses
+              <code>--shadow-overlay</code> — dialog, side panel, menu, toast, open tile — so "floating" always looks
+              the same. Containment is an <b>inset ring</b>, never a border: rings do not change an element's size, so
+              nested containers stay aligned.
+            </p>
+            <div class="demo">
+              <div class="grid-2">
+                <div class="elev elev-raised">--shadow-raised</div>
+                <div class="elev elev-hover">--shadow-hover</div>
+              </div>
+              <div style="height: var(--space-4)"></div>
+              <div class="grid-2">
+                <div class="elev elev-overlay">--shadow-overlay</div>
+                <div class="elev" style="box-shadow: inset 0 0 0 1px var(--color-edge)">ring only (flat)</div>
+              </div>
+              <div style="height: var(--space-5)"></div>
+              <p class="demo-label">Radius</p>
+              <div class="row">
+                <div style="width: 5rem; height: 3rem; border-radius: var(--radius-sm); background: var(--color-surface); box-shadow: inset 0 0 0 1px var(--color-edge); display: grid; place-items: center; font: 500 0.6875rem var(--font-mono)">sm</div>
+                <div style="width: 5rem; height: 3rem; border-radius: var(--radius-md); background: var(--color-surface); box-shadow: inset 0 0 0 1px var(--color-edge); display: grid; place-items: center; font: 500 0.6875rem var(--font-mono)">md</div>
+                <div style="width: 5rem; height: 3rem; border-radius: var(--radius-lg); background: var(--color-surface); box-shadow: inset 0 0 0 1px var(--color-edge); display: grid; place-items: center; font: 500 0.6875rem var(--font-mono)">lg</div>
+                <div style="width: 5rem; height: 3rem; border-radius: var(--radius-xl); background: var(--color-surface); box-shadow: inset 0 0 0 1px var(--color-edge); display: grid; place-items: center; font: 500 0.6875rem var(--font-mono)">xl</div>
+              </div>
+            </div>
+          </article>
+
+          <article class="entry" id="icons">
+            <div class="entry-head">
+              <h3>Icons</h3>
+              <span class="entry-path">@figuredout/ui-web/icons</span>
+            </div>
+            <p class="entry-note">
+              Unchanged: the same 44 Phosphor exports at regular weight. What the system adds is where they sit — icons
+              that label a region go in a <b>tinted chip</b> (the icon rail on Section, StatCard, TableSection), icons
+              inside controls are bare and inherit the control's colour.
+            </p>
+            <div class="demo">
+              <div class="icon-wall">
+                <div class="icon-cell"><svg class="ico" viewBox="0 0 24 24"><use href="#i-house" /></svg>House</div>
+                <div class="icon-cell"><svg class="ico" viewBox="0 0 24 24"><use href="#i-chart" /></svg>ChartBar</div>
+                <div class="icon-cell"><svg class="ico" viewBox="0 0 24 24"><use href="#i-table" /></svg>Table</div>
+                <div class="icon-cell"><svg class="ico" viewBox="0 0 24 24"><use href="#i-gear" /></svg>Gear</div>
+                <div class="icon-cell"><svg class="ico" viewBox="0 0 24 24"><use href="#i-users" /></svg>UsersThree</div>
+                <div class="icon-cell"><svg class="ico" viewBox="0 0 24 24"><use href="#i-plus" /></svg>Plus</div>
+                <div class="icon-cell"><svg class="ico" viewBox="0 0 24 24"><use href="#i-check" /></svg>Check</div>
+                <div class="icon-cell"><svg class="ico" viewBox="0 0 24 24"><use href="#i-check-circle" /></svg>CheckCircle</div>
+                <div class="icon-cell"><svg class="ico" viewBox="0 0 24 24"><use href="#i-warning" /></svg>WarningCircle</div>
+                <div class="icon-cell"><svg class="ico" viewBox="0 0 24 24"><use href="#i-info" /></svg>Info</div>
+                <div class="icon-cell"><svg class="ico" viewBox="0 0 24 24"><use href="#i-x" /></svg>X</div>
+                <div class="icon-cell"><svg class="ico" viewBox="0 0 24 24"><use href="#i-caret-down" /></svg>CaretDown</div>
+                <div class="icon-cell"><svg class="ico" viewBox="0 0 24 24"><use href="#i-search" /></svg>MagnifyingGlass</div>
+                <div class="icon-cell"><svg class="ico" viewBox="0 0 24 24"><use href="#i-dots" /></svg>DotsThree</div>
+                <div class="icon-cell"><svg class="ico" viewBox="0 0 24 24"><use href="#i-sort" /></svg>ArrowsLeftRight</div>
+                <div class="icon-cell"><svg class="ico" viewBox="0 0 24 24"><use href="#i-trash" /></svg>Trash</div>
+                <div class="icon-cell"><svg class="ico" viewBox="0 0 24 24"><use href="#i-pencil" /></svg>NotePencil</div>
+                <div class="icon-cell"><svg class="ico" viewBox="0 0 24 24"><use href="#i-list" /></svg>List</div>
+                <div class="icon-cell"><svg class="ico" viewBox="0 0 24 24"><use href="#i-clock" /></svg>Clock</div>
+                <div class="icon-cell"><svg class="ico" viewBox="0 0 24 24"><use href="#i-sparkle" /></svg>Sparkle</div>
+              </div>
+            </div>
+          </article>
+
+          <!-- ══ PRIMITIVES ═══════════════════════════════════════════ -->
+
+          <article class="entry" id="button">
+            <div class="entry-head">
+              <h3>Button, IconButton</h3>
+              <span class="entry-path">Primitives/Button</span>
+            </div>
+            <p class="entry-note">
+              Same four variants and two sizes. The change is <b>secondary</b>: it now rests on
+              <code>surface-raised</code> with a ring, so on the new light ladder it reads as a real control rather than
+              a white rectangle on a white card. Radii, focus ring and the 0.98 active scale are unchanged.
+            </p>
+            <div class="demo">
+              <p class="demo-label">Variants — md</p>
+              <div class="row">
+                <button class="btn btn-primary" type="button">Save changes</button>
+                <button class="btn btn-secondary" type="button">Cancel</button>
+                <button class="btn btn-ghost" type="button">Learn more</button>
+                <button class="btn btn-danger" type="button">Delete</button>
+                <button class="btn btn-primary" type="button" disabled>Disabled</button>
+              </div>
+            </div>
+            <div class="demo">
+              <p class="demo-label">Icon + label — every variant takes a leading or trailing icon</p>
+              <div class="row">
+                <button class="btn btn-primary" type="button"><svg class="ico ico-sm" viewBox="0 0 24 24"><use href="#i-plus" /></svg>New source</button>
+                <button class="btn btn-secondary" type="button"><svg class="ico ico-sm" viewBox="0 0 24 24"><use href="#i-clock" /></svg>Run now</button>
+                <button class="btn btn-ghost" type="button"><svg class="ico ico-sm" viewBox="0 0 24 24"><use href="#i-table" /></svg>View as table</button>
+                <button class="btn btn-danger" type="button"><svg class="ico ico-sm" viewBox="0 0 24 24"><use href="#i-trash" /></svg>Delete</button>
+                <button class="btn btn-secondary" type="button">Continue<svg class="ico ico-sm" viewBox="0 0 24 24"><use href="#i-caret-right" /></svg></button>
+              </div>
+            </div>
+            <div class="demo">
+              <p class="demo-label">Sizes, loading, IconButton</p>
+              <div class="row">
+                <button class="btn btn-primary btn-sm" type="button"><svg class="ico ico-sm" viewBox="0 0 24 24"><use href="#i-plus" /></svg>New source</button>
+                <button class="btn btn-secondary btn-sm" type="button">Filters<svg class="ico ico-sm" viewBox="0 0 24 24"><use href="#i-caret-down" /></svg></button>
+                <button class="btn btn-primary" type="button"><span class="spinner" style="width: 1rem; height: 1rem; border-width: 2px; border-color: color-mix(in srgb, var(--color-primary-fg) 35%, transparent); border-top-color: var(--color-primary-fg)"></span>Syncing…</button>
+                <button class="btn btn-secondary" type="button" aria-label="Row actions" style="width: 2.75rem; padding: 0"><svg class="ico" viewBox="0 0 24 24"><use href="#i-dots" /></svg></button>
+                <button class="btn btn-ghost btn-sm" type="button" aria-label="Delete" style="width: 2.25rem; padding: 0"><svg class="ico ico-sm" viewBox="0 0 24 24"><use href="#i-trash" /></svg></button>
+              </div>
+            </div>
+          </article>
+
+          <article class="entry" id="badge">
+            <div class="entry-head">
+              <h3>Badge</h3>
+              <span class="entry-path">Primitives/Badge</span>
+            </div>
+            <p class="entry-note">
+              Six tones, as before. The ring is now the tone's own hue instead of neutral <code>edge</code> — a success
+              badge should be one object, not a green fill inside a grey outline. A dot variant turns it into a status.
+            </p>
+            <div class="demo">
+              <div class="row">
+                <span class="badge">Neutral</span>
+                <span class="badge badge-primary">Primary</span>
+                <span class="badge badge-success">Success</span>
+                <span class="badge badge-warning">Warning</span>
+                <span class="badge badge-danger">Danger</span>
+                <span class="badge badge-info">Info</span>
+              </div>
+              <div style="height: var(--space-4)"></div>
+              <div class="row">
+                <span class="badge badge-success badge-dot">Live</span>
+                <span class="badge badge-warning badge-dot">Degraded</span>
+                <span class="badge badge-danger badge-dot">Failing</span>
+                <span class="badge badge-dot">Paused</span>
+              </div>
+            </div>
+          </article>
+
+          <article class="entry" id="card">
+            <div class="entry-head">
+              <h3>Card, CardHeader, CardBody, CardFooter</h3>
+              <span class="entry-path">Primitives/Card</span>
+            </div>
+            <p class="entry-note">
+              The package's Card is a 1px-padded shell wrapping a raised summary — a card inside a card. The hybrid
+              keeps two surfaces but drops the shell: <b>header on raised, body on surface, one hairline between</b>.
+              Tone moves from a coloured ring to a leading bar, because a tinted ring on a tinted ground disappears.
+            </p>
+            <div class="demo">
+              <div class="grid-2">
+                <div class="card card-hoverable">
+                  <div class="card-head">
+                    <div class="card-head-main">
+                      <span class="card-icon" aria-hidden="true"><svg class="ico" viewBox="0 0 24 24"><use href="#i-table" /></svg></span>
+                      <span class="card-title">
+                        <span class="card-number">Source 04</span>
+                        <b>Warehouse — Snowflake</b>
+                        <small>Last landed 4 minutes ago</small>
+                      </span>
+                    </div>
+                    <span class="badge badge-success badge-dot">Healthy</span>
+                  </div>
+                  <div class="card-body">Hourly incremental load, 42 tables, 1.2M rows since midnight.</div>
+                  <div class="card-foot">
+                    <button class="btn btn-secondary btn-sm" type="button">Configure</button>
+                    <button class="btn btn-ghost btn-sm" type="button">View log</button>
+                  </div>
+                </div>
+
+                <div class="card card-danger">
+                  <div class="card-head">
+                    <div class="card-head-main">
+                      <span class="card-icon" aria-hidden="true" style="color: var(--color-danger); background: var(--color-danger-soft); border-color: color-mix(in srgb, var(--color-danger) 30%, transparent)"><svg class="ico" viewBox="0 0 24 24"><use href="#i-warning" /></svg></span>
+                      <span class="card-title">
+                        <b>Stripe — webhook</b>
+                        <small>Signature check failed 3× in the last hour</small>
+                      </span>
+                    </div>
+                  </div>
+                  <div class="card-body">Events are queued and will replay automatically once the secret is rotated.</div>
+                  <div class="card-foot">
+                    <button class="btn btn-danger btn-sm" type="button">Rotate secret</button>
+                  </div>
+                </div>
+              </div>
+              <div style="height: var(--space-4)"></div>
+              <div class="grid-2">
+                <div class="card card-info"><div class="card-body">tone="info"</div></div>
+                <div class="card card-warning"><div class="card-body">tone="warning"</div></div>
+                <div class="card card-success"><div class="card-body">tone="success"</div></div>
+                <div class="card"><div class="card-body">tone="neutral" — body only, no header</div></div>
+              </div>
+            </div>
+          </article>
+
+          <article class="entry" id="input">
+            <div class="entry-head">
+              <h3>Input, Textarea, Select</h3>
+              <span class="entry-path">Primitives/Input</span>
+            </div>
+            <p class="entry-note">
+              The one real change in the forms: a field now sits on <code>surface-sunken</code> rather than
+              <code>surface</code>. <b>A field is a hole you type into</b>, and a white input on a white card was
+              invisible without its border. Focus fills it back to <code>surface</code> and adds the standard 4px ring.
+              The <code>Select</code> below is the real native control — its <b>popup is drawn by the OS</b>, and CSS
+              can only ask (via <code>color-scheme</code> and option colours) rather than tell. Where the list must
+              match the theme, that is what <a href="#select-menu">SelectMenu</a> is for; every other dropdown on this
+              page is one.
+            </p>
+            <div class="demo">
+              <div class="grid-2">
+                <div class="stack">
+                  <input class="field" type="text" placeholder="Placeholder — md" />
+                  <input class="field field-sm" type="text" placeholder="Placeholder — sm" />
+                  <input class="field" type="text" value="Focus me to see the ring" />
+                  <input class="field field-invalid" type="email" value="not-an-email" aria-invalid="true" />
+                  <input class="field" type="text" value="Disabled" disabled />
+                </div>
+                <div class="stack">
+                  <div class="field-wrap">
+                    <select class="field">
+                      <option>Last 24 hours</option>
+                      <option>Last 7 days</option>
+                      <option>Last 30 days</option>
+                    </select>
+                    <span class="field-icon field-icon-right"><svg class="ico ico-sm" viewBox="0 0 24 24"><use href="#i-caret-down" /></svg></span>
+                  </div>
+                  <textarea class="field" placeholder="Notes for the on-call engineer…"></textarea>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <article class="entry" id="form-field">
+            <div class="entry-head">
+              <h3>FormField</h3>
+              <span class="entry-path">Primitives/FormField</span>
+            </div>
+            <p class="entry-note">
+              Unchanged in structure — label, control, hint, error. The label stays sentence-case semibold rather than a
+              mono caption: <b>a form label is an instruction</b>, and the mono caption role is reserved for labels that
+              name a value. The error gains its icon so it is not colour-only.
+            </p>
+            <div class="demo">
+              <div class="grid-2">
+                <div class="form-field">
+                  <label class="form-label" for="ff-1">Warehouse name<span class="req">*</span></label>
+                  <input class="field" id="ff-1" value="prod-analytics" />
+                  <p class="form-hint">Lowercase, no spaces. Used in the connection string.</p>
+                </div>
+                <div class="form-field">
+                  <label class="form-label" for="ff-2">Retry window</label>
+                  <input class="field field-invalid" id="ff-2" value="0" aria-invalid="true" />
+                  <p class="form-error"><svg class="ico ico-sm" viewBox="0 0 24 24"><use href="#i-warning" /></svg>Must be at least 1 minute.</p>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <article class="entry" id="checkbox">
+            <div class="entry-head">
+              <h3>Checkbox</h3>
+              <span class="entry-path">Primitives/Checkbox</span>
+            </div>
+            <p class="entry-note">
+              Drawn rather than a native box with an accent colour, so the checked state uses the same
+              <code>primary</code> and the same focus ring as every other control — and so the indeterminate state
+              actually renders. Same 1rem-ish hit area, same disabled treatment.
+            </p>
+            <div class="demo">
+              <div class="stack">
+                <label class="cbx"><input type="checkbox" /><span class="cbx-box"></span><span>Unchecked</span></label>
+                <label class="cbx"><input type="checkbox" checked /><span class="cbx-box"></span><span>Checked</span></label>
+                <label class="cbx"><input type="checkbox" id="cbx-ind" /><span class="cbx-box"></span><span>Indeterminate</span></label>
+                <label class="cbx"><input type="checkbox" checked disabled /><span class="cbx-box"></span><span>Disabled</span></label>
+              </div>
+            </div>
+          </article>
+
+          <article class="entry" id="switch">
+            <div class="entry-head">
+              <h3>Switch</h3>
+              <span class="entry-path">Primitives/Switch</span>
+            </div>
+            <p class="entry-note">
+              Same size and travel. The off state gains a ring so it reads as a control on any of the four surfaces —
+              previously it was a bare <code>surface-sunken</code> pill, which vanished inside a sunken container.
+            </p>
+            <div class="demo">
+              <div class="stack">
+                <label class="sw"><input type="checkbox" /><span class="sw-track"></span><span>Pause ingestion</span></label>
+                <label class="sw"><input type="checkbox" checked /><span class="sw-track"></span><span>Alert on failed sync</span></label>
+                <label class="sw"><input type="checkbox" disabled /><span class="sw-track"></span><span>Disabled</span></label>
+              </div>
+            </div>
+          </article>
+
+          <article class="entry" id="skeleton">
+            <div class="entry-head">
+              <h3>Skeleton</h3>
+              <span class="entry-path">Primitives/Skeleton</span>
+            </div>
+            <p class="entry-note">
+              A left-to-right sweep instead of an opacity pulse. <b>A pulse reads as something asking for attention</b>;
+              a sweep reads as something still arriving — and on the new light ladder a pulsing sunken block flickered
+              against the card behind it.
+            </p>
+            <div class="demo">
+              <div class="stack" style="max-width: 26rem">
+                <div class="skeleton" style="height: 1.25rem; width: 45%"></div>
+                <div class="skeleton" style="height: 2.5rem"></div>
+                <div class="skeleton" style="height: 0.875rem"></div>
+                <div class="skeleton" style="height: 0.875rem; width: 70%"></div>
+              </div>
+            </div>
+          </article>
+
+          <article class="entry" id="spinner">
+            <div class="entry-head">
+              <h3>Spinner</h3>
+              <span class="entry-path">Primitives/Spinner</span>
+            </div>
+            <p class="entry-note">
+              A ring rather than a spinning arrow glyph: at 16px the arrow's tail is a smear, and a ring reads as
+              progress at any size. Keeps <code>role="status"</code> and the visually-hidden label.
+            </p>
+            <div class="demo">
+              <div class="row">
+                <span class="spinner" style="width: 1rem; height: 1rem"></span>
+                <span class="spinner"></span>
+                <span class="spinner" style="width: 2rem; height: 2rem; border-width: 3px"></span>
+                <span style="display: inline-flex; align-items: center; gap: var(--space-2); font-size: var(--text-sm); color: var(--color-fg-muted)">
+                  <span class="spinner" style="width: 1rem; height: 1rem"></span> Checking connection…
+                </span>
+              </div>
+            </div>
+          </article>
+
+          <article class="entry" id="theme-toggle">
+            <div class="entry-head">
+              <h3>ThemeToggle</h3>
+              <span class="entry-path">Primitives/ThemeToggle</span>
+            </div>
+            <p class="entry-note">
+              Unchanged: a ghost button cycling system → light → dark, with the current mode's icon and label. It now
+              has a second job worth noting — the light palette itself is a token set, so a product could expose the
+              sage/paper/slate choice through the same control.
+            </p>
+            <div class="demo">
+              <div class="row">
+                <button class="btn btn-ghost btn-sm" type="button"><svg class="ico ico-sm" viewBox="0 0 24 24"><use href="#i-sun" /></svg>Light</button>
+                <button class="btn btn-ghost btn-sm" type="button"><svg class="ico ico-sm" viewBox="0 0 24 24"><use href="#i-moon" /></svg>Dark</button>
+                <button class="btn btn-ghost btn-sm" type="button"><svg class="ico ico-sm" viewBox="0 0 24 24"><use href="#i-table" /></svg>System</button>
+              </div>
+            </div>
+          </article>
+
+          <!-- ══ LAYOUT ═══════════════════════════════════════════════ -->
+
+          <article class="entry" id="app-top-bar">
+            <div class="entry-head">
+              <h3>AppTopBar</h3>
+              <span class="entry-path">Patterns/AppTopBar</span>
+            </div>
+            <p class="entry-note">
+              Same structure — mono title, subtitle chip, wrapping nav, actions pushed right. The active nav item's
+              underline now <b>grows from the centre on hover</b> and stays for the current page, replacing a border
+              that shifted the label by a pixel when it appeared.
+            </p>
+            <div class="demo">
+              <div class="appbar">
+                <span class="brand-mark" aria-hidden="true"><svg class="ico ico-sm" viewBox="0 0 24 24"><use href="#i-chart" /></svg></span>
+                <span class="appbar-title">FiguredOut</span>
+                <span class="badge">Staging</span>
+                <nav class="appbar-nav" aria-label="Primary">
+                  <a href="#app-top-bar" aria-current="page">Overview</a>
+                  <a href="#app-top-bar">Sources</a>
+                  <a href="#app-top-bar">Models</a>
+                  <a href="#app-top-bar">Alerts</a>
+                </nav>
+                <div class="row" style="margin-left: auto; gap: var(--space-2)">
+                  <button class="btn btn-ghost btn-sm" type="button"><svg class="ico ico-sm" viewBox="0 0 24 24"><use href="#i-sun" /></svg>Light</button>
+                  <button class="btn btn-primary btn-sm" type="button">Invite</button>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <article class="entry" id="dashboard-shell">
+            <div class="entry-head">
+              <h3>DashboardShell</h3>
+              <span class="entry-path">Patterns/DashboardShell</span>
+            </div>
+            <p class="entry-note">
+              Sidebar, sticky action bar, mobile drawer — unchanged in behaviour. Visually the sidebar now sits on
+              <code>surface</code> against a <code>bg</code> content area, so the two regions separate without a heavy
+              divider. <b>The gallery you are reading is this component</b>, at full size.
+            </p>
+            <div class="demo">
+              <div class="shell-demo">
+                <div class="shell-demo-nav">
+                  <div style="display: flex; align-items: center; gap: var(--space-2); padding-bottom: var(--space-3); border-bottom: 1px solid var(--color-edge); margin-bottom: var(--space-3)">
+                    <span class="brand-mark" aria-hidden="true"><svg class="ico ico-sm" viewBox="0 0 24 24"><use href="#i-chart" /></svg></span>
+                    <b style="font: 600 0.6875rem/1 var(--font-mono); letter-spacing: 0.1em; text-transform: uppercase">Figuredout</b>
+                  </div>
+                  <a class="nav-link" href="#dashboard-shell" aria-current="true"><svg class="ico ico-sm" viewBox="0 0 24 24"><use href="#i-house" /></svg>Overview</a>
+                  <a class="nav-link" href="#dashboard-shell"><svg class="ico ico-sm" viewBox="0 0 24 24"><use href="#i-table" /></svg>Sources</a>
+                  <a class="nav-link" href="#dashboard-shell"><svg class="ico ico-sm" viewBox="0 0 24 24"><use href="#i-chart" /></svg>Models</a>
+                  <a class="nav-link" href="#dashboard-shell"><svg class="ico ico-sm" viewBox="0 0 24 24"><use href="#i-gear" /></svg>Settings</a>
+                </div>
+                <div class="shell-demo-main">
+                  <div class="shell-demo-bar">
+                    <span class="badge badge-success badge-dot">All systems normal</span>
+                    <span style="margin-left: auto"></span>
+                    <button class="btn btn-secondary btn-sm" type="button">Export</button>
+                    <button class="btn btn-primary btn-sm" type="button">New sync</button>
+                  </div>
+                  <div class="shell-demo-body">
+                    <div class="seam seam-3" style="--seam-r: var(--radius-lg)">
+                      <div style="padding: var(--space-3)"><p class="cell-k">Events</p><span class="num" style="font-size: var(--text-lg)">1.28M</span></div>
+                      <div style="padding: var(--space-3)"><p class="cell-k">Latency</p><span class="num" style="font-size: var(--text-lg)">412ms</span></div>
+                      <div style="padding: var(--space-3)"><p class="cell-k">Failed</p><span class="num" style="font-size: var(--text-lg)">3</span></div>
+                    </div>
+                    <div class="skeleton" style="height: 3.5rem"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <article class="entry" id="page-header">
+            <div class="entry-head">
+              <h3>PageHeader</h3>
+              <span class="entry-path">Patterns/PageHeader</span>
+            </div>
+            <p class="entry-note">
+              The package wraps this in the same padded card shell as Card and Section, which makes the top of every
+              page a box inside a box. Here it is <b>type on the page ground with a rule under it</b> — the title is
+              the page, it does not need a container — and the h1 uses the new display step.
+            </p>
+            <div class="demo">
+              <div class="page-header">
+                <div>
+                  <nav class="crumbs" aria-label="Breadcrumb">
+                    <a href="#page-header">Sources</a><span aria-hidden="true">/</span><a href="#page-header">Warehouses</a><span aria-hidden="true">/</span><span>Snowflake</span>
+                  </nav>
+                  <p class="eyebrow" style="margin-top: var(--space-3)">Connected source</p>
+                  <h1>Snowflake — prod-analytics</h1>
+                  <p>Hourly incremental load across 42 tables. Owned by the Data Platform team.</p>
+                </div>
+                <div class="row">
+                  <button class="btn btn-secondary" type="button">Run now</button>
+                  <button class="btn btn-primary" type="button">Edit source</button>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <article class="entry" id="section">
+            <div class="entry-head">
+              <h3>Section, SettingsSection</h3>
+              <span class="entry-path">Patterns/Section</span>
+            </div>
+            <p class="entry-note">
+              Both variants. <code>plain</code> keeps its 10rem icon rail and gains the display scale — this is the
+              section head from the mockup. <code>card</code> becomes the same two-surface object as Card, so a Section
+              and a Card are one family at two sizes.
+            </p>
+            <div class="demo">
+              <p class="demo-label">variant="plain"</p>
+              <div class="head" style="margin-bottom: 0">
+                <div class="head-rail">
+                  <span class="head-icon" aria-hidden="true"><svg class="ico" viewBox="0 0 24 24"><use href="#i-gear" /></svg></span>
+                  <p class="eyebrow">Delivery</p>
+                </div>
+                <h2>Where results land</h2>
+                <p class="lede">Every destination this model writes to, and the last time each one accepted a write.</p>
+              </div>
+            </div>
+            <div class="demo">
+              <p class="demo-label">variant="card" — also SettingsSection</p>
+              <div class="section-card">
+                <header>
+                  <div>
+                    <h3>Retention</h3>
+                    <p>How long raw events are kept before they are rolled up.</p>
+                  </div>
+                  <button class="btn btn-secondary btn-sm" type="button">Edit</button>
+                </header>
+                <div>
+                  <div class="stack">
+                    <label class="sw"><input type="checkbox" checked /><span class="sw-track"></span><span>Roll up events older than 90 days</span></label>
+                    <label class="sw"><input type="checkbox" /><span class="sw-track"></span><span>Delete raw payloads after roll-up</span></label>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <article class="entry" id="page-content">
+            <div class="entry-head">
+              <h3>PageContent</h3>
+              <span class="entry-path">Patterns/PageContent</span>
+            </div>
+            <p class="entry-note">
+              A layout primitive with no appearance: a column with a <code>--space-6</code> rhythm and bottom padding.
+              The hybrid adds the two page-level tokens it should have owned all along — <code>--measure</code> and
+              <code>--gut</code> — so page width stops being hardcoded per app.
+            </p>
+            <div class="demo">
+              <div style="display: grid; gap: var(--space-6)">
+                <div class="skeleton" style="height: 2.5rem; width: 40%"></div>
+                <div class="skeleton" style="height: 6rem"></div>
+                <div class="skeleton" style="height: 6rem"></div>
+              </div>
+            </div>
+          </article>
+
+          <!-- ══ DATA ═════════════════════════════════════════════════ -->
+
+          <article class="entry" id="stat-card">
+            <div class="entry-head">
+              <h3>StatCard</h3>
+              <span class="entry-path">Patterns/StatCard</span>
+            </div>
+            <p class="entry-note">
+              On its own it is the package's tile, with the figure moved up to the display-adjacent scale and sized by
+              its container. In a row it becomes a <b>seam grid</b>: four related figures are one object, not four
+              floating cards. Both are shown.
+            </p>
+            <div class="demo">
+              <p class="demo-label">Connected — the default for a row of related figures</p>
+              <div class="seam seam-4">
+                <div>
+                  <p class="cell-k">Events today <span class="badge badge-success" style="font-size: 0.5625rem; padding: 0 0.35rem">+12%</span></p>
+                  <span class="cell-v num accent">1,284,940</span>
+                  <span class="cell-note">vs 1,146,201 yesterday</span>
+                </div>
+                <div>
+                  <p class="cell-k">Median latency</p>
+                  <span class="cell-v num">412 ms</span>
+                  <span class="cell-note">p95 is 1.9 s</span>
+                </div>
+                <div>
+                  <p class="cell-k">Failed syncs</p>
+                  <span class="cell-v num">3</span>
+                  <span class="cell-note">All retried and clear</span>
+                </div>
+                <div>
+                  <p class="cell-k">Cost this month</p>
+                  <span class="cell-v num">$4,120</span>
+                  <span class="cell-note">Budget $6,000</span>
+                </div>
+              </div>
+            </div>
+            <div class="demo">
+              <p class="demo-label">Standalone</p>
+              <div class="grid-2">
+                <div class="card">
+                  <div class="card-body" style="color: var(--color-fg)">
+                    <div style="display: flex; align-items: flex-start; justify-content: space-between; gap: var(--space-3)">
+                      <p class="cell-k" style="margin: 0">Active models</p>
+                      <span class="card-icon" style="width: 2rem; height: 2rem" aria-hidden="true"><svg class="ico ico-sm" viewBox="0 0 24 24"><use href="#i-sparkle" /></svg></span>
+                    </div>
+                    <span class="num" style="display: block; margin-top: var(--space-2); font-size: var(--text-2xl)">37</span>
+                    <div class="row" style="margin-top: var(--space-3); gap: var(--space-2)">
+                      <span class="badge badge-primary">+4 this week</span>
+                      <span style="font-size: 0.8125rem; color: var(--color-fg-muted)">2 pending review</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <article class="entry" id="description-list">
+            <div class="entry-head">
+              <h3>DescriptionList</h3>
+              <span class="entry-path">Patterns/DescriptionList</span>
+            </div>
+            <p class="entry-note">
+              Facts about one thing, so it is a seam grid too — the package renders separate rounded blocks with gaps,
+              which reads as unrelated cards. Terms use the mono caption role; values that are numbers are tabular.
+            </p>
+            <div class="demo">
+              <dl class="dl">
+                <div><dt>Connection</dt><dd class="num">snowflake://prod-analytics</dd></div>
+                <div><dt>Owner</dt><dd>Data Platform</dd></div>
+                <div><dt>Schedule</dt><dd>Hourly, at :05</dd></div>
+                <div><dt>Last landed</dt><dd class="num">4 min ago</dd></div>
+                <div><dt>Rows today</dt><dd class="num">1,284,940</dd></div>
+                <div><dt>Status</dt><dd><span class="badge badge-success badge-dot">Healthy</span></dd></div>
+              </dl>
+            </div>
+          </article>
+
+          <article class="entry" id="table">
+            <div class="entry-head">
+              <h3>Table</h3>
+              <span class="entry-path">Patterns/Table</span>
+            </div>
+            <p class="entry-note">
+              <b>One table instead of two variants.</b> The package's <code>framed</code> wraps the table in a padded
+              card and switches the header type; here the frame belongs to whatever holds the table, and the table
+              itself is constant. Row tone keeps its leading bar and gains a lighter wash, since a 50% tint on a tinted
+              ground was hurting the text in exactly the rows that matter.
+            </p>
+            <div class="demo">
+              <div class="table-frame">
+                <div class="table-scroll">
+                  <table class="tbl">
+                    <thead>
+                      <tr>
+                        <th scope="col" aria-sort="ascending"><button type="button">Source<svg class="ico ico-sm" viewBox="0 0 24 24"><use href="#i-sort" /></svg></button></th>
+                        <th scope="col">Owner</th>
+                        <th scope="col">Status</th>
+                        <th scope="col" class="right"><button type="button">Rows<svg class="ico ico-sm" viewBox="0 0 24 24"><use href="#i-sort" /></svg></button></th>
+                        <th scope="col" class="right">Last run</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>Snowflake — prod</td><td>Data Platform</td>
+                        <td><span class="badge badge-success badge-dot">Healthy</span></td>
+                        <td class="right num">1,284,940</td><td class="right num">4m</td>
+                      </tr>
+                      <tr data-tone="warning">
+                        <td>Salesforce</td><td>Revenue Ops</td>
+                        <td><span class="badge badge-warning badge-dot">Degraded</span></td>
+                        <td class="right num">88,204</td><td class="right num">51m</td>
+                      </tr>
+                      <tr data-tone="danger">
+                        <td>Stripe webhook</td><td>Billing</td>
+                        <td><span class="badge badge-danger badge-dot">Failing</span></td>
+                        <td class="right num">0</td><td class="right num">3h</td>
+                      </tr>
+                      <tr data-tone="info">
+                        <td>Segment</td><td>Growth</td>
+                        <td><span class="badge badge-info badge-dot">Backfilling</span></td>
+                        <td class="right num">412,006</td><td class="right num">12m</td>
+                      </tr>
+                      <tr data-tone="success">
+                        <td>Postgres — app</td><td>Core</td>
+                        <td><span class="badge badge-success badge-dot">Healthy</span></td>
+                        <td class="right num">2,041,777</td><td class="right num">1m</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <article class="entry" id="table-section">
+            <div class="entry-head">
+              <h3>TableSection</h3>
+              <span class="entry-path">Patterns/TableSection</span>
+            </div>
+            <p class="entry-note">
+              Icon chip, title, description, actions, table, caption. Unchanged in shape — it is the composition that
+              proves the "one table" rule: the same table markup as above, with no frame, because the section is the
+              container.
+            </p>
+            <div class="demo">
+              <section>
+                <div class="table-section-head">
+                  <div class="table-section-title">
+                    <span class="card-icon" style="width: 2.25rem; height: 2.25rem" aria-hidden="true"><svg class="ico ico-sm" viewBox="0 0 24 24"><use href="#i-clock" /></svg></span>
+                    <div>
+                      <h4>Recent runs</h4>
+                      <p>The last five executions, newest first.</p>
+                    </div>
+                  </div>
+                  <div class="row" style="gap: var(--space-2)">
+                    <button class="btn btn-secondary btn-sm" type="button">Export CSV</button>
+                  </div>
+                </div>
+                <div class="table-scroll">
+                  <table class="tbl">
+                    <thead>
+                      <tr><th scope="col">Run</th><th scope="col">Trigger</th><th scope="col" class="right">Duration</th><th scope="col" class="right">Rows</th></tr>
+                    </thead>
+                    <tbody>
+                      <tr><td class="num">#4,201</td><td>Schedule</td><td class="right num">2m 14s</td><td class="right num">184,220</td></tr>
+                      <tr><td class="num">#4,200</td><td>Manual — a.patel</td><td class="right num">2m 02s</td><td class="right num">180,114</td></tr>
+                      <tr><td class="num">#4,199</td><td>Schedule</td><td class="right num">1m 58s</td><td class="right num">179,880</td></tr>
+                    </tbody>
+                  </table>
+                </div>
+                <p class="table-caption">Durations exclude queue time. Rows counted after de-duplication.</p>
+              </section>
+            </div>
+          </article>
+
+          <article class="entry" id="pagination">
+            <div class="entry-head">
+              <h3>Pagination</h3>
+              <span class="entry-path">Patterns/Pagination</span>
+            </div>
+            <p class="entry-note">
+              Page numbers now live in a sunken track like Tabs, with the current page raised out of it — the same
+              "segmented control" idiom, so a reader who has learned one has learned the other. Prev/Next stay
+              secondary buttons and stay disabled at the ends.
+            </p>
+            <div class="demo">
+              <div class="pager" id="pager">
+                <p class="pager-count">Page <b data-role="current">3</b> of <b>8</b></p>
+                <div class="row" style="gap: var(--space-2)">
+                  <button class="btn btn-secondary btn-sm" type="button" data-page="prev"><svg class="ico ico-sm" viewBox="0 0 24 24"><use href="#i-caret-left" /></svg>Previous</button>
+                  <div class="pager-pages" data-role="pages"></div>
+                  <button class="btn btn-secondary btn-sm" type="button" data-page="next">Next<svg class="ico ico-sm" viewBox="0 0 24 24"><use href="#i-caret-right" /></svg></button>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <article class="entry" id="empty-state">
+            <div class="entry-head">
+              <h3>EmptyState</h3>
+              <span class="entry-path">Patterns/EmptyState</span>
+            </div>
+            <p class="entry-note">
+              <b>The dashed border is gone.</b> A dashed rectangle means "drop something here", which is a different
+              component; an empty table is simply empty. It keeps the tinted icon halo, the 44ch description and the
+              optional action.
+            </p>
+            <div class="demo">
+              <div class="empty">
+                <span class="empty-icon"><svg class="ico" viewBox="0 0 24 24"><use href="#i-tray" /></svg></span>
+                <h4>No records yet</h4>
+                <p>This table fills in as soon as a source lands its first batch. Nothing is wrong.</p>
+                <button class="btn btn-primary btn-sm" type="button">Connect a source</button>
+              </div>
+            </div>
+          </article>
+
+          <!-- ══ NAVIGATION & INPUT ═══════════════════════════════════ -->
+
+          <article class="entry" id="tabs">
+            <div class="entry-head">
+              <h3>Tabs</h3>
+              <span class="entry-path">Patterns/Tabs</span>
+            </div>
+            <p class="entry-note">
+              Arrow-key roving focus and the badge slot are unchanged. The surfaces are inverted: <b>the track is now
+              sunken and the active tab is raised out of it</b>. The package had the track raised and the active tab on
+              surface, which on the new ladder made the selected tab look recessed.
+            </p>
+            <div class="demo">
+              <div role="tablist" class="tabs-list" aria-label="Source detail">
+                <button class="tab" role="tab" id="tab-overview" aria-controls="panel-overview" aria-selected="true">Overview</button>
+                <button class="tab" role="tab" id="tab-schema" aria-controls="panel-schema" aria-selected="false">Schema <span class="badge">42</span></button>
+                <button class="tab" role="tab" id="tab-runs" aria-controls="panel-runs" aria-selected="false">Runs</button>
+                <button class="tab" role="tab" aria-selected="false" disabled>Billing</button>
+              </div>
+              <div class="tab-panel" role="tabpanel" id="panel-overview" aria-labelledby="tab-overview">
+                Hourly incremental load across 42 tables. Owned by the Data Platform team, alerting to #data-oncall.
+              </div>
+              <div class="tab-panel" role="tabpanel" id="panel-schema" aria-labelledby="tab-schema" hidden>
+                42 tables, 618 columns. Three columns changed type in the last 7 days.
+              </div>
+              <div class="tab-panel" role="tabpanel" id="panel-runs" aria-labelledby="tab-runs" hidden>
+                4,201 runs recorded. Median duration 2m 06s, longest 14m 51s.
+              </div>
+            </div>
+          </article>
+
+          <article class="entry" id="filter-bar">
+            <div class="entry-head">
+              <h3>FilterBar</h3>
+              <span class="entry-path">Patterns/FilterBar</span>
+            </div>
+            <p class="entry-note">
+              A single ringed strip on <code>surface</code>, holding the controls that scope the view below it. Because
+              fields are now sunken, the bar reads as a rail with holes in it rather than as a card with cards inside.
+            </p>
+            <div class="demo">
+              <div class="filter-bar">
+                <div class="field-wrap field-wrap-search">
+                  <span class="field-icon field-icon-left"><svg class="ico ico-sm" viewBox="0 0 24 24"><use href="#i-search" /></svg></span>
+                  <input class="field" type="search" placeholder="Search sources" />
+                </div>
+                <div class="select-menu" style="flex: 0 1 12rem">
+                  <button class="select-trigger" type="button" aria-haspopup="listbox" aria-expanded="false">
+                    <span data-role="value">All owners</span>
+                    <svg class="ico ico-sm" viewBox="0 0 24 24"><use href="#i-caret-down" /></svg>
+                  </button>
+                  <div class="menu" role="listbox" aria-label="Owner" hidden>
+                    <button class="menu-item" role="option" type="button" aria-selected="true"><span class="menu-item-icon"><svg class="ico ico-sm" viewBox="0 0 24 24"><use href="#i-check" /></svg></span><span>All owners</span></button>
+                    <button class="menu-item" role="option" type="button" aria-selected="false"><span class="menu-item-icon"><svg class="ico ico-sm" viewBox="0 0 24 24"><use href="#i-check" /></svg></span><span>Data Platform</span></button>
+                    <button class="menu-item" role="option" type="button" aria-selected="false"><span class="menu-item-icon"><svg class="ico ico-sm" viewBox="0 0 24 24"><use href="#i-check" /></svg></span><span>Billing</span></button>
+                  </div>
+                </div>
+                <div class="select-menu" style="flex: 0 1 12rem">
+                  <button class="select-trigger" type="button" aria-haspopup="listbox" aria-expanded="false">
+                    <span data-role="value">Last 24 hours</span>
+                    <svg class="ico ico-sm" viewBox="0 0 24 24"><use href="#i-caret-down" /></svg>
+                  </button>
+                  <div class="menu" role="listbox" aria-label="Range" hidden>
+                    <button class="menu-item" role="option" type="button" aria-selected="true"><span class="menu-item-icon"><svg class="ico ico-sm" viewBox="0 0 24 24"><use href="#i-check" /></svg></span><span>Last 24 hours</span></button>
+                    <button class="menu-item" role="option" type="button" aria-selected="false"><span class="menu-item-icon"><svg class="ico ico-sm" viewBox="0 0 24 24"><use href="#i-check" /></svg></span><span>Last 7 days</span></button>
+                    <button class="menu-item" role="option" type="button" aria-selected="false"><span class="menu-item-icon"><svg class="ico ico-sm" viewBox="0 0 24 24"><use href="#i-check" /></svg></span><span>Last 30 days</span></button>
+                  </div>
+                </div>
+                <div class="filter-bar-actions">
+                  <button class="btn btn-ghost btn-sm" type="button">Reset</button>
+                  <button class="btn btn-primary btn-sm" type="button">Apply</button>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <article class="entry" id="search-input">
+            <div class="entry-head">
+              <h3>SearchInput</h3>
+              <span class="entry-path">Patterns/SearchInput</span>
+            </div>
+            <p class="entry-note">
+              Unchanged: leading magnifier, trailing clear button that appears only when there is a value. It inherits
+              the new sunken field surface, which is what makes it read as a search slot.
+            </p>
+            <div class="demo">
+              <div class="grid-2">
+                <div class="field-wrap field-wrap-search">
+                  <span class="field-icon field-icon-left"><svg class="ico ico-sm" viewBox="0 0 24 24"><use href="#i-search" /></svg></span>
+                  <input class="field" type="search" placeholder="Search 1,284 events" />
+                </div>
+                <div class="field-wrap field-wrap-search">
+                  <span class="field-icon field-icon-left"><svg class="ico ico-sm" viewBox="0 0 24 24"><use href="#i-search" /></svg></span>
+                  <input class="field" type="search" value="checkout.completed" />
+                  <button class="field-clear" type="button" aria-label="Clear search"><svg class="ico ico-sm" viewBox="0 0 24 24"><use href="#i-x" /></svg></button>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <article class="entry" id="select-menu">
+            <div class="entry-head">
+              <h3>SelectMenu</h3>
+              <span class="entry-path">Patterns/SelectMenu</span>
+            </div>
+            <p class="entry-note">
+              The listbox for options that need descriptions or disabled states, and <b>the only dropdown whose list
+              is themed</b> — a native <code>&lt;select&gt;</code> popup belongs to the OS and stays light on a dark
+              page. Every dropdown on this page except the native <code>Select</code> demo is this control, including
+              the two in the gallery's own top bar. Its popover is the same surface as DropdownMenu and every other
+              floating thing: raised, overlay shadow, strong ring, 4px padding so the highlighted row's radius nests
+              inside the container's.
+            </p>
+            <div class="demo">
+              <div class="select-menu" style="max-width: 22rem" id="select-demo">
+                <span class="select-label">Destination</span>
+                <button class="select-trigger" type="button" aria-haspopup="listbox" aria-expanded="false">
+                  <span data-role="value">Snowflake — prod-analytics</span>
+                  <svg class="ico ico-sm" viewBox="0 0 24 24"><use href="#i-caret-down" /></svg>
+                </button>
+                <div class="menu" role="listbox" hidden>
+                  <button class="menu-item" role="option" aria-selected="true" type="button">
+                    <span class="menu-item-icon"><svg class="ico ico-sm" viewBox="0 0 24 24"><use href="#i-check" /></svg></span>
+                    <span>Snowflake — prod-analytics<small>Hourly, 42 tables</small></span>
+                  </button>
+                  <button class="menu-item" role="option" aria-selected="false" type="button">
+                    <span class="menu-item-icon"><svg class="ico ico-sm" viewBox="0 0 24 24"><use href="#i-table" /></svg></span>
+                    <span>BigQuery — eu-west<small>Daily, 12 tables</small></span>
+                  </button>
+                  <button class="menu-item" role="option" aria-selected="false" type="button" disabled>
+                    <span class="menu-item-icon"><svg class="ico ico-sm" viewBox="0 0 24 24"><use href="#i-table" /></svg></span>
+                    <span>Redshift — legacy<small>Decommissioned</small></span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <article class="entry" id="dropdown-menu">
+            <div class="entry-head">
+              <h3>DropdownMenu</h3>
+              <span class="entry-path">Patterns/DropdownMenu</span>
+            </div>
+            <p class="entry-note">
+              Button or icon trigger, optional per-item description, danger tone. Same popover surface as SelectMenu,
+              and it enters with a 4px rise over <code>--motion-fast</code> — the one motion every floating surface uses.
+            </p>
+            <div class="demo">
+              <div class="row">
+                <div class="menu-anchor" data-menu>
+                  <button class="btn btn-secondary btn-sm" type="button" aria-expanded="false" aria-haspopup="menu">
+                    Actions<svg class="ico ico-sm" viewBox="0 0 24 24"><use href="#i-caret-down" /></svg>
+                  </button>
+                  <div class="menu menu-left" role="menu" hidden>
+                    <button class="menu-item" role="menuitem" type="button"><span class="menu-item-icon"><svg class="ico ico-sm" viewBox="0 0 24 24"><use href="#i-pencil" /></svg></span><span>Edit source<small>Name, schedule, credentials</small></span></button>
+                    <button class="menu-item" role="menuitem" type="button"><span class="menu-item-icon"><svg class="ico ico-sm" viewBox="0 0 24 24"><use href="#i-clock" /></svg></span><span>Run now</span></button>
+                    <button class="menu-item" role="menuitem" type="button" disabled><span class="menu-item-icon"><svg class="ico ico-sm" viewBox="0 0 24 24"><use href="#i-table" /></svg></span><span>Duplicate<small>Needs write access</small></span></button>
+                    <button class="menu-item menu-item-danger" role="menuitem" type="button"><span class="menu-item-icon"><svg class="ico ico-sm" viewBox="0 0 24 24"><use href="#i-trash" /></svg></span><span>Delete source</span></button>
+                  </div>
+                </div>
+
+                <div class="menu-anchor" data-menu>
+                  <button class="btn btn-ghost btn-sm" type="button" aria-label="Row actions" aria-expanded="false" aria-haspopup="menu" style="width: 2.25rem; padding: 0">
+                    <svg class="ico ico-sm" viewBox="0 0 24 24"><use href="#i-dots" /></svg>
+                  </button>
+                  <div class="menu menu-right" role="menu" hidden>
+                    <button class="menu-item" role="menuitem" type="button"><span class="menu-item-icon"><svg class="ico ico-sm" viewBox="0 0 24 24"><use href="#i-check" /></svg></span><span>Mark reviewed</span></button>
+                    <button class="menu-item menu-item-danger" role="menuitem" type="button"><span class="menu-item-icon"><svg class="ico ico-sm" viewBox="0 0 24 24"><use href="#i-trash" /></svg></span><span>Remove</span></button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <article class="entry" id="stepper">
+            <div class="entry-head">
+              <h3>Stepper</h3>
+              <span class="entry-path">Patterns/Stepper</span>
+            </div>
+            <p class="entry-note">
+              A seam grid, because steps are a sequence and three gapped cards do not say "then". Current step takes
+              the primary wash, completed steps a success mark, upcoming steps stay neutral.
+            </p>
+            <div class="demo">
+              <ol class="steps">
+                <li data-state="done">
+                  <span class="step-mark"><svg class="ico ico-sm" viewBox="0 0 24 24"><use href="#i-check" /></svg></span>
+                  <span class="step-text"><b>Connect</b><span>Credentials verified</span></span>
+                </li>
+                <li data-state="current">
+                  <span class="step-mark">2</span>
+                  <span class="step-text"><b>Choose tables</b><span>42 of 128 selected</span></span>
+                </li>
+                <li>
+                  <span class="step-mark">3</span>
+                  <span class="step-text"><b>Schedule</b><span>Not started</span></span>
+                </li>
+              </ol>
+            </div>
+          </article>
+
+          <article class="entry" id="expandable-tile">
+            <div class="entry-head">
+              <h3>ExpandableTile</h3>
+              <span class="entry-path">Patterns/ExpandableTile</span>
+            </div>
+            <p class="entry-note">
+              The one behavioural change in the set: an open tile takes <code>--shadow-overlay</code>,
+              <code>surface-raised</code> and a 3px lift, so <b>it reads as a dialog that stayed where it was</b>
+              instead of flattening into the page. The +/− marker replaces the caret; the controlled API is unchanged.
+            </p>
+            <div class="demo">
+              <details class="tile">
+                <summary>
+                  <span class="tile-title"><span>What counts as a failed sync?</span><small>Retries, partial loads, schema drift</small></span>
+                  <span class="tile-mark" aria-hidden="true"></span>
+                </summary>
+                <div class="tile-body">
+                  <p>A sync is failed once every retry in its window has been used. Partial loads count as failures even when rows landed.</p>
+                </div>
+              </details>
+              <details class="tile" open>
+                <summary>
+                  <span class="tile-title"><span>Where does the cost number come from?</span><small>Warehouse billing, not our estimate</small></span>
+                  <span class="tile-mark" aria-hidden="true"></span>
+                </summary>
+                <div class="tile-body">
+                  <p>Pulled from the warehouse's own billing export, lagged by up to four hours. <strong>We never estimate it.</strong></p>
+                </div>
+              </details>
+            </div>
+          </article>
+
+          <!-- ══ FEEDBACK & OVERLAYS ══════════════════════════════════ -->
+
+          <article class="entry" id="info-banner">
+            <div class="entry-head">
+              <h3>InfoBanner</h3>
+              <span class="entry-path">Patterns/InfoBanner</span>
+            </div>
+            <p class="entry-note">
+              Five tones, <code>role="alert"</code> on warning and danger. Each gains a <b>leading bar in its own
+              hue</b>, so a stack of banners is scannable by tone without any of them shouting, and the tone is not
+              carried by colour alone.
+            </p>
+            <div class="demo">
+              <div class="stack">
+                <div class="banner banner-info" role="status">
+                  <div class="banner-main">
+                    <span class="banner-icon"><svg class="ico" viewBox="0 0 24 24"><use href="#i-info" /></svg></span>
+                    <span class="banner-text"><b>Backfill in progress</b><span>Historical events from 2024 are still loading. Counts will move.</span></span>
+                  </div>
+                  <button class="btn btn-ghost btn-sm" type="button">Details</button>
+                </div>
+                <div class="banner banner-warning" role="alert">
+                  <div class="banner-main">
+                    <span class="banner-icon"><svg class="ico" viewBox="0 0 24 24"><use href="#i-warning" /></svg></span>
+                    <span class="banner-text"><b>Salesforce is degraded</b><span>Last successful sync was 51 minutes ago.</span></span>
+                  </div>
+                </div>
+                <div class="banner banner-danger" role="alert">
+                  <div class="banner-main">
+                    <span class="banner-icon"><svg class="ico" viewBox="0 0 24 24"><use href="#i-warning" /></svg></span>
+                    <span class="banner-text"><b>Stripe webhook signature failed</b><span>Events are queued. Rotate the signing secret to resume.</span></span>
+                  </div>
+                  <button class="btn btn-danger btn-sm" type="button">Rotate</button>
+                </div>
+                <div class="banner banner-success" role="status">
+                  <div class="banner-main">
+                    <span class="banner-icon"><svg class="ico" viewBox="0 0 24 24"><use href="#i-check-circle" /></svg></span>
+                    <span class="banner-text"><b>All destinations caught up</b><span>Nothing pending as of 09:14.</span></span>
+                  </div>
+                </div>
+                <div class="banner" role="status">
+                  <div class="banner-main">
+                    <span class="banner-icon"><svg class="ico" viewBox="0 0 24 24"><use href="#i-info" /></svg></span>
+                    <span class="banner-text"><b>Neutral</b><span>For messages with no status attached.</span></span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <article class="entry" id="tooltip">
+            <div class="entry-head">
+              <h3>Tooltip</h3>
+              <span class="entry-path">Patterns/Tooltip</span>
+            </div>
+            <p class="entry-note">
+              Unchanged behaviour — hover and focus, top or bottom. It keeps the inverted surface (<code>fg</code> on
+              <code>bg</code>), which is deliberately the one floating element that does <em>not</em> use the raised
+              surface: a tooltip is an annotation, not a layer of the app.
+            </p>
+            <div class="demo">
+              <div class="row">
+                <span class="tip">
+                  <button class="btn btn-secondary btn-sm" type="button">Hover me</button>
+                  <span class="tip-bubble" role="tooltip">Runs are queued per source, so two sources never block each other.</span>
+                </span>
+                <span class="tip">
+                  <span class="badge badge-warning badge-dot">Degraded</span>
+                  <span class="tip-bubble" role="tooltip">Last successful sync 51 minutes ago.</span>
+                </span>
+              </div>
+            </div>
+          </article>
+
+          <article class="entry" id="dialog">
+            <div class="entry-head">
+              <h3>Dialog</h3>
+              <span class="entry-path">Patterns/Dialog</span>
+            </div>
+            <p class="entry-note">
+              Focus trap, Escape, restore-focus-on-close and the three sizes are unchanged. The shell loses its 1px
+              padding wrapper: header on raised, body on surface, footer on sunken — the same three-surface anatomy as
+              Card, at overlay elevation. The scrim keeps the blur and now tints with <code>fg</code>.
+            </p>
+            <div class="demo">
+              <div class="row">
+                <button class="btn btn-primary" type="button" data-open="dialog">Open dialog</button>
+                <span class="note">Escape closes. Focus returns to the trigger.</span>
+              </div>
+            </div>
+          </article>
+
+          <article class="entry" id="confirm-dialog">
+            <div class="entry-head">
+              <h3>ConfirmDialog</h3>
+              <span class="entry-path">Patterns/ConfirmDialog</span>
+            </div>
+            <p class="entry-note">
+              Dialog with a fixed footer: ghost cancel, then the confirm in <code>primary</code> or
+              <code>danger</code>. Order is unchanged — the destructive action stays on the right, where the primary
+              action always is, so muscle memory does not misfire.
+            </p>
+            <div class="demo">
+              <div class="row">
+                <button class="btn btn-danger" type="button" data-open="confirm">Delete source</button>
+              </div>
+            </div>
+          </article>
+
+          <article class="entry" id="side-panel">
+            <div class="entry-head">
+              <h3>SidePanel</h3>
+              <span class="entry-path">Patterns/SidePanel</span>
+            </div>
+            <p class="entry-note">
+              Same right-edge sheet, same focus handling, two sizes. It now slides in 24px over
+              <code>--motion-normal</code> rather than appearing, and its ring is on the leading edge only — the other
+              three sides meet the viewport.
+            </p>
+            <div class="demo">
+              <div class="row">
+                <button class="btn btn-primary" type="button" data-open="panel">Open side panel</button>
+              </div>
+            </div>
+          </article>
+
+          <article class="entry" id="toast">
+            <div class="entry-head">
+              <h3>ToastProvider, useToast</h3>
+              <span class="entry-path">Patterns/Toast</span>
+            </div>
+            <p class="entry-note">
+              Bottom-right stack, four tones, optional action, auto-dismiss at 4s. The shell is flattened to one
+              raised surface with the tone carried by the icon halo, and it leaves to the right rather than
+              disappearing — <b>a toast that vanishes reads as a bug</b>. With no second line the icon and title
+              centre on each other; with a description they top-align, so the icon always sits on the title.
+            </p>
+            <div class="demo">
+              <div class="row">
+                <button class="btn btn-secondary btn-sm" type="button" data-toast="success">Success</button>
+                <button class="btn btn-secondary btn-sm" type="button" data-toast="info">Info</button>
+                <button class="btn btn-secondary btn-sm" type="button" data-toast="warning">Warning</button>
+                <button class="btn btn-secondary btn-sm" type="button" data-toast="danger">Danger</button>
+                <button class="btn btn-secondary btn-sm" type="button" data-toast="info" data-toast-title="Filters cleared" data-toast-body="">Title only</button>
+              </div>
+            </div>
+          </article>
+
+          <article class="entry" id="avatar">
+            <div class="entry-head">
+              <h3>Avatar</h3>
+              <span class="entry-path">Patterns/Avatar</span>
+            </div>
+            <p class="entry-note">
+              Initials on <code>primary-soft</code>, three sizes, optional image and subtitle. Gains a faint ring so it
+              keeps its edge on the raised surfaces it usually appears on (menus, table rows, top bars).
+            </p>
+            <div class="demo">
+              <div class="row" style="gap: var(--space-6)">
+                <span class="avatar avatar-sm"><span class="avatar-mark">AP</span><span class="avatar-text"><b>Aditi Patel</b><span>Data Platform</span></span></span>
+                <span class="avatar"><span class="avatar-mark">JM</span><span class="avatar-text"><b>Jordan Mize</b><span>Billing</span></span></span>
+                <span class="avatar avatar-lg"><span class="avatar-mark"><svg class="ico" viewBox="0 0 24 24"><use href="#i-users" /></svg></span><span class="avatar-text"><b>Revenue Ops</b><span>7 members</span></span></span>
+              </div>
+            </div>
+          </article>
+
+          <!-- ══ CHARTS ═══════════════════════════════════════════════ -->
+
+          <article class="entry" id="line-chart">
+            <div class="entry-head">
+              <h3>LineChart</h3>
+              <span class="entry-path">Charts/LineChart</span>
+            </div>
+            <p class="entry-note">
+              Recharts draws the real one; the shape here is hand-drawn so the gallery stays dependency-free. What the
+              design system owns is the furniture: <b>mono axis labels, hairline grid at <code>--chart-grid</code>, no
+              axis lines</b>, and series colours straight from the categorical tokens.
+            </p>
+            <div class="demo">
+              <div class="chart">
+                <div class="chart-top">
+                  <ul class="legend">
+                    <li><i style="background: var(--chart-cat-1)"></i>Events accepted</li>
+                    <li><i style="background: var(--chart-cat-2)"></i>Events rejected</li>
+                  </ul>
+                </div>
+                <svg class="chart-plot" viewBox="0 0 640 240" role="img" aria-label="Events accepted and rejected over eight weeks">
+                  <line class="chart-grid-line" x1="48" y1="30" x2="620" y2="30" />
+                  <line class="chart-grid-line" x1="48" y1="75" x2="620" y2="75" />
+                  <line class="chart-grid-line" x1="48" y1="120" x2="620" y2="120" />
+                  <line class="chart-grid-line" x1="48" y1="165" x2="620" y2="165" />
+                  <line class="chart-grid-line" x1="48" y1="200" x2="620" y2="200" />
+                  <text class="chart-axis" x="8" y="34">1.5M</text>
+                  <text class="chart-axis" x="8" y="124">750k</text>
+                  <text class="chart-axis" x="20" y="204">0</text>
+                  <polyline fill="none" stroke="var(--chart-cat-1)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"
+                    points="48,150 130,132 212,140 294,108 376,96 458,70 540,80 620,52" />
+                  <polyline fill="none" stroke="var(--chart-cat-2)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="0"
+                    points="48,178 130,170 212,162 294,166 376,150 458,142 540,132 620,126" />
+                  <circle cx="620" cy="52" r="4" fill="var(--chart-cat-1)" />
+                  <circle cx="620" cy="126" r="4" fill="var(--chart-cat-2)" />
+                  <text class="chart-axis" x="40" y="224">W1</text>
+                  <text class="chart-axis" x="204" y="224">W3</text>
+                  <text class="chart-axis" x="368" y="224">W5</text>
+                  <text class="chart-axis" x="530" y="224">W7</text>
+                </svg>
+              </div>
+            </div>
+          </article>
+
+          <article class="entry" id="bar-chart">
+            <div class="entry-head">
+              <h3>BarChart</h3>
+              <span class="entry-path">Charts/BarChart</span>
+            </div>
+            <p class="entry-note">
+              Bars get the radius token on their top corners and a 2px gap inside each group. Grid lines run behind
+              them and stop at the plot area — <b>a grid line crossing an axis label is the most common chart bug</b> in
+              a system that has no chart rules.
+            </p>
+            <div class="demo">
+              <div class="chart">
+                <div class="chart-top">
+                  <ul class="legend">
+                    <li><i style="background: var(--chart-cat-1)"></i>This week</li>
+                    <li><i style="background: var(--chart-cat-3)"></i>Last week</li>
+                  </ul>
+                </div>
+                <svg class="chart-plot" viewBox="0 0 640 240" role="img" aria-label="Runs per day, this week against last week">
+                  <line class="chart-grid-line" x1="48" y1="40" x2="620" y2="40" />
+                  <line class="chart-grid-line" x1="48" y1="90" x2="620" y2="90" />
+                  <line class="chart-grid-line" x1="48" y1="140" x2="620" y2="140" />
+                  <line class="chart-grid-line" x1="48" y1="190" x2="620" y2="190" />
+                  <text class="chart-axis" x="14" y="44">600</text>
+                  <text class="chart-axis" x="14" y="144">200</text>
+                  <g fill="var(--chart-cat-1)">
+                    <rect x="60" y="96" width="28" height="94" rx="6" />
+                    <rect x="150" y="64" width="28" height="126" rx="6" />
+                    <rect x="240" y="82" width="28" height="108" rx="6" />
+                    <rect x="330" y="48" width="28" height="142" rx="6" />
+                    <rect x="420" y="70" width="28" height="120" rx="6" />
+                    <rect x="510" y="112" width="28" height="78" rx="6" />
+                  </g>
+                  <g fill="var(--chart-cat-3)">
+                    <rect x="92" y="120" width="28" height="70" rx="6" />
+                    <rect x="182" y="104" width="28" height="86" rx="6" />
+                    <rect x="272" y="112" width="28" height="78" rx="6" />
+                    <rect x="362" y="90" width="28" height="100" rx="6" />
+                    <rect x="452" y="118" width="28" height="72" rx="6" />
+                    <rect x="542" y="140" width="28" height="50" rx="6" />
+                  </g>
+                  <text class="chart-axis" x="76" y="212">Mon</text>
+                  <text class="chart-axis" x="168" y="212">Tue</text>
+                  <text class="chart-axis" x="258" y="212">Wed</text>
+                  <text class="chart-axis" x="350" y="212">Thu</text>
+                  <text class="chart-axis" x="442" y="212">Fri</text>
+                  <text class="chart-axis" x="532" y="212">Sat</text>
+                </svg>
+              </div>
+            </div>
+          </article>
+
+          <article class="entry" id="donut-chart">
+            <div class="entry-head">
+              <h3>DonutChart</h3>
+              <span class="entry-path">Charts/DonutChart</span>
+            </div>
+            <p class="entry-note">
+              Segments are separated by a 2px gap in the page ground rather than a stroke, so the ring reads cleanly on
+              any surface. The centre carries the total as a mono figure with a mono caption under it — the same
+              pairing the stat cells use.
+            </p>
+            <div class="demo">
+              <div class="row" style="gap: var(--space-8); align-items: center">
+                <svg width="200" height="200" viewBox="0 0 200 200" role="img" aria-label="Events by source">
+                  <g transform="rotate(-90 100 100)" fill="none" stroke-width="26">
+                    <circle cx="100" cy="100" r="70" stroke="var(--chart-cat-1)" stroke-dasharray="182 258" stroke-dashoffset="0" />
+                    <circle cx="100" cy="100" r="70" stroke="var(--chart-cat-2)" stroke-dasharray="112 328" stroke-dashoffset="-186" />
+                    <circle cx="100" cy="100" r="70" stroke="var(--chart-cat-3)" stroke-dasharray="74 366" stroke-dashoffset="-302" />
+                    <circle cx="100" cy="100" r="70" stroke="var(--chart-cat-4)" stroke-dasharray="60 380" stroke-dashoffset="-380" />
+                  </g>
+                  <text x="100" y="96" text-anchor="middle" class="num" style="font-size: 1.5rem; fill: var(--color-fg)">1.28M</text>
+                  <text x="100" y="118" text-anchor="middle" class="chart-axis" style="letter-spacing: 0.1em">EVENTS</text>
+                </svg>
+                <ul class="legend" style="flex-direction: column; gap: var(--space-3)">
+                  <li><i style="background: var(--chart-cat-1)"></i>Postgres — 41%</li>
+                  <li><i style="background: var(--chart-cat-2)"></i>Snowflake — 26%</li>
+                  <li><i style="background: var(--chart-cat-3)"></i>Segment — 17%</li>
+                  <li><i style="background: var(--chart-cat-4)"></i>Everything else — 16%</li>
+                </ul>
+              </div>
+            </div>
+          </article>
+
+          <article class="entry" id="sparkline">
+            <div class="entry-head">
+              <h3>Sparkline</h3>
+              <span class="entry-path">Charts/Sparkline</span>
+            </div>
+            <p class="entry-note">
+              No axes, no grid, no tooltip — a sparkline is a word in a sentence, not a chart. It takes
+              <code>--chart-seq</code> and sits inline beside the figure it belongs to, at the cap height of the number.
+            </p>
+            <div class="demo">
+              <div class="seam seam-3">
+                <div>
+                  <p class="cell-k">Events / hour</p>
+                  <div style="display: flex; align-items: baseline; gap: var(--space-3)">
+                    <span class="num" style="font-size: var(--text-2xl)">53.4k</span>
+                    <svg width="96" height="28" viewBox="0 0 96 28" aria-hidden="true"><polyline fill="none" stroke="var(--chart-seq)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" points="2,22 14,18 26,20 38,12 50,14 62,8 74,10 94,4" /></svg>
+                  </div>
+                </div>
+                <div>
+                  <p class="cell-k">Latency p95</p>
+                  <div style="display: flex; align-items: baseline; gap: var(--space-3)">
+                    <span class="num" style="font-size: var(--text-2xl)">1.9s</span>
+                    <svg width="96" height="28" viewBox="0 0 96 28" aria-hidden="true"><polyline fill="none" stroke="var(--chart-seq)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" points="2,10 14,12 26,8 38,16 50,14 62,20 74,18 94,22" /></svg>
+                  </div>
+                </div>
+                <div>
+                  <p class="cell-k">Cost / day</p>
+                  <div style="display: flex; align-items: baseline; gap: var(--space-3)">
+                    <span class="num" style="font-size: var(--text-2xl)">$137</span>
+                    <svg width="96" height="28" viewBox="0 0 96 28" aria-hidden="true"><polyline fill="none" stroke="var(--chart-seq)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" points="2,16 14,14 26,15 38,13 50,14 62,11 74,12 94,9" /></svg>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <article class="entry" id="funnel-bars">
+            <div class="entry-head">
+              <h3>FunnelBars</h3>
+              <span class="entry-path">Charts/FunnelBars</span>
+            </div>
+            <p class="entry-note">
+              Unchanged: label, track, fill at <code>--chart-seq</code> with opacity carrying magnitude, count and
+              percentage in mono. The track picks up the ring so an empty stage is still a visible row rather than a
+              blank line.
+            </p>
+            <div class="demo">
+              <div class="funnel" role="table" aria-label="Pipeline by status">
+                <div class="funnel-row" role="row">
+                  <span class="funnel-label" role="cell">Received</span>
+                  <span class="funnel-track" role="cell"><span class="funnel-fill" style="width: 100%"></span></span>
+                  <span class="funnel-value num" role="cell">1,284 <small>(100%)</small></span>
+                </div>
+                <div class="funnel-row" role="row">
+                  <span class="funnel-label" role="cell">Parsed</span>
+                  <span class="funnel-track" role="cell"><span class="funnel-fill" style="width: 88%; opacity: 0.9"></span></span>
+                  <span class="funnel-value num" role="cell">1,130 <small>(88%)</small></span>
+                </div>
+                <div class="funnel-row" role="row">
+                  <span class="funnel-label" role="cell">Enriched</span>
+                  <span class="funnel-track" role="cell"><span class="funnel-fill" style="width: 61%; opacity: 0.75"></span></span>
+                  <span class="funnel-value num" role="cell">783 <small>(61%)</small></span>
+                </div>
+                <div class="funnel-row" role="row">
+                  <span class="funnel-label" role="cell">Delivered</span>
+                  <span class="funnel-track" role="cell"><span class="funnel-fill" style="width: 44%; opacity: 0.6"></span></span>
+                  <span class="funnel-value num" role="cell">565 <small>(44%)</small></span>
+                </div>
+                <div class="funnel-row" role="row">
+                  <span class="funnel-label" role="cell">Confirmed</span>
+                  <span class="funnel-track" role="cell"><span class="funnel-fill" style="width: 12%; opacity: 0.45"></span></span>
+                  <span class="funnel-value num" role="cell">154 <small>(12%)</small></span>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <article class="entry" id="chart-shell">
+            <div class="entry-head">
+              <h3>ChartShell</h3>
+              <span class="entry-path">Charts/ChartShell</span>
+            </div>
+            <p class="entry-note">
+              The wrapper that gives every chart the same three states — loading (skeleton), empty (EmptyState), loaded
+              — plus the legend and the <b>view-as-table</b> escape hatch. Unchanged in behaviour; it now inherits the
+              new skeleton sweep and the borderless empty state. Try the toggle.
+            </p>
+            <div class="demo">
+              <div class="chart" id="chart-shell-demo">
+                <div class="chart-top">
+                  <ul class="legend">
+                    <li><i style="background: var(--chart-cat-1)"></i>Accepted</li>
+                    <li><i style="background: var(--chart-cat-2)"></i>Rejected</li>
+                  </ul>
+                  <button class="btn btn-ghost btn-sm" type="button" data-role="toggle" aria-pressed="false">
+                    <svg class="ico ico-sm" viewBox="0 0 24 24"><use href="#i-table" /></svg>View as table
+                  </button>
+                </div>
+                <div data-role="plot">
+                  <svg class="chart-plot" viewBox="0 0 640 200" role="img" aria-label="Accepted and rejected events by week">
+                    <line class="chart-grid-line" x1="48" y1="30" x2="620" y2="30" />
+                    <line class="chart-grid-line" x1="48" y1="90" x2="620" y2="90" />
+                    <line class="chart-grid-line" x1="48" y1="150" x2="620" y2="150" />
+                    <polyline fill="none" stroke="var(--chart-cat-1)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" points="48,120 162,96 276,104 390,70 504,60 620,40" />
+                    <polyline fill="none" stroke="var(--chart-cat-2)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" points="48,160 162,152 276,146 390,148 504,138 620,132" />
+                    <text class="chart-axis" x="40" y="182">W1</text>
+                    <text class="chart-axis" x="380" y="182">W4</text>
+                    <text class="chart-axis" x="600" y="182">W6</text>
+                  </svg>
+                </div>
+                <div data-role="table" hidden>
+                  <div class="table-scroll">
+                    <table class="tbl">
+                      <thead><tr><th scope="col">Week</th><th scope="col" class="right">Accepted</th><th scope="col" class="right">Rejected</th></tr></thead>
+                      <tbody>
+                        <tr><td class="num">W1</td><td class="right num">402,110</td><td class="right num">8,204</td></tr>
+                        <tr><td class="num">W2</td><td class="right num">488,220</td><td class="right num">7,980</td></tr>
+                        <tr><td class="num">W3</td><td class="right num">470,006</td><td class="right num">8,551</td></tr>
+                        <tr><td class="num">W4</td><td class="right num">601,447</td><td class="right num">8,102</td></tr>
+                        <tr><td class="num">W5</td><td class="right num">640,209</td><td class="right num">7,340</td></tr>
+                        <tr><td class="num">W6</td><td class="right num">712,884</td><td class="right num">6,918</td></tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="demo">
+              <p class="demo-label">Loading and empty, from the same shell</p>
+              <div class="grid-2">
+                <div class="skeleton" style="height: 10rem"></div>
+                <div class="empty" style="padding: var(--space-6)">
+                  <span class="empty-icon"><svg class="ico" viewBox="0 0 24 24"><use href="#i-chart" /></svg></span>
+                  <h4>No data yet</h4>
+                  <p>Data will appear here once activity starts flowing in.</p>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <article class="entry" id="chart-tooltip">
+            <div class="entry-head">
+              <h3>ChartTooltip</h3>
+              <span class="entry-path">Charts/ChartTooltip</span>
+            </div>
+            <p class="entry-note">
+              The hover card Recharts renders. It is now the <b>same floating surface as every menu and dialog</b> —
+              raised, overlay shadow, strong ring — with a mono caption for the x value and tabular figures for the
+              series, so it agrees with the table showing the same numbers underneath.
+            </p>
+            <div class="demo">
+              <div class="row" style="gap: var(--space-6)">
+                <div class="chart-tip">
+                  <b>Week 4 · 22 Jul</b>
+                  <span class="chart-tip-row"><span><i style="background: var(--chart-cat-1)"></i>Accepted</span><span class="num">601,447</span></span>
+                  <span class="chart-tip-row"><span><i style="background: var(--chart-cat-2)"></i>Rejected</span><span class="num">8,102</span></span>
+                </div>
+                <div class="chart-tip">
+                  <b>Snowflake</b>
+                  <span class="chart-tip-row"><span><i style="background: var(--chart-cat-2)"></i>Share</span><span class="num">26.4%</span></span>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <footer style="padding-block: var(--space-10) var(--space-12); border-top: 1px solid var(--color-edge)">
+            <p class="note">
+              46 exports, all of them here. Standalone mockup — nothing in <code>src/</code> was touched, and nothing
+              imports this folder. Run Storybook beside it with <code>npm run storybook</code>.
+            </p>
+          </footer>
+        </main>
+      </div>
+    </div>
+
+    <!-- ── overlays ─────────────────────────────────────────────────── -->
+    <div class="scrim scrim-center" id="scrim-dialog" hidden>
+      <div class="dlg" role="dialog" aria-modal="true" aria-labelledby="dlg-title" tabindex="-1">
+        <div class="dlg-head">
+          <div>
+            <h2 id="dlg-title">Edit source</h2>
+            <p>Changes apply to the next scheduled run.</p>
+          </div>
+          <button class="btn btn-ghost btn-sm" type="button" aria-label="Close dialog" data-close style="width: 2.25rem; padding: 0">
+            <svg class="ico ico-sm" viewBox="0 0 24 24"><use href="#i-x" /></svg>
+          </button>
+        </div>
+        <div class="dlg-body">
+          <div class="stack">
+            <div class="form-field">
+              <label class="form-label" for="dlg-name">Display name</label>
+              <input class="field" id="dlg-name" value="Snowflake — prod-analytics" />
+            </div>
+            <div class="form-field">
+              <span class="form-label" id="dlg-schedule-label">Schedule</span>
+              <div class="select-menu">
+                <button class="select-trigger" type="button" aria-haspopup="listbox" aria-expanded="false" aria-labelledby="dlg-schedule-label">
+                  <span data-role="value">Hourly, at :05</span>
+                  <svg class="ico ico-sm" viewBox="0 0 24 24"><use href="#i-caret-down" /></svg>
+                </button>
+                <div class="menu" role="listbox" aria-label="Schedule" hidden>
+                  <button class="menu-item" role="option" type="button" aria-selected="true"><span class="menu-item-icon"><svg class="ico ico-sm" viewBox="0 0 24 24"><use href="#i-check" /></svg></span><span>Hourly, at :05</span></button>
+                  <button class="menu-item" role="option" type="button" aria-selected="false"><span class="menu-item-icon"><svg class="ico ico-sm" viewBox="0 0 24 24"><use href="#i-check" /></svg></span><span>Every 15 minutes</span></button>
+                  <button class="menu-item" role="option" type="button" aria-selected="false"><span class="menu-item-icon"><svg class="ico ico-sm" viewBox="0 0 24 24"><use href="#i-check" /></svg></span><span>Daily, at 02:00</span></button>
+                </div>
+              </div>
+              <p class="form-hint">Runs are queued per source, so overlapping schedules never collide.</p>
+            </div>
+            <label class="cbx"><input type="checkbox" checked /><span class="cbx-box"></span><span>Alert #data-oncall when a run fails</span></label>
+          </div>
+        </div>
+        <div class="dlg-foot">
+          <button class="btn btn-ghost" type="button" data-close>Cancel</button>
+          <button class="btn btn-primary" type="button" data-close data-confirm-toast="Source updated">Save changes</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="scrim scrim-center" id="scrim-confirm" hidden>
+      <div class="dlg" role="alertdialog" aria-modal="true" aria-labelledby="confirm-title" tabindex="-1" style="max-width: 26rem">
+        <div class="dlg-head">
+          <div>
+            <h2 id="confirm-title">Delete this source?</h2>
+            <p>This cannot be undone.</p>
+          </div>
+        </div>
+        <div class="dlg-body">
+          Deleting <b style="color: var(--color-fg)">Snowflake — prod-analytics</b> removes its 42 tables from every
+          model that reads them. Runs already in flight will finish.
+        </div>
+        <div class="dlg-foot">
+          <button class="btn btn-ghost" type="button" data-close>Cancel</button>
+          <button class="btn btn-danger" type="button" data-close data-confirm-toast="Source deleted" data-confirm-tone="danger">Delete source</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="scrim scrim-end" id="scrim-panel" hidden>
+      <div class="panel" role="dialog" aria-modal="true" aria-labelledby="panel-title" tabindex="-1">
+        <div class="panel-head">
+          <div>
+            <h2 id="panel-title">Run #4,201</h2>
+            <p>Started 09:05, finished 09:07 · triggered by schedule</p>
+          </div>
+          <button class="btn btn-ghost btn-sm" type="button" aria-label="Close panel" data-close style="width: 2.25rem; padding: 0">
+            <svg class="ico ico-sm" viewBox="0 0 24 24"><use href="#i-x" /></svg>
+          </button>
+        </div>
+        <div class="panel-body">
+          <div class="stack">
+            <div class="banner banner-success" role="status">
+              <div class="banner-main">
+                <span class="banner-icon"><svg class="ico" viewBox="0 0 24 24"><use href="#i-check-circle" /></svg></span>
+                <span class="banner-text"><b>Completed</b><span>184,220 rows across 42 tables.</span></span>
+              </div>
+            </div>
+            <dl class="dl">
+              <div><dt>Duration</dt><dd class="num">2m 14s</dd></div>
+              <div><dt>Queued</dt><dd class="num">4s</dd></div>
+              <div><dt>Rows</dt><dd class="num">184,220</dd></div>
+              <div><dt>Bytes</dt><dd class="num">1.4 GB</dd></div>
+            </dl>
+            <details class="tile">
+              <summary>
+                <span class="tile-title"><span>Per-table breakdown</span><small>42 tables</small></span>
+                <span class="tile-mark" aria-hidden="true"></span>
+              </summary>
+              <div class="tile-body">
+                <div class="table-scroll">
+                  <table class="tbl">
+                    <thead><tr><th scope="col">Table</th><th scope="col" class="right">Rows</th></tr></thead>
+                    <tbody>
+                      <tr><td>orders</td><td class="right num">84,110</td></tr>
+                      <tr><td>order_items</td><td class="right num">62,004</td></tr>
+                      <tr><td>customers</td><td class="right num">38,106</td></tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </details>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="toast-stack" id="toast-stack" aria-live="polite"></div>
+
+    <script>
+      // ── theme, palette, wallpaper ─────────────────────────────────────
+      const root = document.documentElement
+      const PALETTES = ["lt-current", "lt-sage", "lt-paper", "lt-slate"]
+      const state = { theme: "light", light: "lt-sage", glow: "many" }
+
+      function apply() {
+        root.dataset.theme = state.theme
+        root.classList.remove(...PALETTES)
+        if (state.theme === "light") root.classList.add(state.light)
+        document.body.dataset.glow = state.glow
+
+        const themeButton = document.getElementById("toggle-theme")
+        const dark = state.theme === "dark"
+        // Label and icon together: the label says what the click does, the icon
+        // says it at a glance. Every button in the system can take both.
+        themeButton.lastChild.textContent = dark ? "Light" : "Dark"
+        themeButton.querySelector("use").setAttribute("href", dark ? "#i-sun" : "#i-moon")
+      }
+
+      document.getElementById("toggle-theme").addEventListener("click", () => {
+        state.theme = state.theme === "dark" ? "light" : "dark"
+        apply()
+      })
+
+      // Picking a palette means you want to look at it, so it also leaves dark.
+      document.getElementById("pick-light").addEventListener("select-change", (event) => {
+        state.light = event.detail.value
+        state.theme = "light"
+        apply()
+      })
+
+      document.getElementById("pick-glow").addEventListener("select-change", (event) => {
+        state.glow = event.detail.value
+        apply()
+      })
+
+      // ── sidebar: mark the section you are reading ─────────────────────
+      const links = new Map(
+        [...document.querySelectorAll(".shell-nav .nav-link")].map((link) => [link.getAttribute("href").slice(1), link]),
+      )
+      const spy = new IntersectionObserver(
+        (records) => {
+          for (const record of records) {
+            if (!record.isIntersecting) continue
+            for (const link of links.values()) link.removeAttribute("aria-current")
+            links.get(record.target.id)?.setAttribute("aria-current", "true")
+          }
+        },
+        // A band across the upper third: an entry counts as "being read" once
+        // its heading reaches it, not when its last pixel leaves the viewport.
+        { rootMargin: "-10% 0px -70% 0px" },
+      )
+      for (const entry of document.querySelectorAll(".entry")) spy.observe(entry)
+
+      // ── tabs ──────────────────────────────────────────────────────────
+      const tabList = document.querySelector('[role="tablist"]')
+      const tabs = [...tabList.querySelectorAll('[role="tab"]:not([disabled])')]
+
+      function selectTab(tab) {
+        for (const other of tabs) {
+          const selected = other === tab
+          other.setAttribute("aria-selected", String(selected))
+          other.tabIndex = selected ? 0 : -1
+          document.getElementById(other.getAttribute("aria-controls")).hidden = !selected
+        }
+      }
+
+      for (const tab of tabs) {
+        tab.addEventListener("click", () => selectTab(tab))
+        tab.addEventListener("keydown", (event) => {
+          const keys = { ArrowRight: 1, ArrowLeft: -1 }
+          if (!(event.key in keys)) return
+          event.preventDefault()
+          const next = tabs[(tabs.indexOf(tab) + keys[event.key] + tabs.length) % tabs.length]
+          selectTab(next)
+          next.focus()
+        })
+      }
+
+      // ── menus (dropdown + select) ─────────────────────────────────────
+      function closeAllMenus() {
+        for (const menu of document.querySelectorAll(".menu")) {
+          menu.hidden = true
+          menu.parentElement.querySelector("[aria-expanded]")?.setAttribute("aria-expanded", "false")
+        }
+      }
+
+      document.addEventListener("click", (event) => {
+        const trigger = event.target.closest("[aria-haspopup]")
+        if (!trigger) {
+          if (!event.target.closest(".menu")) closeAllMenus()
+          return
+        }
+        const menu = trigger.parentElement.querySelector(".menu")
+        const wasOpen = !menu.hidden
+        closeAllMenus()
+        menu.hidden = wasOpen
+        trigger.setAttribute("aria-expanded", String(!wasOpen))
+      })
+
+      document.addEventListener("keydown", (event) => {
+        if (event.key === "Escape") closeAllMenus()
+      })
+
+      // Every listbox on the page shares one behaviour: choosing an option
+      // marks it selected, writes its label back to the trigger, closes, and
+      // fires `select-change` with the value. The controls in the top bar
+      // listen for that event, which is why they are the same component as the
+      // SelectMenu demo rather than a native <select> with its OS popup.
+      for (const listbox of document.querySelectorAll(".select-menu")) {
+        const trigger = listbox.querySelector(".select-trigger")
+        const valueSlot = listbox.querySelector('[data-role="value"]')
+
+        for (const option of listbox.querySelectorAll('[role="option"]')) {
+          option.addEventListener("click", () => {
+            if (option.disabled) return
+            for (const other of listbox.querySelectorAll('[role="option"]')) {
+              other.setAttribute("aria-selected", String(other === option))
+            }
+            // The label is the option's first text node — the <small> under it
+            // is a description, not part of the value.
+            valueSlot.textContent = option.querySelector("span:last-child").firstChild.textContent.trim()
+            closeAllMenus()
+            trigger.focus()
+            listbox.dispatchEvent(
+              new CustomEvent("select-change", {
+                detail: { value: option.dataset.value ?? valueSlot.textContent },
+              }),
+            )
+          })
+        }
+      }
+
+      // ── overlays ──────────────────────────────────────────────────────
+      const SCRIMS = { dialog: "scrim-dialog", confirm: "scrim-confirm", panel: "scrim-panel" }
+      let lastTrigger = null
+
+      function openScrim(name, trigger) {
+        const scrim = document.getElementById(SCRIMS[name])
+        lastTrigger = trigger ?? null
+        scrim.hidden = false
+        scrim.querySelector('[role="dialog"], [role="alertdialog"]').focus()
+      }
+
+      function closeScrim(scrim) {
+        scrim.hidden = true
+        lastTrigger?.focus()
+        lastTrigger = null
+      }
+
+      for (const button of document.querySelectorAll("[data-open]")) {
+        button.addEventListener("click", () => openScrim(button.dataset.open, button))
+      }
+
+      for (const scrim of document.querySelectorAll(".scrim")) {
+        // The scrim itself closes; the dialog inside it does not, so a click
+        // that starts inside and ends on the backdrop does not dismiss.
+        scrim.addEventListener("click", (event) => {
+          if (event.target === scrim) closeScrim(scrim)
+        })
+        for (const closer of scrim.querySelectorAll("[data-close]")) {
+          closer.addEventListener("click", () => {
+            closeScrim(scrim)
+            if (closer.dataset.confirmToast) {
+              pushToast(closer.dataset.confirmTone ?? "success", closer.dataset.confirmToast, "")
+            }
+          })
+        }
+        // Focus stays inside while it is open.
+        scrim.addEventListener("keydown", (event) => {
+          if (event.key === "Escape") {
+            event.preventDefault()
+            closeScrim(scrim)
+            return
+          }
+          if (event.key !== "Tab") return
+          const focusable = scrim.querySelectorAll(
+            'button:not([disabled]), [href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), summary, [tabindex]:not([tabindex="-1"])',
+          )
+          if (focusable.length === 0) return
+          const first = focusable[0]
+          const last = focusable[focusable.length - 1]
+          if (event.shiftKey && document.activeElement === first) {
+            event.preventDefault()
+            last.focus()
+          } else if (!event.shiftKey && document.activeElement === last) {
+            event.preventDefault()
+            first.focus()
+          }
+        })
+      }
+
+      // ── toasts ────────────────────────────────────────────────────────
+      const TOAST_ICON = { success: "#i-check-circle", info: "#i-info", warning: "#i-warning", danger: "#i-warning" }
+      const stack = document.getElementById("toast-stack")
+
+      function pushToast(tone, title, description) {
+        const toast = document.createElement("div")
+        // With no second line there is nothing to top-align to, so the icon and
+        // the title centre on each other instead of hanging from the top edge.
+        toast.className = `toast toast-${tone}${description ? " toast-has-body" : ""}`
+        toast.setAttribute("role", "status")
+        toast.innerHTML = `
+          <span class="toast-icon"><svg class="ico ico-sm" viewBox="0 0 24 24"><use href="${TOAST_ICON[tone]}" /></svg></span>
+          <span class="toast-text"><b></b><span></span></span>
+          <button class="btn btn-ghost btn-sm" type="button" aria-label="Dismiss" style="width: 2rem; padding: 0">
+            <svg class="ico ico-sm" viewBox="0 0 24 24"><use href="#i-x" /></svg>
+          </button>`
+        // Text is set as text, not markup: a toast usually carries a value
+        // someone else supplied.
+        toast.querySelector("b").textContent = title
+        if (description) {
+          toast.querySelector(".toast-text span").textContent = description
+        } else {
+          toast.querySelector(".toast-text span").remove()
+        }
+        const remove = () => {
+          toast.classList.add("is-leaving")
+          toast.addEventListener("animationend", () => toast.remove(), { once: true })
+        }
+        toast.querySelector("button").addEventListener("click", remove)
+        stack.append(toast)
+        window.setTimeout(remove, 4000)
+      }
+
+      const TOAST_TITLE = {
+        success: "Source connected",
+        info: "Backfill started",
+        warning: "Salesforce is degraded",
+        danger: "Webhook signature failed",
+      }
+      const TOAST_BODY = {
+        success: "42 tables are now syncing hourly.",
+        info: "Historical events from 2024 are loading.",
+        warning: "Last successful sync 51 minutes ago.",
+        danger: "Events are queued until the secret is rotated.",
+      }
+
+      for (const button of document.querySelectorAll("[data-toast]")) {
+        const tone = button.dataset.toast
+        button.addEventListener("click", () =>
+          // The per-button overrides are what let one demo fire a title-only
+          // toast without a second listener racing the first.
+          pushToast(tone, button.dataset.toastTitle ?? TOAST_TITLE[tone], button.dataset.toastBody ?? TOAST_BODY[tone]),
+        )
+      }
+
+      document.getElementById("tour-toast").addEventListener("click", () =>
+        pushToast("success", "Everything is wired up", "Toasts, dialogs, menus and tabs all work on this page."),
+      )
+
+
+      // ── pagination ────────────────────────────────────────────────────
+      const pager = document.getElementById("pager")
+      const TOTAL_PAGES = 8
+      let page = 3
+
+      function renderPager() {
+        const pages = new Set([1, page - 1, page, page + 1, TOTAL_PAGES].filter((n) => n >= 1 && n <= TOTAL_PAGES))
+        const host = pager.querySelector('[data-role="pages"]')
+        host.replaceChildren()
+        for (const n of [...pages].sort((a, b) => a - b)) {
+          const button = document.createElement("button")
+          button.type = "button"
+          button.className = "pager-page"
+          button.textContent = String(n)
+          if (n === page) button.setAttribute("aria-current", "page")
+          button.addEventListener("click", () => {
+            page = n
+            renderPager()
+          })
+          host.append(button)
+        }
+        pager.querySelector('[data-role="current"]').textContent = String(page)
+        pager.querySelector('[data-page="prev"]').disabled = page === 1
+        pager.querySelector('[data-page="next"]').disabled = page === TOTAL_PAGES
+      }
+
+      pager.querySelector('[data-page="prev"]').addEventListener("click", () => {
+        page = Math.max(1, page - 1)
+        renderPager()
+      })
+      pager.querySelector('[data-page="next"]').addEventListener("click", () => {
+        page = Math.min(TOTAL_PAGES, page + 1)
+        renderPager()
+      })
+      renderPager()
+
+      // ── ChartShell's view-as-table ────────────────────────────────────
+      const chartShell = document.getElementById("chart-shell-demo")
+      chartShell.querySelector('[data-role="toggle"]').addEventListener("click", (event) => {
+        const showTable = chartShell.querySelector('[data-role="plot"]').hidden === false
+        chartShell.querySelector('[data-role="plot"]').hidden = showTable
+        chartShell.querySelector('[data-role="table"]').hidden = !showTable
+        event.currentTarget.setAttribute("aria-pressed", String(showTable))
+        event.currentTarget.lastChild.textContent = showTable ? "View chart" : "View as table"
+      })
+
+      // The one checkbox state HTML cannot express on its own.
+      document.getElementById("cbx-ind").indeterminate = true
+
+      apply()
+    </script>
+  </body>
+</html>

@@ -2,6 +2,21 @@
 
 Shared React UI foundations for FiguredOut web apps.
 
+## The design system
+
+Light and dark both run a four-step surface ladder — `surface-sunken` < `bg` < `surface` <
+`surface-raised` — and white is the top of it in light mode, not the resting surface. That is what makes
+elevation mean something: a card on `surface` separates from the page without leaning on its hairline,
+so `surface-raised` is free to mean *lifted* (an open tile, a hovered cell, a dialog, a menu, a toast).
+
+Five rules hold the components together, and `COMPONENT_GUIDE.md` states them in full: a hairline is an
+inset ring, never a border; three elevation steps and no more; mono uppercase captions name values while
+mono tabular figures are values; one duration and one curve; one focus ring.
+
+`hybrid-mockup/` is the standalone reference this system was designed in — a static preview of every
+component with a note on each decision. It is not built, imported or published; treat it as the spec and
+as the place to try a change before it lands in `src/`.
+
 ## Install
 
 ```bash
@@ -38,16 +53,19 @@ export default {
 Primitives:
 `Badge`, `Button`, `IconButton`, `Card`, `CardHeader`, `CardBody`, `CardFooter`, `Checkbox`, `FormField`, `Input`, `Textarea`, `Select`, `Skeleton`, `Spinner`, `Switch`, `ThemeToggle`
 
+New in this system: `Hero`, `PageBand`, `SeamGrid` / `SeamCell` / `seamCorners`, `StatCardContent`.
+
 Application patterns:
-`AppTopBar`, `Avatar`, `ConfirmDialog`, `DescriptionList`, `Dialog`, `DropdownMenu`, `EmptyState`, `ExpandableTile`, `FilterBar`, `InfoBanner`, `PageContent`, `PageHeader`, `Pagination`, `SearchInput`, `SelectMenu`, `Section`, `SettingsSection`, `SidePanel`, `StatCard`, `Stepper`, `Table`, `TableSection`, `Tabs`, `ToastProvider`, `Tooltip`, `useToast`
+`AppTopBar`, `Avatar`, `ConfirmDialog`, `DashboardShell`, `DescriptionList`, `Dialog`, `DropdownMenu`, `EmptyState`, `ExpandableTile`, `FilterBar`, `Hero`, `InfoBanner`, `PageBand`, `PageContent`, `PageHeader`, `Pagination`, `SearchInput`, `SeamGrid`, `SelectMenu`, `Section`, `SettingsSection`, `SidePanel`, `StatCard`, `StatCardContent`, `Stepper`, `Table`, `TableSection`, `Tabs`, `ToastProvider`, `Tooltip`, `useToast`
 
 Dashboard composition:
 
 - Use `AppTopBar` for responsive app navigation with primary nav links and right-aligned actions.
 - Use `Section variant="plain"` for page-level dashboard regions that should not create nested card shells.
-- Use `TableSection` for titled data regions; it defaults the inner `Table` to `variant="plain"`.
-- Use `Table rowTone` for semantic row status and `Table variant="framed"` only when the table needs its own container.
-- Use `SelectMenu` for richer single-select controls, `ExpandableTile` for compact disclosure panels, and `InfoBanner` for status or guidance messages.
+- Use `TableSection` for titled data regions; the section is the container, so the table inside it is never framed.
+- Use `Table rowTone` for semantic row status, and `Table framed` only when the table is the standalone focal component — inside a `Card` or `Section` the container already provides the frame.
+- Use `SelectMenu` for richer single-select controls — and whenever the option list has to match the theme, since a native `<select>` popup is drawn by the OS. Use `ExpandableTile` for compact disclosure panels and `InfoBanner` for status or guidance messages.
+- Use `SeamGrid` for a set of related cells so they read as one object; pass a child count that divides evenly by 4, 2 and 1.
 
 ## Component Explorer
 

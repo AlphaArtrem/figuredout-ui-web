@@ -32,8 +32,8 @@ export function Pagination({ currentPage, onPageChange, totalPages }: Pagination
   return (
     <div className="flex flex-wrap items-center justify-between gap-3">
       <p className="text-sm text-fg-muted">
-        Page <span className="font-medium text-fg">{currentPage}</span> of{" "}
-        <span className="font-medium text-fg">{totalPages}</span>
+        Page <span className="font-mono font-medium tabular-nums text-fg">{currentPage}</span> of{" "}
+        <span className="font-mono font-medium tabular-nums text-fg">{totalPages}</span>
       </p>
       <div className="flex items-center gap-2">
         <Button
@@ -45,21 +45,26 @@ export function Pagination({ currentPage, onPageChange, totalPages }: Pagination
         >
           Previous
         </Button>
-        {getVisiblePages(currentPage, totalPages).map((page) => (
-          <button
-            key={page}
-            type="button"
-            aria-current={page === currentPage ? "page" : undefined}
-            className={cn(
-              "inline-flex h-9 min-w-9 items-center justify-center rounded-sm px-3 text-sm font-medium transition duration-fast ease-standard",
-              "focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-focus-ring active:scale-[0.98]",
-              page === currentPage ? "bg-primary text-primary-fg shadow-raised" : "bg-surface-raised text-fg hover:bg-surface",
-            )}
-            onClick={() => onPageChange(page)}
-          >
-            {page}
-          </button>
-        ))}
+        {/* The same sunken track as Tabs, with the current page raised out of
+         * it: one segmented-control idiom, so a reader who has learned one has
+         * learned the other. */}
+        <div className="flex items-center gap-1 rounded-lg bg-surface-sunken p-1 ring-1 ring-inset ring-edge">
+          {getVisiblePages(currentPage, totalPages).map((page) => (
+            <button
+              key={page}
+              type="button"
+              aria-current={page === currentPage ? "page" : undefined}
+              className={cn(
+                "inline-flex h-9 min-w-9 items-center justify-center rounded-md px-2 font-mono text-sm tabular-nums transition duration-fast ease-standard",
+                "focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-focus-ring active:scale-[0.98]",
+                page === currentPage ? "bg-primary font-semibold text-primary-fg" : "text-fg-muted hover:text-fg",
+              )}
+              onClick={() => onPageChange(page)}
+            >
+              {page}
+            </button>
+          ))}
+        </div>
         <Button
           variant="secondary"
           size="sm"

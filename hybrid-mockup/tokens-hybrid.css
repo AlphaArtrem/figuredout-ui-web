@@ -1,0 +1,266 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+ * HYBRID TOKENS — mockup only. Nothing here is imported by the package.
+ *
+ * Base layer is styles/tokens.css from @figuredout/ui-web, copied verbatim so
+ * the mockup can run standalone from a file server. Everything the callpool
+ * design system contributes is in the "borrowed" blocks and is additive: no
+ * existing token changes value, so every current component keeps rendering
+ * exactly as it does in Storybook.
+ *
+ * Two things ARE changed relative to the package, both marked CHANGED:
+ *   1. theme switching also answers to [data-theme], not just .dark
+ *   2. --font-sans / --font-mono fall back to system faces (no next/font here)
+ * ═══════════════════════════════════════════════════════════════════════════ */
+
+:root {
+  color-scheme: light;
+
+  --color-bg: #fafafa;
+  --color-surface: #ffffff;
+  --color-surface-raised: #ffffff;
+  --color-surface-sunken: #f4f4f5;
+  --color-fg: #111113;
+  --color-fg-muted: #363a3f;
+  --color-fg-subtle: #4b4c52;
+  --color-edge: #e4e4e7;
+  --color-edge-strong: #b7b7ba;
+
+  --color-primary: #15803d;
+  --color-primary-hover: #166534;
+  --color-primary-fg: #f0fdf4;
+  --color-primary-soft: rgba(21, 128, 61, 0.12);
+  --color-focus-ring: rgba(21, 128, 61, 0.34);
+
+  --color-success: #16a34a;
+  --color-success-soft: rgba(22, 163, 74, 0.12);
+  --color-warning: #713f12;
+  --color-warning-soft: rgba(250, 204, 21, 0.16);
+  --color-danger: #7f1d1d;
+  --color-danger-fg: #fff1f2;
+  --color-danger-soft: rgba(248, 113, 113, 0.14);
+  --color-info: #1e3a8a;
+  --color-info-soft: rgba(96, 165, 250, 0.14);
+  --color-accent: #7c2d12;
+  --color-accent-fg: #fff7ed;
+  --color-banner-fg: #111113;
+  --color-banner-muted: #4b4c52;
+
+  --chart-cat-1: #15803d;
+  --chart-cat-2: #1e3a8a;
+  --chart-cat-3: #7c2d12;
+  --chart-cat-4: #7f1d1d;
+  --chart-cat-5: #713f12;
+  --chart-cat-6: #4b4c52;
+  --chart-seq: #15803d;
+  --chart-grid: rgba(17, 17, 19, 0.1);
+  --chart-axis-label: #4b4c52;
+
+  /* CHANGED for the mockup: the package points these at next/font variables. */
+  --font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+
+  --text-xs: 0.75rem;
+  --text-sm: 0.875rem;
+  --text-base: 1rem;
+  --text-lg: 1.125rem;
+  --text-xl: 1.25rem;
+  --text-2xl: 1.5rem;
+  --text-3xl: 1.875rem;
+  --text-4xl: 2.25rem;
+
+  --leading-xs: 1rem;
+  --leading-sm: 1.25rem;
+  --leading-base: 1.5rem;
+  --leading-lg: 1.75rem;
+  --leading-xl: 1.75rem;
+  --leading-2xl: 2rem;
+  --leading-3xl: 2.25rem;
+  --leading-4xl: 2.5rem;
+
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.25rem;
+  --space-6: 1.5rem;
+  --space-8: 2rem;
+  --space-10: 2.5rem;
+  --space-12: 3rem;
+
+  --radius-sm: 0.5rem;
+  --radius-md: 0.625rem;
+  --radius-lg: 0.75rem;
+  --radius-xl: 1rem;
+
+  --shadow-raised:
+    0 1px 2px rgba(17, 17, 19, 0.04),
+    0 18px 48px rgba(17, 17, 19, 0.08);
+  --shadow-hover:
+    0 1px 2px rgba(17, 17, 19, 0.06),
+    0 22px 56px rgba(17, 17, 19, 0.12);
+  --shadow-overlay:
+    0 2px 8px rgba(17, 17, 19, 0.08),
+    0 24px 64px rgba(17, 17, 19, 0.18);
+
+  --ease-standard: cubic-bezier(0.32, 0.72, 0, 1);
+  --motion-fast: 150ms;
+  --motion-normal: 250ms;
+
+  --z-nav: 40;
+  --z-overlay: 60;
+  --z-toast: 80;
+
+  /* ── borrowed from callpool ─────────────────────────────────────────────
+   *
+   * Four additions, all decorative or layout-level. None of them re-tints an
+   * existing semantic token, which is the rule that keeps this additive: a
+   * provenance/status colour changing must never move the wallpaper.
+   */
+
+  /* The page-wide glow. Deliberately NOT the semantic palette — in light mode
+   * the semantic hues are dark enough that a 10% wash reads as a grey smudge,
+   * so the decorative set is lighter and more saturated than its semantic
+   * cousin. Four hues rather than two, so a long scroll never reads as one
+   * repeated smear. */
+  --glow-1: #22c55e; /* primary-ish */
+  --glow-2: #38bdf8; /* info-ish */
+  --glow-3: #f59e0b; /* warning-ish */
+  --glow-4: #a78bfa; /* accent-ish */
+
+  /* The measure and the gutter. callpool's whole layout idea is that content
+   * stays inside a measure while the rules between sections run edge to edge —
+   * .wrap carries the width, .band carries the border. The package has no
+   * page-level token for this today; DashboardShell hardcodes its own. */
+  --measure: 1200px;
+  --gut: clamp(1rem, 4vw, 2.5rem);
+
+  /* The hairline a seam grid draws its 1px gap over. Same value as --color-edge
+   * today, named separately because a seam is a different job from a border and
+   * the two want to move independently later. */
+  --seam: var(--color-edge);
+}
+
+/* CHANGED: the package switches on `.dark` only. Declaring the dark set three
+ * ways — OS preference, [data-theme="dark"], and .dark — is callpool's pattern,
+ * and it is the one that lets an explicit choice win in BOTH directions. The
+ * copies have to stay in sync. */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+
+    --color-bg: #111113;
+    --color-surface: #18191b;
+    --color-surface-raised: #212225;
+    --color-surface-sunken: #151619;
+    --color-fg: #fafafa;
+    --color-fg-muted: #a1a1aa;
+    --color-fg-subtle: #8a8a8f;
+    --color-edge: #272a2d;
+    --color-edge-strong: #43484e;
+
+    --color-primary: #86efac;
+    --color-primary-hover: #bbf7d0;
+    --color-primary-fg: #052e16;
+    --color-primary-soft: rgba(34, 197, 94, 0.16);
+    --color-focus-ring: rgba(134, 239, 172, 0.36);
+
+    --color-success: #5ddf6c;
+    --color-success-soft: rgba(93, 223, 108, 0.16);
+    --color-warning: #eab308;
+    --color-warning-soft: rgba(66, 32, 6, 0.78);
+    --color-danger: #f87171;
+    --color-danger-fg: #450a0a;
+    --color-danger-soft: rgba(69, 10, 10, 0.78);
+    --color-info: #60a5fa;
+    --color-info-soft: rgba(30, 58, 138, 0.36);
+    --color-accent: #fb923c;
+    --color-accent-fg: #431407;
+    --color-banner-fg: #fafafa;
+    --color-banner-muted: #a1a1aa;
+
+    --chart-cat-1: #86efac;
+    --chart-cat-2: #60a5fa;
+    --chart-cat-3: #fb923c;
+    --chart-cat-4: #f87171;
+    --chart-cat-5: #eab308;
+    --chart-cat-6: #a1a1aa;
+    --chart-seq: #86efac;
+    --chart-grid: rgba(250, 250, 250, 0.12);
+    --chart-axis-label: #a1a1aa;
+
+    --shadow-raised:
+      0 1px 2px rgba(0, 0, 0, 0.24),
+      0 18px 40px rgba(0, 0, 0, 0.3);
+    --shadow-hover:
+      0 1px 2px rgba(0, 0, 0, 0.28),
+      0 22px 56px rgba(0, 0, 0, 0.38);
+    --shadow-overlay:
+      0 4px 12px rgba(0, 0, 0, 0.28),
+      0 28px 80px rgba(0, 0, 0, 0.38);
+
+    --glow-1: #86efac;
+    --glow-2: #60a5fa;
+    --glow-3: #fb923c;
+    --glow-4: #a78bfa;
+  }
+}
+
+:root[data-theme="dark"],
+.dark {
+  color-scheme: dark;
+
+  --color-bg: #111113;
+  --color-surface: #18191b;
+  --color-surface-raised: #212225;
+  --color-surface-sunken: #151619;
+  --color-fg: #fafafa;
+  --color-fg-muted: #a1a1aa;
+  --color-fg-subtle: #8a8a8f;
+  --color-edge: #272a2d;
+  --color-edge-strong: #43484e;
+
+  --color-primary: #86efac;
+  --color-primary-hover: #bbf7d0;
+  --color-primary-fg: #052e16;
+  --color-primary-soft: rgba(34, 197, 94, 0.16);
+  --color-focus-ring: rgba(134, 239, 172, 0.36);
+
+  --color-success: #5ddf6c;
+  --color-success-soft: rgba(93, 223, 108, 0.16);
+  --color-warning: #eab308;
+  --color-warning-soft: rgba(66, 32, 6, 0.78);
+  --color-danger: #f87171;
+  --color-danger-fg: #450a0a;
+  --color-danger-soft: rgba(69, 10, 10, 0.78);
+  --color-info: #60a5fa;
+  --color-info-soft: rgba(30, 58, 138, 0.36);
+  --color-accent: #fb923c;
+  --color-accent-fg: #431407;
+  --color-banner-fg: #fafafa;
+  --color-banner-muted: #a1a1aa;
+
+  --chart-cat-1: #86efac;
+  --chart-cat-2: #60a5fa;
+  --chart-cat-3: #fb923c;
+  --chart-cat-4: #f87171;
+  --chart-cat-5: #eab308;
+  --chart-cat-6: #a1a1aa;
+  --chart-seq: #86efac;
+  --chart-grid: rgba(250, 250, 250, 0.12);
+  --chart-axis-label: #a1a1aa;
+
+  --shadow-raised:
+    0 1px 2px rgba(0, 0, 0, 0.24),
+    0 18px 40px rgba(0, 0, 0, 0.3);
+  --shadow-hover:
+    0 1px 2px rgba(0, 0, 0, 0.28),
+    0 22px 56px rgba(0, 0, 0, 0.38);
+  --shadow-overlay:
+    0 4px 12px rgba(0, 0, 0, 0.28),
+    0 28px 80px rgba(0, 0, 0, 0.38);
+
+  --glow-1: #86efac;
+  --glow-2: #60a5fa;
+  --glow-3: #fb923c;
+  --glow-4: #a78bfa;
+}
