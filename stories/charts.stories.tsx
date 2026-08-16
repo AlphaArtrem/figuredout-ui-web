@@ -3,8 +3,6 @@ import { BarChart, ChartShell, ChartTooltip, DonutChart, FunnelBars, LineChart, 
 import { SeamGrid, Section, StatCardContent } from "../index"
 import { DemoLabel, Stage, weeklyData } from "./demo-data"
 
-type WeeklyRow = (typeof weeklyData)[number]
-
 const meta = {
   title: "Charts",
   tags: ["autodocs"],
@@ -157,20 +155,15 @@ export const Shell: Story = {
   },
   render: () => (
     <Stage>
+      {/* `LineChart` is already a ChartShell consumer — it builds its own legend
+       * and table columns from `series`. Wrapping it in a second shell here
+       * drew the legend and the view-as-table toggle twice, one belonging to
+       * each shell. Every chart in the package goes through the shell, so
+       * showing one of them IS showing the shell. */}
       <Section variant="plain" eyebrow="Ingestion" title="Accepted and rejected">
-        <ChartShell
-          data={weeklyData}
-          rowKey={(row) => row.week}
-          legend={series.map((entry, index) => ({ ...entry, color: `var(--chart-cat-${index + 1})` }))}
-          tableColumns={[
-            { id: "week", header: "Week", render: (row: WeeklyRow) => row.week },
-            { id: "accepted", header: "Accepted", align: "right", render: (row: WeeklyRow) => <span className="font-mono tabular-nums">{row.accepted}</span> },
-            { id: "rejected", header: "Rejected", align: "right", render: (row: WeeklyRow) => <span className="font-mono tabular-nums">{row.rejected}</span> },
-          ]}
-          renderChart={() => <LineChart data={weeklyData} xKey="week" series={series} />}
-        />
+        <LineChart data={weeklyData} xKey="week" series={series} />
       </Section>
-      <DemoLabel>Loading and empty come from the same shell</DemoLabel>
+      <DemoLabel className="mt-6">Loading and empty come from the same shell</DemoLabel>
       <div className="grid gap-4 md:grid-cols-2">
         <ChartShell data={[]} loading rowKey={() => ""} tableColumns={[]} renderChart={() => null} height={160} />
         <ChartShell data={[]} rowKey={() => ""} tableColumns={[]} renderChart={() => null} />

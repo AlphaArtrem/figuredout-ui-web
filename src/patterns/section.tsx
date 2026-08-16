@@ -33,20 +33,22 @@ export function Section({
 
     return (
       <section className={cn("grid min-w-0 gap-8 border-t border-edge py-12", className)} {...props}>
-        {/* The icon chip and the mono eyebrow sit in a 10rem rail beside the
-         * heading. `display: contents` at md puts them into this grid — icon in
-         * the rail's first row, eyebrow beneath it — while keeping them a
-         * single flex row on a phone. */}
-        <div className="grid grid-cols-1 gap-2 md:grid-cols-[10rem_minmax(0,1fr)] md:gap-x-5 md:gap-y-3">
-          <div className="flex min-w-0 items-center gap-3 md:contents">
+        {/* Icon beside the heading, then eyebrow, then description — one
+         * left-hand column at every width. The heading used to move into the
+         * second column of a 10rem rail at md, which left it indented on a
+         * tablet or a desktop while it sat flush on a phone: the same region
+         * read as two different layouts depending on the screen, and the wider
+         * one buried its own title. */}
+        <div className="grid grid-cols-1 gap-2">
+          <div className="flex min-w-0 items-center gap-3">
             {icon ? (
-              <span className="inline-grid size-10 shrink-0 place-items-center rounded-lg border border-primary/30 bg-primary-soft text-primary md:col-start-1 md:row-start-1">
+              <span className="inline-grid size-10 shrink-0 place-items-center rounded-lg border border-primary/30 bg-primary-soft text-primary">
                 {icon}
               </span>
             ) : null}
             <h2
               className={cn(
-                "m-0 text-fg md:col-start-2 md:row-start-1",
+                "m-0 text-fg",
                 isDisplay
                   ? "text-display font-bold tracking-[-0.025em]"
                   : "text-2xl font-semibold leading-tight",
@@ -56,11 +58,11 @@ export function Section({
             </h2>
           </div>
           {eyebrow ? (
-            <p className="m-0 self-start font-mono text-xs font-semibold uppercase tracking-[0.14em] text-fg-subtle md:col-start-1 md:row-start-2">
+            <p className="m-0 self-start font-mono text-xs font-semibold uppercase tracking-[0.14em] text-fg-subtle">
               {eyebrow}
             </p>
           ) : null}
-          <div className="grid min-w-0 gap-3 md:col-start-2 md:row-start-2">
+          <div className="grid min-w-0 gap-3">
             {description ? (
               <p
                 className={cn(

@@ -48,9 +48,13 @@ export const weeklyData = [
 export const numberFormat = new Intl.NumberFormat("en-US")
 
 /** A section heading inside a story, for the multi-part demos. */
-export function DemoLabel({ children }: { children: React.ReactNode }) {
+export function DemoLabel({ children, className }: { children: React.ReactNode; className?: string }) {
   return (
-    <p className="m-0 font-mono text-[0.625rem] font-semibold uppercase tracking-[0.12em] text-fg-subtle">{children}</p>
+    <p
+      className={`m-0 font-mono text-[0.625rem] font-semibold uppercase tracking-[0.12em] text-fg-subtle ${className ?? ""}`}
+    >
+      {children}
+    </p>
   )
 }
 

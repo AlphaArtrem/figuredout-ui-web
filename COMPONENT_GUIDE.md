@@ -64,7 +64,7 @@ Patterns:
 - Use `AppTopBar` for application chrome that must wrap cleanly at small widths while preserving accessible primary navigation.
 - Use `DashboardShell` for operational apps that need persistent sidebar navigation, a sticky action/status bar, and a mobile navigation drawer.
 - Use `StatCard` for compact metric tiles, not as a general content container.
-- Use `Section variant="plain"` for page-level regions with a divider, icon rail, eyebrow, heading, and description.
+- Use `Section variant="plain"` for page-level regions with a divider, icon, eyebrow, heading, and description.
 - Use `InfoBanner` for semantic messages; warning and danger tones announce with `role="alert"`.
 - Use `ExpandableTile` for optional detail blocks that can be controlled with `open` / `onOpenChange` or initialized with `defaultOpen`. Its open state is an overlay that stayed where it was, so do not stack more than a few in one view.
 - Use `SeamGrid` for a set of related cells — stat tiles, rules, facts — so they read as one object rather than as separate cards. Pass a child count that divides evenly by every step (4 → 2 → 1); a hole in a grid of hairlines reads as a missing figure. `seamCorners` is exported for structures that cannot be a `SeamGrid`, such as `DescriptionList`'s `<dl>` and `Stepper`'s `<ol>`.

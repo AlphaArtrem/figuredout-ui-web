@@ -77,7 +77,8 @@ the page without leaning on its hairline, which is what leaves `surface-raised` 
 - `AppTopBar` owns app-level title, subtitle, primary navigation, sticky positioning and right-aligned
   actions. `DashboardShell` owns persistent sidebar navigation, the mobile drawer, sticky actions and status.
 - `PageBand` owns page width (`--measure`) and the edge-to-edge divider between regions; `Section
-  variant="plain"` owns the region's icon rail, eyebrow, heading and lede. `size="display"` gives it the
+  variant="plain"` owns the region's icon, eyebrow, heading and lede, stacked flush left at every width.
+  `size="display"` gives it the
   page-level scale — reserve that for the two or three regions a page is navigated by.
 - `SeamGrid` makes a set of related cells read as one object. Pass a child count that divides evenly by every
   step (4 → 2 → 1): a hole in a grid of hairlines reads as a missing figure. `seamCorners` is exported for

@@ -151,7 +151,7 @@ export const Sections: Story = {
     docs: {
       description: {
         story:
-          "`plain` puts an icon chip and a mono eyebrow in a 10rem rail beside the heading, with a divider above — use it for page regions. `size=\"display\"` gives it the page-level scale; reserve that for the two or three regions a page is navigated by.\n\n`card` is the same two-surface object as Card, so a Section and a Card read as one family at two sizes. `SettingsSection` is the card variant pinned to `surface`.",
+          "`plain` stacks an icon chip, the heading, a mono eyebrow and the lede flush left, with a divider above — use it for page regions. The heading used to move into the second column of a 10rem rail at `md`, which indented it on a tablet and a desktop while it sat flush on a phone; one alignment at every width keeps the region reading the same way on all of them. `size=\"display\"` gives it the page-level scale; reserve that for the two or three regions a page is navigated by.\n\n`card` is the same two-surface object as Card, so a Section and a Card read as one family at two sizes. `SettingsSection` is the card variant pinned to `surface`.",
       },
     },
   },
@@ -259,8 +259,10 @@ export const Shell: Story = {
           </Badge>
         }
         actions={
+          /* `sr-only` rather than `hidden`: the label still names the button for
+           * a screen reader on a phone, where only the icon is drawn. */
           <Button size="sm" leadingIcon={<Plus size={14} />}>
-            New sync
+            <span className="sr-only sm:not-sr-only">New sync</span>
           </Button>
         }
       >
@@ -277,7 +279,16 @@ export const Shell: Story = {
                 <StatCardContent title="Failed" value="3" />
               </div>
             </SeamGrid>
-            <InfoBanner tone="info" title="Backfill in progress" description="Counts will move until it finishes." />
+            {/* The story's frame is a fixed 28rem tall, and on a phone the
+             * stats fill it — the banner only ever showed as a slice clipped by
+             * the bottom edge, which reads as a bug in the shell rather than as
+             * the banner it is. It has room from `sm` up. */}
+            <InfoBanner
+              className="hidden sm:flex"
+              tone="info"
+              title="Backfill in progress"
+              description="Counts will move until it finishes."
+            />
           </PageContent>
         </div>
       </DashboardShell>
