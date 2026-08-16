@@ -5,6 +5,7 @@ import type { ReactNode } from "react"
 import { CaretDown, Check, DotsThree } from "../icons/index.js"
 import { cn } from "../lib/cn.js"
 import { POPOVER_SURFACE } from "../lib/overlay.js"
+import { useViewportClamp } from "../lib/use-viewport-clamp.js"
 import { Button, IconButton } from "../primitives/button.js"
 
 export interface DropdownMenuItem {
@@ -34,6 +35,7 @@ export function DropdownMenu({
 }: DropdownMenuProps) {
   const [open, setOpen] = useState(false)
   const containerRef = useRef<HTMLDivElement | null>(null)
+  const { ref: menuRef, shift } = useViewportClamp<HTMLDivElement>(open)
 
   useEffect(() => {
     if (!open) {
@@ -79,42 +81,52 @@ export function DropdownMenu({
         </Button>
       )}
       {open ? (
+        /* The shift rides on this wrapper, not on the menu itself:
+         * POPOVER_SURFACE animates the menu in with `animate-rise`, and a
+         * running animation beats an inline style on the same property. */
         <div
-          role="menu"
+          style={shift === 0 ? undefined : { transform: `translateX(${shift}px)` }}
           className={cn(
-            "absolute top-[calc(100%+0.5rem)] min-w-56",
+            "absolute top-[calc(100%+0.5rem)] z-overlay",
             /* Which edge it hangs from is the caller's choice, because it
              * depends on where the trigger sits: right-aligned for a control at
-             * the end of a row, left-aligned for one at the start. A menu that
-             * runs off its container is the most common overlay bug. */
+             * the end of a row, left-aligned for one at the start. The clamp
+             * then keeps that choice from running off the screen. */
             align === "end" ? "right-0" : "left-0",
-            POPOVER_SURFACE,
           )}
         >
-          {items.map((item) => (
-            <button
-              key={String(item.label)}
-              type="button"
-              role="menuitem"
-              disabled={item.disabled}
-              className={cn(
-                "flex w-full items-start gap-3 rounded-md px-3 py-2.5 text-left transition duration-fast ease-standard",
-                "focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-focus-ring",
-                item.tone === "danger" ? "text-danger hover:bg-danger-soft" : "text-fg hover:bg-primary-soft",
-                item.disabled && "cursor-not-allowed opacity-50",
-              )}
-              onClick={() => {
-                item.onSelect?.()
-                setOpen(false)
-              }}
-            >
-              <span className="mt-0.5 text-fg-subtle">{item.icon ?? <Check size={16} aria-hidden="true" />}</span>
-              <span className="space-y-0.5">
-                <span className="block text-sm font-medium">{item.label}</span>
-                {item.description ? <span className="block text-xs text-fg-muted">{item.description}</span> : null}
-              </span>
-            </button>
-          ))}
+          <div
+            ref={menuRef}
+            role="menu"
+            /* `max-w` as well as the shift: a menu wider than the screen cannot
+             * be slid into view, only narrowed into it. */
+            className={cn("min-w-56 max-w-[calc(100vw-1rem)]", POPOVER_SURFACE)}
+          >
+            {items.map((item) => (
+              <button
+                key={String(item.label)}
+                type="button"
+                role="menuitem"
+                disabled={item.disabled}
+                className={cn(
+                  "flex w-full items-start gap-3 rounded-md px-3 py-2.5 text-left transition duration-fast ease-standard",
+                  "focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-focus-ring",
+                  item.tone === "danger" ? "text-danger hover:bg-danger-soft" : "text-fg hover:bg-primary-soft",
+                  item.disabled && "cursor-not-allowed opacity-50",
+                )}
+                onClick={() => {
+                  item.onSelect?.()
+                  setOpen(false)
+                }}
+              >
+                <span className="mt-0.5 text-fg-subtle">{item.icon ?? <Check size={16} aria-hidden="true" />}</span>
+                <span className="space-y-0.5">
+                  <span className="block text-sm font-medium">{item.label}</span>
+                  {item.description ? <span className="block text-xs text-fg-muted">{item.description}</span> : null}
+                </span>
+              </button>
+            ))}
+          </div>
         </div>
       ) : null}
     </div>

@@ -23,7 +23,12 @@ const SPACING: Record<NonNullable<PageBandProps["spacing"]>, string> = {
 export function PageBand({ children, className, divided = true, spacing = "loose", ...props }: PageBandProps) {
   return (
     <section className={cn(divided && "border-t border-edge", SPACING[spacing], className)} {...props}>
-      <div className="mx-auto min-w-0 max-w-measure px-gut">{children}</div>
+      {/* The band owns the rule at its top edge, so whatever opens the band must
+       * not draw a second one under it. A plain Section carries its own divider
+       * — correct when Sections stack on a page, doubled the moment one starts a
+       * band, and the two rules land a band's padding apart at different widths:
+       * the band's runs edge to edge, the Section's stops at the measure. */}
+      <div className="mx-auto min-w-0 max-w-measure px-gut [&>*:first-child]:border-t-0">{children}</div>
     </section>
   )
 }

@@ -21,6 +21,7 @@ export interface DashboardShellProps extends Omit<HTMLAttributes<HTMLDivElement>
   logo?: ReactNode
   navItems: DashboardShellNavItem[]
   onNavItemSelect?: (itemId: string) => void
+  /** Ambient state for the app as a whole. Sits beside the title in the sidebar. */
   status?: ReactNode
   subtitle?: ReactNode
   title: ReactNode
@@ -71,7 +72,14 @@ export function DashboardShell({
       <div className="flex min-h-16 items-center gap-3 border-b border-edge px-4">
         {logo ? <div className="flex shrink-0 items-center">{logo}</div> : null}
         <div className="grid min-w-0 gap-0.5">
-          <div className="truncate font-mono text-sm font-semibold uppercase tracking-[0.12em] text-fg">{title}</div>
+          {/* Status rides with the identity, not with the actions: it describes
+           * the thing named beside it. The row wraps because the drawer is wider
+           * than the docked sidebar — the badge sits next to the title where
+           * there is room for both and drops under it where there is not. */}
+          <div className="flex min-w-0 flex-wrap items-center gap-x-2 gap-y-1">
+            <div className="truncate font-mono text-sm font-semibold uppercase tracking-[0.12em] text-fg">{title}</div>
+            {status ? <div className="min-w-0 shrink-0">{status}</div> : null}
+          </div>
           {subtitle ? <div className="truncate text-xs font-medium text-fg-muted">{subtitle}</div> : null}
         </div>
       </div>
@@ -137,16 +145,18 @@ export function DashboardShell({
               size="sm"
               variant="ghost"
             />
+            {/* The app names itself at every width. It used to be `lg:hidden`,
+             * on the reasoning that the sidebar already says it — but the
+             * sidebar is one scroll region and the bar is another, and on a
+             * phone the sidebar is behind a drawer. */}
             <div className="flex min-w-0 flex-1 items-center gap-3">
-              <div className="min-w-0 lg:hidden">
+              <div className="min-w-0">
                 <div className="truncate font-mono text-sm font-semibold uppercase tracking-[0.1em] text-fg">{title}</div>
                 {subtitle ? <div className="truncate text-xs text-fg-muted">{subtitle}</div> : null}
               </div>
-              {status ? <div className="hidden min-w-0 sm:block">{status}</div> : null}
             </div>
             {actions ? <div className="flex shrink-0 items-center gap-2 overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">{actions}</div> : null}
           </div>
-          {status ? <div className="border-t border-edge px-4 py-2 sm:hidden">{status}</div> : null}
         </header>
 
         <main className="min-w-0 flex-1">{children}</main>

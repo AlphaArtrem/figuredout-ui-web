@@ -70,7 +70,13 @@ export function ToastProvider({ children }: { children: ReactNode }) {
   return (
     <ToastContext.Provider value={value}>
       {children}
-      <div className="pointer-events-none fixed bottom-4 right-4 z-toast flex w-full max-w-sm flex-col gap-3">
+      {/* Anchored to both side gutters rather than sized `w-full` and pushed off
+       * the right one: on a fixed element `w-full` is the whole viewport, so
+       * `right-4` used to start the stack at -16px and clip every toast's left
+       * edge on a phone. Anchoring both edges makes the width the space between
+       * them, and `ml-auto` keeps the stack against the right on a screen wide
+       * enough for `max-w-sm` to bite. */}
+      <div className="pointer-events-none fixed inset-x-4 bottom-4 z-toast ml-auto flex max-w-sm flex-col gap-3">
         {toasts.map((toast) => {
           const Icon = TONE_ICONS[toast.tone ?? "info"]
           const tone = toast.tone ?? "info"
@@ -101,7 +107,10 @@ export function ToastProvider({ children }: { children: ReactNode }) {
                 <p className="text-sm font-semibold text-fg">{toast.title}</p>
                 {toast.description ? <p className="text-sm text-fg-muted">{toast.description}</p> : null}
                 {toast.action ? (
-                  <Button variant="ghost" size="sm" onClick={toast.action.onClick}>
+                  /* `soft`, not `ghost`: an untinted action under the
+                   * description is just its own padding, and reads as text that
+                   * failed to line up with the line above it. */
+                  <Button variant="soft" size="sm" onClick={toast.action.onClick}>
                     {toast.action.label}
                   </Button>
                 ) : null}

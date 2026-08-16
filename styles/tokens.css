@@ -217,3 +217,34 @@
   --glow-mid: 9%;
   --glow-soft: 6%;
 }
+
+/* The page itself.
+ *
+ * <html> has no background of its own, so it borrows the body's — but only
+ * across the viewport. Content wide enough to scroll sideways drags itself off
+ * the painted area and exposes the bare canvas underneath. Painting <html>
+ * from the same token closes that gap.
+ *
+ * The page scrollbar is hidden. A classic (non-overlay) scrollbar reserves a
+ * real column beside the content, and the browser paints that column from
+ * `color-scheme` rather than from our tokens — so a host that pins
+ * `color-scheme` (next-themes writes it inline on <html>, and an inline style
+ * beats the `.dark` rule above) leaves a light stripe down the edge of a dark
+ * page. Nobody needs telling a web page scrolls, so we take the column back
+ * instead of trying to colour it.
+ *
+ * This is the PAGE scrollbar only. Scroll regions inside the layout — a menu,
+ * a side panel, a wide table — keep theirs, because there the scrollbar is the
+ * only thing announcing that more content exists.
+ *
+ * Consumers get all of this from the same single import as the tokens.
+ */
+html {
+  background-color: var(--color-bg);
+  scrollbar-width: none;
+}
+
+/* Safari, and Chrome before it understood `scrollbar-width`. */
+html::-webkit-scrollbar {
+  display: none;
+}

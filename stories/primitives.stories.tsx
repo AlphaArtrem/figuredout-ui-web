@@ -44,7 +44,7 @@ export const Buttons: Story = {
     docs: {
       description: {
         story:
-          "Four variants, two sizes, and every one takes a leading or trailing icon. `secondary` rests on `surface-raised` with a ring so it reads as a control on any of the four surfaces — on plain `surface` it was a white rectangle on a white card. `danger` uses `text-danger-fg`, not `primary-fg`, which in dark mode is a near-black green on a light red.",
+          "Five variants, two sizes, and every one takes a leading or trailing icon. `secondary` rests on `surface-raised` with a ring so it reads as a control on any of the four surfaces — on plain `surface` it was a white rectangle on a white card. `soft` wears ghost's hover tint at rest, for an action sitting under copy it has to line up with: untinted, its padding reads as a bad indent. `danger` uses `text-danger-fg`, not `primary-fg`, which in dark mode is a near-black green on a light red.",
       },
     },
   },
@@ -55,6 +55,7 @@ export const Buttons: Story = {
         <Button>Save changes</Button>
         <Button variant="secondary">Cancel</Button>
         <Button variant="ghost">Learn more</Button>
+        <Button variant="soft">View source</Button>
         <Button variant="danger">Delete</Button>
         <Button disabled>Disabled</Button>
       </div>
@@ -375,15 +376,21 @@ export const Theme: Story = {
   },
   render: () => (
     <Stage>
+      {/* The label leads, and the three controls travel together: the row wraps
+       * between them and never inside them, so a narrow viewport puts the
+       * sentence on its own line above all three rather than breaking the set
+       * up. */}
       <div className="flex flex-wrap items-center gap-3">
-        <ThemeToggle />
         <span className="text-sm text-fg-muted">Every button can carry an icon and a label:</span>
-        <Button size="sm" variant="ghost" leadingIcon={<Sun size={16} />}>
-          Light
-        </Button>
-        <Button size="sm" variant="ghost" leadingIcon={<Moon size={16} />}>
-          Dark
-        </Button>
+        <div className="flex items-center gap-3">
+          <ThemeToggle />
+          <Button size="sm" variant="ghost" leadingIcon={<Sun size={16} />}>
+            Light
+          </Button>
+          <Button size="sm" variant="ghost" leadingIcon={<Moon size={16} />}>
+            Dark
+          </Button>
+        </div>
       </div>
     </Stage>
   ),

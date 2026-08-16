@@ -56,29 +56,37 @@ export function FunnelBars({
             key={entry.key}
             type={onSelect ? "button" : undefined}
             onClick={onSelect ? () => onSelect(entry.key) : undefined}
+            /* Label and count share a line above a full-width bar, rather than
+             * flanking it. Side by side, the bar is what gives way as the
+             * screen narrows — it was the first thing to reach zero width on a
+             * phone, leaving a row of numbers with no chart in it. Stacked, the
+             * reading stays put and the bar gets the whole width to work in.
+             *
+             * A grid, not nested flex rows, so all three stay direct children:
+             * `role="row"` has to own its cells. */
             className={cn(
-              "flex w-full items-center gap-3 rounded-md py-1 text-left",
+              "grid w-full grid-cols-[minmax(0,1fr)_auto] items-baseline gap-x-3 gap-y-1.5 rounded-md px-1 py-1.5 text-left",
               onSelect &&
                 "transition duration-fast ease-standard hover:bg-surface-raised focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-focus-ring",
             )}
             role="row"
           >
-            <span className="w-32 shrink-0 truncate text-right text-xs text-fg-muted" role="cell">
+            <span className="min-w-0 truncate text-xs text-fg-muted" role="cell">
               {entry.label}
+            </span>
+            <span className="shrink-0 font-mono text-xs tabular-nums text-fg" role="cell">
+              {entry.count} <span className="text-fg-subtle">({pct.toFixed(0)}%)</span>
             </span>
             {/* The track carries the ring so an empty stage is still a visible
                 row rather than a blank line. */}
             <span
-              className="h-2.5 flex-1 overflow-hidden rounded-full bg-surface-sunken ring-1 ring-inset ring-edge"
+              className="col-span-2 h-2.5 overflow-hidden rounded-full bg-surface-sunken ring-1 ring-inset ring-edge"
               role="cell"
             >
               <span
                 className="block h-full rounded-full"
                 style={{ width: `${pct}%`, backgroundColor: sequentialColor, opacity: intensity }}
               />
-            </span>
-            <span className="w-20 shrink-0 font-mono text-xs tabular-nums text-fg" role="cell">
-              {entry.count} <span className="text-fg-subtle">({pct.toFixed(0)}%)</span>
             </span>
           </Wrapper>
         )

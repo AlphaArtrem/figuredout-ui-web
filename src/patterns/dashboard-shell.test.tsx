@@ -1,5 +1,5 @@
 import userEvent from "@testing-library/user-event"
-import { fireEvent, render, screen } from "@testing-library/react"
+import { fireEvent, render, screen, within } from "@testing-library/react"
 import { DashboardShell } from "./dashboard-shell.js"
 
 const navItems = [
@@ -30,6 +30,26 @@ describe("DashboardShell", () => {
     expect(screen.getByRole("button", { name: "Refresh" })).toBeInTheDocument()
     expect(screen.getAllByText("System online").length).toBeGreaterThan(0)
     expect(screen.getAllByText("Signed in").length).toBeGreaterThan(0)
+  })
+
+  it("names the app in the bar at every width, and keeps status with the sidebar title", () => {
+    render(
+      <DashboardShell
+        title="Workspace"
+        subtitle="Paper mode"
+        navItems={navItems}
+        status={<span>System online</span>}
+      >
+        <div>Dashboard content</div>
+      </DashboardShell>,
+    )
+
+    const bar = screen.getByRole("banner")
+    expect(within(bar).getByText("Workspace")).toBeInTheDocument()
+    expect(within(bar).getByText("Paper mode")).toBeInTheDocument()
+    expect(within(bar).queryByText("System online")).not.toBeInTheDocument()
+
+    expect(within(screen.getByRole("complementary")).getByText("System online")).toBeInTheDocument()
   })
 
   it("calls selection callback for enabled navigation items only", async () => {

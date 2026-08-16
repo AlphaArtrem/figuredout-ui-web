@@ -201,7 +201,7 @@ export const TopBar: Story = {
     docs: {
       description: {
         story:
-          "Mono title, subtitle chip, wrapping nav, actions pushed right. The active nav item's underline is a scaled pseudo-element that grows from the centre, replacing a border that nudged the label by a pixel when it appeared.",
+          "Mono title, wrapping nav, actions pushed right. The active nav item's underline is a scaled pseudo-element that grows from the centre, replacing a border that nudged the label by a pixel when it appeared. Ambient state — environment chips, connection badges — is left to the app: below `md` the bar wraps onto three rows, and where that state belongs then is a per-app call rather than something this component should decide.",
       },
     },
   },
@@ -214,7 +214,6 @@ export const TopBar: Story = {
         </span>
       }
       title="FiguredOut"
-      subtitle="Staging"
       navItems={[
         { label: "Overview", href: "#overview", active: true },
         { label: "Sources", href: "#sources" },
@@ -222,12 +221,11 @@ export const TopBar: Story = {
         { label: "Alerts", href: "#alerts" },
       ]}
       actions={
-        <>
-          <Badge tone="success" dot>
-            Live
-          </Badge>
-          <Button size="sm">Invite</Button>
-        </>
+        /* `sr-only` rather than `hidden`: the label still names the button for a
+         * screen reader on a phone, where only the icon is drawn. */
+        <Button size="sm" leadingIcon={<Plus size={14} />}>
+          <span className="sr-only sm:not-sr-only">Invite</span>
+        </Button>
       }
     />
   ),
@@ -261,14 +259,9 @@ export const Shell: Story = {
           </Badge>
         }
         actions={
-          <>
-            <Button size="sm" variant="secondary">
-              Export
-            </Button>
-            <Button size="sm" leadingIcon={<Plus size={14} />}>
-              New sync
-            </Button>
-          </>
+          <Button size="sm" leadingIcon={<Plus size={14} />}>
+            New sync
+          </Button>
         }
       >
         <div className="p-6">

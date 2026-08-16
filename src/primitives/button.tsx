@@ -5,7 +5,7 @@ import type { ButtonHTMLAttributes, ReactNode } from "react"
 import { ArrowClockwise } from "../icons/index.js"
 import { cn } from "../lib/cn.js"
 
-type ButtonVariant = "primary" | "secondary" | "ghost" | "danger"
+type ButtonVariant = "primary" | "secondary" | "ghost" | "soft" | "danger"
 type ButtonSize = "sm" | "md"
 
 export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
@@ -26,6 +26,12 @@ const VARIANT_STYLES: Record<ButtonVariant, string> = {
     "bg-surface-raised text-fg shadow-raised ring-1 ring-inset ring-edge hover:bg-surface-sunken hover:ring-edge-strong focus-visible:ring-focus-ring",
   ghost:
     "bg-transparent text-fg-muted hover:bg-primary-soft hover:text-fg focus-visible:ring-focus-ring",
+  /* Ghost's hover tint, worn at rest. A ghost button reads as a run of text
+   * until you point at it, so its padding looks like a bad indent when it sits
+   * under copy it is supposed to line up with — a toast's action is the case
+   * this exists for. The tint gives the padding something to belong to. Hover
+   * moves the label rather than the fill, which is already there. */
+  soft: "bg-primary-soft text-fg hover:text-primary focus-visible:ring-focus-ring",
   /* text-danger-fg, not text-primary-fg: the latter is the ink for PRIMARY, and
    * in dark mode it is a near-black green on a light red. */
   danger:

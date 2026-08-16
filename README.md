@@ -45,7 +45,12 @@ export default {
 - `@figuredout/ui-web` exports primitives and layout/application patterns.
 - `@figuredout/ui-web/icons` exports the approved Phosphor icon surface.
 - `@figuredout/ui-web/charts` exports chart wrappers and color helpers.
-- `@figuredout/ui-web/styles/tokens.css` provides CSS custom properties.
+- `@figuredout/ui-web/styles/tokens.css` provides CSS custom properties. It also
+  paints `<html>` with the page background and hides the page scrollbar, matching
+  the horizontal scrollers in `AppTopBar` and `DashboardShell`. Scroll regions
+  inside the layout keep their scrollbars; only the page loses its. Without this
+  a dark page shows a light stripe down its right edge, because the browser paints
+  the scroll gutter from `color-scheme`, which a theme library may have pinned inline.
 - `@figuredout/ui-web/tailwind-preset` maps tokens to semantic Tailwind utilities.
 
 ## Component surface
