@@ -1,48 +1,90 @@
 import type { Config } from "tailwindcss"
 
+/**
+ * Tailwind's `/NN` opacity modifier can only fade a color it controls the
+ * format of (an RGB triple, or a function like this one) — never a bare
+ * `var(--x)` reference, whatever format the variable itself holds. Every
+ * semantic color below used to be a plain `"var(--color-x)"` string, so
+ * `ring-success/30`, `border-primary/30` and similar silently fell back to
+ * Tailwind's *default* indigo instead of a faded version of the token —
+ * every tone-colored ring or border with an opacity modifier, system-wide.
+ * It read as "this component styles itself" rather than a config bug,
+ * because the unmodified sibling utility right next to it — `bg-success-soft`,
+ * `text-success` — worked fine.
+ *
+ * `color-mix` fades the variable itself, so it works regardless of the
+ * token's underlying format (hex, rgb, oklch, a further `var()` indirection)
+ * with no separate RGB-channel token needed. Unmodified usage — `opacityValue`
+ * undefined — returns exactly the old `var(--x)` string, so this changes
+ * nothing for a class with no `/NN`.
+ */
+function withAlpha(cssVar: string) {
+  return ({ opacityValue }: { opacityValue?: string }) => {
+    /* `opacityValue` is not only `undefined` or an explicit `/NN` modifier's
+     * decimal string. textColor, backgroundColor, borderColor and a few
+     * others have a companion `*-opacity` core plugin, and default the
+     * modifier to a CSS-variable INDIRECTION — `var(--tw-text-opacity)` — so
+     * a `text-opacity-50` utility elsewhere can still adjust it later via
+     * the cascade. `Number(...)` on that string is `NaN`, which produced
+     * `color-mix(in srgb, var(--x) NaN%, transparent)` — a real color that
+     * renders as fully transparent — the first version of this fix shipped
+     * that for every unmodified `text-*`/`bg-*` use before this test caught
+     * it. Only a genuine `/NN` modifier resolves to a finite number; treat
+     * everything else, indirection included, as "no modifier". */
+    const percent = opacityValue === undefined ? NaN : Number(opacityValue) * 100
+    return Number.isFinite(percent) ? `color-mix(in srgb, var(${cssVar}) ${percent}%, transparent)` : `var(${cssVar})`
+  }
+}
+
+/* Tailwind has accepted a function in place of a color string since 3.0 —
+ * it is how the framework's own docs show a custom opacity-aware color —
+ * but @types/tailwindcss still types theme colors as string-only. The cast
+ * bridges a real type-package gap, not an unsound guess about the runtime. */
+type ColorValue = string | ReturnType<typeof withAlpha>
+
 const uiPreset: Config = {
   darkMode: "class",
   content: [],
   theme: {
     extend: {
       colors: {
-        background: "var(--color-bg)",
-        surface: "var(--color-surface)",
-        "surface-raised": "var(--color-surface-raised)",
-        "surface-sunken": "var(--color-surface-sunken)",
-        fg: "var(--color-fg)",
-        "fg-muted": "var(--color-fg-muted)",
-        "fg-subtle": "var(--color-fg-subtle)",
-        edge: "var(--color-edge)",
-        "edge-strong": "var(--color-edge-strong)",
-        primary: "var(--color-primary)",
-        "primary-hover": "var(--color-primary-hover)",
-        "primary-fg": "var(--color-primary-fg)",
-        "primary-soft": "var(--color-primary-soft)",
-        "focus-ring": "var(--color-focus-ring)",
-        success: "var(--color-success)",
-        "success-soft": "var(--color-success-soft)",
-        warning: "var(--color-warning)",
-        "warning-soft": "var(--color-warning-soft)",
-        danger: "var(--color-danger)",
-        "danger-fg": "var(--color-danger-fg)",
-        "danger-soft": "var(--color-danger-soft)",
-        info: "var(--color-info)",
-        "info-soft": "var(--color-info-soft)",
-        accent: "var(--color-accent)",
-        "accent-fg": "var(--color-accent-fg)",
-        "banner-fg": "var(--color-banner-fg)",
-        "banner-muted": "var(--color-banner-muted)",
-        "chart-cat-1": "var(--chart-cat-1)",
-        "chart-cat-2": "var(--chart-cat-2)",
-        "chart-cat-3": "var(--chart-cat-3)",
-        "chart-cat-4": "var(--chart-cat-4)",
-        "chart-cat-5": "var(--chart-cat-5)",
-        "chart-cat-6": "var(--chart-cat-6)",
-        "chart-seq": "var(--chart-seq)",
-        "chart-grid": "var(--chart-grid)",
-        "chart-axis-label": "var(--chart-axis-label)",
-      },
+        background: withAlpha("--color-bg"),
+        surface: withAlpha("--color-surface"),
+        "surface-raised": withAlpha("--color-surface-raised"),
+        "surface-sunken": withAlpha("--color-surface-sunken"),
+        fg: withAlpha("--color-fg"),
+        "fg-muted": withAlpha("--color-fg-muted"),
+        "fg-subtle": withAlpha("--color-fg-subtle"),
+        edge: withAlpha("--color-edge"),
+        "edge-strong": withAlpha("--color-edge-strong"),
+        primary: withAlpha("--color-primary"),
+        "primary-hover": withAlpha("--color-primary-hover"),
+        "primary-fg": withAlpha("--color-primary-fg"),
+        "primary-soft": withAlpha("--color-primary-soft"),
+        "focus-ring": withAlpha("--color-focus-ring"),
+        success: withAlpha("--color-success"),
+        "success-soft": withAlpha("--color-success-soft"),
+        warning: withAlpha("--color-warning"),
+        "warning-soft": withAlpha("--color-warning-soft"),
+        danger: withAlpha("--color-danger"),
+        "danger-fg": withAlpha("--color-danger-fg"),
+        "danger-soft": withAlpha("--color-danger-soft"),
+        info: withAlpha("--color-info"),
+        "info-soft": withAlpha("--color-info-soft"),
+        accent: withAlpha("--color-accent"),
+        "accent-fg": withAlpha("--color-accent-fg"),
+        "banner-fg": withAlpha("--color-banner-fg"),
+        "banner-muted": withAlpha("--color-banner-muted"),
+        "chart-cat-1": withAlpha("--chart-cat-1"),
+        "chart-cat-2": withAlpha("--chart-cat-2"),
+        "chart-cat-3": withAlpha("--chart-cat-3"),
+        "chart-cat-4": withAlpha("--chart-cat-4"),
+        "chart-cat-5": withAlpha("--chart-cat-5"),
+        "chart-cat-6": withAlpha("--chart-cat-6"),
+        "chart-seq": withAlpha("--chart-seq"),
+        "chart-grid": withAlpha("--chart-grid"),
+        "chart-axis-label": withAlpha("--chart-axis-label"),
+      } satisfies Record<string, ColorValue> as unknown as Record<string, string>,
       borderColor: {
         edge: "var(--color-edge)",
         "edge-strong": "var(--color-edge-strong)",
