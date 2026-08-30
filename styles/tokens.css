@@ -10,61 +10,70 @@
  * White is the top of the ladder, not the resting surface. A card sits just
  * under white on a tinted ground, so it separates from the page without
  * depending on its hairline, and "raised" — an open tile, a hovered cell, a
- * dialog — has somewhere to go. The neutrals lean very slightly green so the
+ * dialog — has somewhere to go. The neutrals lean very slightly cool so the
  * brand's primary sits on a ground that agrees with it.
  *
- * Dark mode already had the same three steps (#111113 → #18191b → #212225) and
- * is unchanged.
+ * THE PALETTE IS FIGUREDOUTAI'S, and dark mode is the canonical one: it is the
+ * marketing site's own scheme, so the product and the site read as one thing.
+ * Four brand colours carry it —
+ *
+ *   ink #030A0E · sky #90C2E7 · peak #C9E4F5 · paper #F0EDEF
+ *
+ * with deep teal #1B6579, green #4FA87C, amber #E8A33D and terracotta #D4645A
+ * as the supporting hues. Light mode is not a second brand: it is the same
+ * hues re-levelled onto a paper ground, which is why `primary` there is the
+ * deep teal rather than the sky — sky on white is 1.8:1 and unreadable.
+ *
+ * The dark ladder is #010508 → #030A0E → #08171D → #0E2530.
  */
 
 :root {
   color-scheme: light;
 
-  --color-bg: #f1f4f0;
-  --color-surface: #f9fbf8;
+  --color-bg: #eef2f5;
+  --color-surface: #f7fafb;
   --color-surface-raised: #ffffff;
-  --color-surface-sunken: #e7ebe5;
-  --color-fg: #0f1310;
-  --color-fg-muted: #333c35;
-  --color-fg-subtle: #4e574f;
-  --color-edge: #dbe1d9;
-  --color-edge-strong: #a7b0a5;
+  --color-surface-sunken: #e2e9ee;
+  --color-fg: #030a0e;
+  --color-fg-muted: #2c3b42;
+  --color-fg-subtle: #47575f;
+  --color-edge: #d3dee4;
+  --color-edge-strong: #9dafb8;
 
-  --color-primary: #15803d;
-  --color-primary-hover: #166534;
-  --color-primary-fg: #f0fdf4;
-  --color-primary-soft: rgba(21, 128, 61, 0.12);
-  --color-focus-ring: rgba(21, 128, 61, 0.34);
+  --color-primary: #15586b;
+  --color-primary-hover: #0e4353;
+  --color-primary-fg: #f0edef;
+  /* 0.10 rather than the 0.12 the other washes use: at 0.12 this teal lightens
+   * its own ground enough to pull `primary` on `primary-soft` under 4.5:1,
+   * which is the composite a `Badge tone="primary"` produces. */
+  --color-primary-soft: rgba(21, 88, 107, 0.1);
+  --color-focus-ring: rgba(21, 88, 107, 0.34);
 
-  /* Darkened from #16a34a, which reached only 3.17:1 on `surface` and 2.77:1
-   * on its own soft wash — success text in a Badge or an InfoBanner was below
-   * AA for body copy. This clears 4.5:1 on both. See docs/contrast-report.md. */
-  --color-success: #0f7434;
-  --color-success-soft: rgba(22, 163, 74, 0.12);
-  --color-warning: #713f12;
-  --color-warning-soft: rgba(250, 204, 21, 0.16);
-  --color-danger: #7f1d1d;
+  --color-success: #12643a;
+  --color-success-soft: rgba(79, 168, 124, 0.16);
+  --color-warning: #6d4210;
+  --color-warning-soft: rgba(232, 163, 61, 0.18);
+  --color-danger: #8e2f24;
   /* Danger carries its own ink. --color-primary-fg is the ink for PRIMARY, and
-   * in dark mode it is a near-black green — on a light red that is unreadable. */
-  --color-danger-fg: #fff1f2;
-  --color-danger-soft: rgba(248, 113, 113, 0.14);
-  --color-info: #1e3a8a;
-  --color-info-soft: rgba(96, 165, 250, 0.14);
-  --color-accent: #7c2d12;
-  --color-accent-fg: #fff7ed;
-  --color-banner-fg: #111113;
-  --color-banner-muted: #4b4c52;
+   * in dark mode it is a near-black ink — on a light terracotta that is unreadable. */
+  --color-danger-fg: #fdf3f1;
+  --color-danger-soft: rgba(212, 100, 90, 0.16);
+  --color-info: #1c4b80;
+  --color-info-soft: rgba(144, 194, 231, 0.28);
+  --color-accent: #7a3a1a;
+  --color-accent-fg: #fdf3f1;
+  --color-banner-fg: #030a0e;
+  --color-banner-muted: #47575f;
 
-  --chart-cat-1: #15803d;
-  --chart-cat-2: #1e3a8a;
-  --chart-cat-3: #7c2d12;
-  --chart-cat-4: #7f1d1d;
-  --chart-cat-5: #713f12;
-  --chart-cat-6: #4b4c52;
-  --chart-seq: #15803d;
-  --chart-grid: rgba(15, 19, 16, 0.1);
-  --chart-axis-label: #4e574f;
-
+  --chart-cat-1: #15586b;
+  --chart-cat-2: #1c4b80;
+  --chart-cat-3: #7a3a1a;
+  --chart-cat-4: #8e2f24;
+  --chart-cat-5: #6d4210;
+  --chart-cat-6: #47575f;
+  --chart-seq: #15586b;
+  --chart-grid: rgba(3, 10, 14, 0.1);
+  --chart-axis-label: #47575f;
   /* The fallbacks matter: without them an app that has not wired next/font — or
    * any surface that renders the package outside Next, such as Storybook —
    * silently falls back to the browser default, which is a serif. */
@@ -113,14 +122,14 @@
    * hue-matched also lets them run at a lower opacity, because they are no
    * longer fighting pure white to be seen. */
   --shadow-raised:
-    0 1px 2px rgba(16, 32, 22, 0.05),
-    0 12px 32px rgba(16, 32, 22, 0.07);
+    0 1px 2px rgba(3, 20, 28, 0.05),
+    0 12px 32px rgba(3, 20, 28, 0.07);
   --shadow-hover:
-    0 1px 2px rgba(16, 32, 22, 0.07),
-    0 18px 44px rgba(16, 32, 22, 0.11);
+    0 1px 2px rgba(3, 20, 28, 0.07),
+    0 18px 44px rgba(3, 20, 28, 0.11);
   --shadow-overlay:
-    0 2px 8px rgba(16, 32, 22, 0.08),
-    0 26px 64px rgba(16, 32, 22, 0.16);
+    0 2px 8px rgba(3, 20, 28, 0.08),
+    0 26px 64px rgba(3, 20, 28, 0.16);
 
   --ease-standard: cubic-bezier(0.32, 0.72, 0, 1);
   --motion-fast: 150ms;
@@ -141,14 +150,15 @@
    * independently later. */
   --seam: var(--color-edge);
 
-  /* Decorative only, for the page wallpaper. Deliberately NOT the semantic
-   * palette: a status colour changing must never re-tint the background, and
-   * the semantic hues are too dark in light mode to read as anything but a
-   * grey smudge at these opacities. */
-  --glow-1: #22c55e;
-  --glow-2: #38bdf8;
-  --glow-3: #f59e0b;
-  --glow-4: #a78bfa;
+  /* Decorative only, for the page wallpaper. The brand's four hues, but held as
+   * literal values rather than `var(--color-primary)`: a status colour changing
+   * must never re-tint the background. They are also the BRIGHT reading of each
+   * hue, not the semantic one — light mode's semantic teal (#15586b) is dark
+   * enough to read as a grey smudge at these opacities. */
+  --glow-1: #90c2e7;
+  --glow-2: #38a3bd;
+  --glow-3: #f0b45c;
+  --glow-4: #e08a7e;
   --glow-strong: 22%;
   --glow-mid: 16%;
   --glow-soft: 11%;
@@ -157,46 +167,45 @@
 .dark {
   color-scheme: dark;
 
-  --color-bg: #111113;
-  --color-surface: #18191b;
-  --color-surface-raised: #212225;
-  --color-surface-sunken: #151619;
-  --color-fg: #fafafa;
-  --color-fg-muted: #a1a1aa;
-  --color-fg-subtle: #8a8a8f;
-  --color-edge: #272a2d;
-  --color-edge-strong: #43484e;
+  --color-bg: #030a0e;
+  --color-surface: #08171d;
+  --color-surface-raised: #0e2530;
+  --color-surface-sunken: #010508;
+  --color-fg: #f0edef;
+  --color-fg-muted: #afb1b4;
+  --color-fg-subtle: #8a8f93;
+  --color-edge: #1e323d;
+  --color-edge-strong: #415f72;
 
-  --color-primary: #86efac;
-  --color-primary-hover: #bbf7d0;
-  --color-primary-fg: #052e16;
-  --color-primary-soft: rgba(34, 197, 94, 0.16);
-  --color-focus-ring: rgba(134, 239, 172, 0.36);
+  --color-primary: #90c2e7;
+  --color-primary-hover: #c9e4f5;
+  --color-primary-fg: #030a0e;
+  --color-primary-soft: rgba(144, 194, 231, 0.16);
+  --color-focus-ring: rgba(144, 194, 231, 0.36);
 
-  --color-success: #5ddf6c;
-  --color-success-soft: rgba(93, 223, 108, 0.16);
-  --color-warning: #eab308;
-  --color-warning-soft: rgba(66, 32, 6, 0.78);
-  --color-danger: #f87171;
-  --color-danger-fg: #450a0a;
-  --color-danger-soft: rgba(69, 10, 10, 0.78);
-  --color-info: #60a5fa;
-  --color-info-soft: rgba(30, 58, 138, 0.36);
-  --color-accent: #fb923c;
-  --color-accent-fg: #431407;
-  --color-banner-fg: #fafafa;
-  --color-banner-muted: #a1a1aa;
+  --color-success: #5cbb8b;
+  --color-success-soft: rgba(79, 168, 124, 0.16);
+  --color-warning: #e8a33d;
+  --color-warning-soft: rgba(232, 163, 61, 0.16);
+  --color-danger: #e2827a;
+  --color-danger-fg: #2a0906;
+  --color-danger-soft: rgba(212, 100, 90, 0.18);
+  --color-info: #7fbcd6;
+  --color-info-soft: rgba(27, 101, 121, 0.4);
+  --color-accent: #c9e4f5;
+  --color-accent-fg: #030a0e;
+  --color-banner-fg: #f0edef;
+  --color-banner-muted: #afb1b4;
 
-  --chart-cat-1: #86efac;
-  --chart-cat-2: #60a5fa;
-  --chart-cat-3: #fb923c;
-  --chart-cat-4: #f87171;
-  --chart-cat-5: #eab308;
-  --chart-cat-6: #a1a1aa;
-  --chart-seq: #86efac;
-  --chart-grid: rgba(250, 250, 250, 0.12);
-  --chart-axis-label: #a1a1aa;
-
+  --chart-cat-1: #90c2e7;
+  --chart-cat-2: #5cbb8b;
+  --chart-cat-3: #e8a33d;
+  --chart-cat-4: #e2827a;
+  --chart-cat-5: #7fbcd6;
+  --chart-cat-6: #afb1b4;
+  --chart-seq: #90c2e7;
+  --chart-grid: rgba(240, 237, 239, 0.12);
+  --chart-axis-label: #afb1b4;
   --shadow-raised:
     0 1px 2px rgba(0, 0, 0, 0.24),
     0 18px 40px rgba(0, 0, 0, 0.3);
@@ -207,10 +216,12 @@
     0 4px 12px rgba(0, 0, 0, 0.28),
     0 28px 80px rgba(0, 0, 0, 0.38);
 
-  --glow-1: #86efac;
-  --glow-2: #60a5fa;
-  --glow-3: #fb923c;
-  --glow-4: #a78bfa;
+  /* Dark can take the deep teal directly — the site's own hero wash is exactly
+   * this pair, sky over teal, on the ink ground. */
+  --glow-1: #90c2e7;
+  --glow-2: #1b6579;
+  --glow-3: #e8a33d;
+  --glow-4: #d4645a;
   /* Roughly half of light's: these hues are far brighter than their ground in
    * dark mode, so the same percentage reads as several times louder. */
   --glow-strong: 13%;
