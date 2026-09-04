@@ -1,7 +1,10 @@
+"use client"
+
 import { forwardRef } from "react"
 import type { InputHTMLAttributes, SelectHTMLAttributes, TextareaHTMLAttributes } from "react"
 import { CaretDown } from "../icons/index.js"
 import { cn } from "../lib/cn.js"
+import { useFieldAria } from "./form-field.js"
 
 type FieldSize = "sm" | "md"
 
@@ -35,12 +38,14 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
   { className, fieldSize = "md", invalid = false, ...props },
   ref,
 ) {
+  const fieldAria = useFieldAria(props)
   return (
     <input
       ref={ref}
       className={cn(FIELD_BASE, FIELD_SIZE[fieldSize], invalid && INVALID_STYLE, className)}
       aria-invalid={invalid || undefined}
       {...props}
+      {...fieldAria}
     />
   )
 })
@@ -51,6 +56,7 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(function 
   { className, invalid = false, rows = 4, ...props },
   ref,
 ) {
+  const fieldAria = useFieldAria(props)
   return (
     <textarea
       ref={ref}
@@ -58,6 +64,7 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(function 
       className={cn(FIELD_BASE, "min-h-28 resize-y py-3", invalid && INVALID_STYLE, className)}
       aria-invalid={invalid || undefined}
       {...props}
+      {...fieldAria}
     />
   )
 })
@@ -75,6 +82,7 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(function Select
   { children, className, fieldSize = "md", invalid = false, ...props },
   ref,
 ) {
+  const fieldAria = useFieldAria(props)
   return (
     <div className="relative min-w-0 self-start">
       <select
@@ -88,6 +96,7 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(function Select
         )}
         aria-invalid={invalid || undefined}
         {...props}
+        {...fieldAria}
       >
         {children}
       </select>

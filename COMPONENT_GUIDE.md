@@ -54,13 +54,14 @@ something.
 ## Exports
 
 Primitives:
-`Badge`, `Button`, `IconButton`, `Card`, `CardHeader`, `CardBody`, `CardFooter`, `Checkbox`, `FormField`, `Input`, `Textarea`, `Select`, `Skeleton`, `Spinner`, `Switch`, `ThemeToggle`
+`Badge`, `Button`, `IconButton`, `Card`, `CardHeader`, `CardBody`, `CardFooter`, `Checkbox`, `FormField`, `useFieldAria`, `Input`, `Textarea`, `Select`, `Skeleton`, `Spinner`, `Switch`, `ThemeToggle`
 
 Patterns:
 `AppTopBar`, `Avatar`, `ConfirmDialog`, `DashboardShell`, `DescriptionList`, `Dialog`, `DropdownMenu`, `EmptyState`, `ExpandableTile`, `FilterBar`, `Hero`, `InfoBanner`, `PageBand`, `PageContent`, `PageHeader`, `Pagination`, `SearchInput`, `SeamGrid`, `SeamCell`, `seamCorners`, `SelectMenu`, `Section`, `SettingsSection`, `SidePanel`, `StatCard`, `StatCardContent`, `Stepper`, `Table`, `TableSection`, `Tabs`, `ToastProvider`, `Tooltip`, `useToast`
 
 ## Composition Notes
 
+- `FormField` names the controls inside it. `labelFor` is still the better association — it is what makes the label a click target for its control — but a field without one now publishes its label id and its hint/error ids through context, and `Input`, `Textarea` and `Select` name and describe themselves from it however deeply they are nested. A control that already carries its own `aria-label` or `aria-labelledby` keeps it. Anything else inside a field — `Checkbox`, `Switch`, a custom picker, a row of buttons — does **not** inherit: give it `labelFor`, or a label of its own.
 - Use `AppTopBar` for application chrome that must wrap cleanly at small widths while preserving accessible primary navigation.
 - Use `DashboardShell` for operational apps that need persistent sidebar navigation, a sticky action/status bar, and a mobile navigation drawer.
 - Use `StatCard` for compact metric tiles, not as a general content container.
