@@ -12,9 +12,30 @@ export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: ButtonVariant
   size?: ButtonSize
   loading?: boolean
+  /** What the pending state is called out loud. See PENDING_CONVENTION below. */
+  loadingLabel?: string
   leadingIcon?: ReactNode
   trailingIcon?: ReactNode
 }
+
+/* PENDING_CONVENTION — how this package says "a write is running".
+ *
+ * Three parts, and every pending affordance in the package uses all three so a
+ * screen reader is told something is happening rather than only hearing the
+ * control go dim:
+ *
+ *   1. a spinning glyph, `aria-hidden`, for the sighted user;
+ *   2. `aria-busy="true"` on the element that is busy;
+ *   3. a `role="status"` node carrying `sr-only` text, mounted at the moment
+ *      the work starts — `Spinner` is the same three parts standing alone.
+ *
+ * On a button the status node is rendered *after* the children, so the
+ * accessible name gains a suffix ("Save Saving…") instead of being replaced.
+ * The name is content-derived, so the suffix is the announcement for a user who
+ * arrives at the control mid-write, and the live region is the announcement for
+ * one who was already there. Follow this for any other pending surface
+ * (skeletons included) rather than inventing a second convention. */
+const DEFAULT_LOADING_LABEL = "Loading"
 
 const VARIANT_STYLES: Record<ButtonVariant, string> = {
   primary:
@@ -51,6 +72,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(function Button
     leadingIcon,
     trailingIcon,
     loading = false,
+    loadingLabel = DEFAULT_LOADING_LABEL,
     size = "md",
     type = "button",
     variant = "primary",
@@ -65,6 +87,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(function Button
       ref={ref}
       type={type}
       disabled={isDisabled}
+      aria-busy={loading || undefined}
       className={cn(
         "inline-flex items-center justify-center whitespace-nowrap font-medium transition duration-normal ease-standard",
         "motion-reduce:transform-none motion-reduce:transition-none",
@@ -76,9 +99,19 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(function Button
       )}
       {...props}
     >
-      {loading ? <ArrowClockwise size={16} className="animate-spin" aria-hidden="true" /> : leadingIcon}
+      {loading ? (
+        <ArrowClockwise size={16} className="animate-spin motion-reduce:animate-none" aria-hidden="true" />
+      ) : (
+        leadingIcon
+      )}
       {children}
-      {!loading ? trailingIcon : null}
+      {loading ? (
+        <span role="status" className="sr-only">
+          {loadingLabel}
+        </span>
+      ) : (
+        trailingIcon
+      )}
     </button>
   )
 })

@@ -113,3 +113,94 @@ describe("FormField", () => {
     expect(described).toEqual(["Sets every screen's wording", "e.g. 'Editor'."])
   })
 })
+
+/* Finding 129: the error was a plain <p> and no control was ever marked
+ * invalid, so a wrong password on sign-in was announced and a password
+ * mismatch on /admin/account was silent. */
+describe("FormField, in error", () => {
+  it("announces the error and marks the control invalid", () => {
+    render(
+      <FormField label="Confirm new password" error="Those passwords don't match.">
+        <Input type="text" />
+      </FormField>,
+    )
+
+    expect(screen.getByRole("alert")).toHaveTextContent("Those passwords don't match.")
+    expect(screen.getByRole("textbox", { name: "Confirm new password" })).toHaveAttribute("aria-invalid", "true")
+  })
+
+  it("marks a textarea and a select invalid the same way", () => {
+    render(
+      <>
+        <FormField label="Personality" error="Required">
+          <Textarea />
+        </FormField>
+        <FormField label="Status" error="Required">
+          <Select>
+            <option value="a">A</option>
+          </Select>
+        </FormField>
+      </>,
+    )
+
+    expect(screen.getByRole("textbox", { name: "Personality" })).toHaveAttribute("aria-invalid", "true")
+    expect(screen.getByRole("combobox", { name: "Status" })).toHaveAttribute("aria-invalid", "true")
+  })
+
+  /* The native association is the case that broke on /admin/account: the field
+   * publishes no labelId when `labelFor` is set, so `invalid` had to ride a
+   * channel that survives that. */
+  it("marks the control invalid even when labelFor carries the name", () => {
+    render(
+      <FormField label="Confirm new password" labelFor="confirm-password" error="Those passwords don't match.">
+        <Input id="confirm-password" type="text" />
+      </FormField>,
+    )
+
+    expect(screen.getByRole("textbox", { name: "Confirm new password" })).toHaveAttribute("aria-invalid", "true")
+  })
+
+  it("marks every control in a field that holds more than one", () => {
+    render(
+      <FormField label="Portfolio links" error="One of these is not a URL">
+        <Input type="url" />
+        <Input type="url" />
+      </FormField>,
+    )
+
+    for (const input of screen.getAllByRole("textbox", { name: "Portfolio links" })) {
+      expect(input).toHaveAttribute("aria-invalid", "true")
+    }
+  })
+
+  it("leaves a valid field's control unmarked and the page free of live regions", () => {
+    render(
+      <FormField label="Firm name" hint="Shown on every screen.">
+        <Input />
+      </FormField>,
+    )
+
+    expect(screen.getByRole("textbox", { name: "Firm name" })).not.toHaveAttribute("aria-invalid")
+    expect(screen.queryByRole("alert")).toBeNull()
+  })
+
+  it("marks a control that sets invalid itself, with no field error", () => {
+    render(
+      <FormField label="Weight">
+        <Input invalid />
+      </FormField>,
+    )
+
+    expect(screen.getByRole("textbox", { name: "Weight" })).toHaveAttribute("aria-invalid", "true")
+  })
+
+  it("lets a control that states its own validity override the field", () => {
+    render(
+      <FormField label="Weight" error="Must be a number">
+        <Input aria-invalid={false} />
+      </FormField>,
+    )
+
+    expect(screen.getByRole("textbox", { name: "Weight" })).toHaveAttribute("aria-invalid", "false")
+  })
+})

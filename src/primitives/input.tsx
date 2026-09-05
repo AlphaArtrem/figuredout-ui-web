@@ -29,6 +29,11 @@ const FIELD_SIZE: Record<FieldSize, string> = {
   md: "min-h-11 py-2.5",
 }
 
+/* The red ring is driven by the control's own `invalid` prop only, while
+ * `aria-invalid` is also inherited from an enclosing FormField's `error` (see
+ * `useFieldAria`). Deliberate, for now: a field's error text is already visible
+ * and red, and widening the ring to every errored field is a visual change
+ * across every form in the product rather than an accessibility fix. */
 const INVALID_STYLE =
   "shadow-[inset_0_0_0_1px_var(--color-danger)] hover:shadow-[inset_0_0_0_1px_var(--color-danger)] focus:shadow-[inset_0_0_0_1px_var(--color-danger)] focus:ring-danger-soft"
 
@@ -38,12 +43,11 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
   { className, fieldSize = "md", invalid = false, ...props },
   ref,
 ) {
-  const fieldAria = useFieldAria(props)
+  const fieldAria = useFieldAria(props, invalid)
   return (
     <input
       ref={ref}
       className={cn(FIELD_BASE, FIELD_SIZE[fieldSize], invalid && INVALID_STYLE, className)}
-      aria-invalid={invalid || undefined}
       {...props}
       {...fieldAria}
     />
@@ -56,13 +60,12 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(function 
   { className, invalid = false, rows = 4, ...props },
   ref,
 ) {
-  const fieldAria = useFieldAria(props)
+  const fieldAria = useFieldAria(props, invalid)
   return (
     <textarea
       ref={ref}
       rows={rows}
       className={cn(FIELD_BASE, "min-h-28 resize-y py-3", invalid && INVALID_STYLE, className)}
-      aria-invalid={invalid || undefined}
       {...props}
       {...fieldAria}
     />
@@ -82,7 +85,7 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(function Select
   { children, className, fieldSize = "md", invalid = false, ...props },
   ref,
 ) {
-  const fieldAria = useFieldAria(props)
+  const fieldAria = useFieldAria(props, invalid)
   return (
     <div className="relative min-w-0 self-start">
       <select
@@ -94,7 +97,6 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(function Select
           invalid && INVALID_STYLE,
           className,
         )}
-        aria-invalid={invalid || undefined}
         {...props}
         {...fieldAria}
       >
