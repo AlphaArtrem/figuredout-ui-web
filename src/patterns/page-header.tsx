@@ -65,8 +65,16 @@ export function PageHeader({ actions, breadcrumb, description, eyebrow, title }:
       </div>
       {actions ? (
         /* `justify-end` so a set that wraps stays flush with the page edge
-         * rather than drifting into the title's column. */
-        <div className="col-start-2 row-start-1 flex flex-wrap items-center justify-end gap-2 self-center lg:row-span-2 lg:self-end">
+         * rather than drifting into the title's column.
+         *
+         * `[&>*]:flex-wrap` is the one reach into a child here, and it earns it:
+         * most call sites pass their actions inside their own `flex` row, which
+         * is a single flex item to this container and so does not wrap when the
+         * column is capped. It overflowed instead, and `justify-end` sent the
+         * overflow LEFT, printing the buttons over the title. The utility says
+         * "whatever row you brought, let it wrap"; on a child that is not a flex
+         * container it does nothing at all. */
+        <div className="col-start-2 row-start-1 flex flex-wrap items-center justify-end gap-2 self-center [&>*]:flex-wrap lg:row-span-2 lg:self-end">
           {actions}
         </div>
       ) : null}
