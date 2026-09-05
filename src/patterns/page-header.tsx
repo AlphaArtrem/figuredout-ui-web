@@ -42,7 +42,16 @@ export function PageHeader({ actions, breadcrumb, description, eyebrow, title }:
         "grid items-start border-b border-edge pb-5",
         /* A single track when there is nothing to put beside the title: a
          * second, empty column still spends the column gap. */
-        actions ? "grid-cols-[minmax(0,1fr)_auto] gap-x-4" : "grid-cols-[minmax(0,1fr)]",
+        /* The action column is capped below `lg` and only there. Uncapped, a
+         * two-button set on /dashboard took 256px of a 342px row and squeezed
+         * "What needs you right now" into a 70px column five lines deep — the
+         * title losing to its own action is not an improvement on the action
+         * being lost under the description. Capped, the buttons wrap down their
+         * own column and the title keeps the majority of the row. From `lg` up
+         * there is room for both, so the track goes back to its content. */
+        actions
+          ? "grid-cols-[minmax(0,1fr)_minmax(0,45%)] gap-x-4 lg:grid-cols-[minmax(0,1fr)_auto]"
+          : "grid-cols-[minmax(0,1fr)]",
       )}
     >
       <div className="col-start-1 row-start-1 min-w-0">
@@ -62,7 +71,15 @@ export function PageHeader({ actions, breadcrumb, description, eyebrow, title }:
         </div>
       ) : null}
       {description ? (
-        <p className="col-start-1 row-start-2 m-0 mt-3 max-w-[60ch] text-sm text-fg-muted">{description}</p>
+        /* The description spans both columns below `lg`. The action column is
+           sized by its buttons and the tracks are shared down the grid, so
+           leaving the description in column 1 would have narrowed a phone's
+           reading width to whatever the buttons left over — 200px of 342 on
+           /entities. At `lg` it goes back to one column, because that is where
+           the actions sit beside it. */
+        <p className="col-span-2 col-start-1 row-start-2 m-0 mt-3 max-w-[60ch] text-sm text-fg-muted lg:col-span-1">
+          {description}
+        </p>
       ) : null}
     </div>
   )

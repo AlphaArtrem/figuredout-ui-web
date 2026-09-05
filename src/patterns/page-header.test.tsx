@@ -34,6 +34,24 @@ describe("PageHeader action placement (finding 12)", () => {
     expect(action?.className).toContain("lg:self-end")
   })
 
+  it("caps the action column below lg so a wide action set cannot squeeze the title out", () => {
+    const { container } = render(
+      <PageHeader title="What needs you right now" actions={<button type="button">Go to Inbox</button>} />,
+    )
+
+    const header = container.firstElementChild
+    expect(header?.className).toContain("grid-cols-[minmax(0,1fr)_minmax(0,45%)]")
+    expect(header?.className).toContain("lg:grid-cols-[minmax(0,1fr)_auto]")
+  })
+
+  it("gives the description the whole row below lg, and column one from lg up", () => {
+    render(<PageHeader title="Editors" description="Copy." actions={<button type="button">Add</button>} />)
+
+    const description = screen.getByText("Copy.")
+    expect(description.className).toContain("col-span-2")
+    expect(description.className).toContain("lg:col-span-1")
+  })
+
   it("does not spend a column gap on a header with nothing beside the title", () => {
     const { container } = render(<PageHeader title="Settings" description="Copy." />)
 
