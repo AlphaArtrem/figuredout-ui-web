@@ -27,7 +27,23 @@
  * The dark ladder is #010508 → #030A0E → #08171D → #0E2530.
  */
 
-:root {
+/* Bare `:root` stays, so a consumer that never sets a theme class still gets
+ * the light palette as its default — removing it would change the default for
+ * anyone not using the class attribute strategy.
+ *
+ * `.light` is here so light can be scoped to a SUBTREE, the way `.dark` below
+ * already can. Themes are class-based (`ThemeProvider attribute="class"`), and
+ * in dark mode `.dark` sits on `<html>`; a descendant with no class of its own
+ * inherits it, so a "light preview" panel inside a dark app resolved
+ * `--color-bg` to #030a0e and rendered identical to the dark panel beside it.
+ * A declaration on the element beats an inherited value, so `.light` on the
+ * wrapper is enough to flip that subtree back — and the same holds in reverse
+ * for a `.dark` island inside a light page.
+ *
+ * The two selectors share one block rather than duplicating the values: a
+ * second copy of forty tokens is a second copy to forget to update. */
+:root,
+.light {
   color-scheme: light;
 
   --color-bg: #eef2f5;

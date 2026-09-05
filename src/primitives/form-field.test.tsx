@@ -204,3 +204,111 @@ describe("FormField, in error", () => {
     expect(screen.getByRole("textbox", { name: "Weight" })).toHaveAttribute("aria-invalid", "false")
   })
 })
+
+/* Finding 49: the required asterisk lived inside the label, and the label is
+ * what every control in the field is named from, so eighty-six controls
+ * announced as "App name star". Hiding the asterisk on its own would have been
+ * a regression — most call sites mark the FIELD required and never pass
+ * `required` to the control — so the required state moves to `aria-required`,
+ * carried by the same context that already carries the label id. */
+describe("FormField, required", () => {
+  it("keeps the asterisk out of the control's accessible name", () => {
+    render(
+      <FormField label="App name" required>
+        <Input />
+      </FormField>,
+    )
+
+    expect(screen.getByRole("textbox", { name: "App name" })).toBeTruthy()
+    expect(screen.queryByRole("textbox", { name: "App name*" })).toBeNull()
+  })
+
+  it("hides the asterisk from the accessibility tree but still draws it", () => {
+    const { container } = render(
+      <FormField label="App name" required>
+        <Input />
+      </FormField>,
+    )
+
+    const asterisk = container.querySelector("label span")
+    expect(asterisk).toHaveTextContent("*")
+    expect(asterisk).toHaveAttribute("aria-hidden", "true")
+  })
+
+  /* The case that made this not a one-liner: `dynamic-field.tsx` in the
+   * consuming app marks the field required and never passes `required` to the
+   * input, so before this the asterisk was the only signal those fields had. */
+  it("marks a control required even when the control was never told it is", () => {
+    render(
+      <FormField label="Firm name" required>
+        <Input />
+      </FormField>,
+    )
+
+    expect(screen.getByRole("textbox", { name: "Firm name" })).toHaveAttribute("aria-required", "true")
+  })
+
+  it("marks a textarea and a select required the same way", () => {
+    render(
+      <>
+        <FormField label="Personality" required>
+          <Textarea />
+        </FormField>
+        <FormField label="Status" required>
+          <Select>
+            <option value="a">A</option>
+          </Select>
+        </FormField>
+      </>,
+    )
+
+    expect(screen.getByRole("textbox", { name: "Personality" })).toHaveAttribute("aria-required", "true")
+    expect(screen.getByRole("combobox", { name: "Status" })).toHaveAttribute("aria-required", "true")
+  })
+
+  /* `labelFor` suppresses the labelId, so `required` had to ride a channel that
+   * survives the native association — the same shape 129's `invalid` needed. */
+  it("marks the control required even when labelFor carries the name", () => {
+    render(
+      <FormField label="Firm name" labelFor="firm-name" required>
+        <Input id="firm-name" />
+      </FormField>,
+    )
+
+    expect(screen.getByRole("textbox", { name: "Firm name" })).toHaveAttribute("aria-required", "true")
+  })
+
+  it("marks every control in a field that holds more than one", () => {
+    render(
+      <FormField label="Portfolio links" required>
+        <Input type="url" />
+        <Input type="url" />
+      </FormField>,
+    )
+
+    for (const input of screen.getAllByRole("textbox", { name: "Portfolio links" })) {
+      expect(input).toHaveAttribute("aria-required", "true")
+    }
+  })
+
+  it("leaves an optional field's control unmarked, with no asterisk rendered", () => {
+    const { container } = render(
+      <FormField label="Website">
+        <Input />
+      </FormField>,
+    )
+
+    expect(screen.getByRole("textbox", { name: "Website" })).not.toHaveAttribute("aria-required")
+    expect(container.querySelector("label span")).toBeNull()
+  })
+
+  it("lets a control that states its own required-ness override the field", () => {
+    render(
+      <FormField label="Website" required>
+        <Input aria-required={false} />
+      </FormField>,
+    )
+
+    expect(screen.getByRole("textbox", { name: "Website" })).toHaveAttribute("aria-required", "false")
+  })
+})

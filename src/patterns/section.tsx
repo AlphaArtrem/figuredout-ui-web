@@ -33,13 +33,26 @@ export function Section({
 
     return (
       <section className={cn("grid min-w-0 gap-8 border-t border-edge py-12", className)} {...props}>
-        {/* Icon beside the heading, then eyebrow, then description — one
+        {/* Eyebrow, then icon beside the heading, then description — one
          * left-hand column at every width. The heading used to move into the
          * second column of a 10rem rail at md, which left it indented on a
          * tablet or a desktop while it sat flush on a phone: the same region
          * read as two different layouts depending on the screen, and the wider
-         * one buried its own title. */}
+         * one buried its own title.
+         *
+         * The eyebrow leads. It is a kicker — it says which region of the page
+         * you have arrived at, and a kicker printed under its own headline is
+         * an afterthought rather than a signpost. This variant used to emit the
+         * heading first while the card variant below and `PageHeader` both led
+         * with the eyebrow, so the same design language read in two different
+         * orders depending on which page you landed on. Nothing argued for the
+         * old order; it was not deliberate. */}
         <div className="grid grid-cols-1 gap-2">
+          {eyebrow ? (
+            <p className="m-0 self-start font-mono text-xs font-semibold uppercase tracking-[0.14em] text-fg-subtle">
+              {eyebrow}
+            </p>
+          ) : null}
           <div className="flex min-w-0 items-center gap-3">
             {icon ? (
               <span className="inline-grid size-10 shrink-0 place-items-center rounded-lg border border-primary/30 bg-primary-soft text-primary">
@@ -57,11 +70,6 @@ export function Section({
               {title}
             </h2>
           </div>
-          {eyebrow ? (
-            <p className="m-0 self-start font-mono text-xs font-semibold uppercase tracking-[0.14em] text-fg-subtle">
-              {eyebrow}
-            </p>
-          ) : null}
           <div className="grid min-w-0 gap-3">
             {description ? (
               <p

@@ -26,11 +26,20 @@ export interface FormFieldProps extends HTMLAttributes<HTMLDivElement> {
  * land on the control the user is focused on, and the field cannot reach into
  * its children to put it there — cloning would break the moment a field holds
  * more than one input, and it is `traps.md` §51's mistake in a new costume. So
- * the field states that it is in error and the controls mark themselves. */
+ * the field states that it is in error and the controls mark themselves.
+ *
+ * `required` rides it too, and it is the half of the asterisk fix that is easy
+ * to miss. The asterisk is now `aria-hidden`, because it was being read as part
+ * of every field's name ("App name star"). Hiding it alone would have been a
+ * regression: a great many call sites mark the FIELD required and never pass
+ * `required` to the control inside it, so the asterisk was the only signal
+ * those fields had. The field therefore publishes its own `required` and the
+ * controls set `aria-required` themselves — same mechanism, same reason. */
 interface FieldContextValue {
   describedBy?: string
   invalid?: boolean
   labelId?: string
+  required?: boolean
 }
 
 const FieldContext = createContext<FieldContextValue | null>(null)
@@ -40,12 +49,20 @@ interface OwnFieldAria {
   "aria-invalid"?: AriaAttributes["aria-invalid"]
   "aria-label"?: string | undefined
   "aria-labelledby"?: string | undefined
+  "aria-required"?: AriaAttributes["aria-required"]
 }
 
 /* Anything the consumer set wins: a control that already carries its own name,
  * description or validity keeps it, and only the gaps are filled from the
  * field. `ownInvalid` is the control's own `invalid` prop, which sits between
- * the two — more specific than the field, less than an explicit attribute. */
+ * the two — more specific than the field, less than an explicit attribute.
+ *
+ * `aria-required` is stated whenever the FIELD is required, even on a control
+ * that also carries the native `required` attribute. The two agree, so the
+ * redundancy costs nothing, and making the flag depend on which of the two
+ * spellings a call site happened to use would leave the answer to "is this
+ * control required" different from field to field for no reason a reader could
+ * see. A control that sets `aria-required` itself still wins. */
 export function useFieldAria(own: OwnFieldAria, ownInvalid = false): OwnFieldAria {
   const field = useContext(FieldContext)
   const alreadyNamed = own["aria-label"] != null || own["aria-labelledby"] != null
@@ -55,6 +72,7 @@ export function useFieldAria(own: OwnFieldAria, ownInvalid = false): OwnFieldAri
     "aria-describedby": describedBy || undefined,
     "aria-invalid": own["aria-invalid"] ?? (ownInvalid || field?.invalid ? true : undefined),
     "aria-labelledby": own["aria-labelledby"] ?? (alreadyNamed ? undefined : field?.labelId),
+    "aria-required": own["aria-required"] ?? (field?.required ? true : undefined),
   }
 }
 
@@ -78,17 +96,27 @@ export function FormField({
     return {
       ...(describedBy ? { describedBy } : {}),
       ...(error ? { invalid: true } : {}),
+      ...(required ? { required: true } : {}),
       /* Only when `labelFor` has not already tied the label to its control —
        * otherwise the native association stands on its own. */
       ...(labelFor ? {} : { labelId }),
     }
-  }, [error, errorId, hint, hintId, labelFor, labelId])
+  }, [error, errorId, hint, hintId, labelFor, labelId, required])
 
   return (
     <div className={cn("space-y-2", className)} {...props}>
       <label id={labelId} htmlFor={labelFor} className="block text-sm font-medium text-fg">
         {label}
-        {required ? <span className="ml-1 text-danger">*</span> : null}
+        {/* The asterisk is decoration, not name. It sits inside the label, and
+          * the label is what every control in the field is named from, so an
+          * exposed asterisk made eighty-six controls announce as "App name
+          * star". The required state is carried by `aria-required` on the
+          * controls instead — see FieldContextValue above. */}
+        {required ? (
+          <span aria-hidden="true" className="ml-1 text-danger">
+            *
+          </span>
+        ) : null}
       </label>
       <FieldContext.Provider value={context}>{children}</FieldContext.Provider>
       {hint ? (

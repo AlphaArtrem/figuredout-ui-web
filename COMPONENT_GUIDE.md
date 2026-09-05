@@ -32,6 +32,8 @@ Light and dark both run four steps, and which one a thing sits on is its meaning
 | `surface` | Cards, tables, panels — anything resting on the page. |
 | `surface-raised` | Anything lifted: an open tile, a hovered cell, a dialog, a menu, a toast. |
 
+Light is on both `:root` and `.light`, dark on `.dark`, so either scheme can be scoped to a subtree — a light preview panel inside a dark app needs `.light` on its wrapper, or it inherits `.dark` from `<html>` and renders dark.
+
 White is the top of that ladder in light mode, not the resting surface. A card that sits on `surface`
 separates from the page without depending on its hairline, which is what makes `surface-raised` mean
 something.
@@ -63,11 +65,11 @@ Patterns:
 
 - `ConfirmDialog`'s `onConfirm` may return a promise. Return nothing and it closes on confirm, as it always has. Return a promise and it holds the dialog open with a pending confirm button, refuses Escape/overlay/close while the write runs, closes on resolve, and on reject stays open with the error in a `role="alert"` line above the buttons. Pass `confirmErrorMessage` to map a rejection to a sentence.
 - Pending state is one convention everywhere: a spinning glyph marked `aria-hidden`, `aria-busy` on the busy element, and a `role="status"` node with `sr-only` text mounted when the work starts. `Spinner` is those three parts standing alone; `Button loading` renders its status node *after* the children, so the accessible name gains a suffix ("Save Loading") instead of being replaced. Set `loadingLabel` to say something more specific.
-- `FormField` names the controls inside it. `labelFor` is still the better association — it is what makes the label a click target for its control — but a field without one now publishes its label id and its hint/error ids through context, and `Input`, `Textarea` and `Select` name and describe themselves from it however deeply they are nested. A control that already carries its own `aria-label` or `aria-labelledby` keeps it. An `error` also publishes an `invalid` flag through the same context, so those three controls set their own `aria-invalid` — the parent never reaches into a child to place it — and the error itself is a `role="alert"`, announced when it appears. Anything else inside a field — `Checkbox`, `Switch`, a custom picker, a row of buttons — does **not** inherit: give it `labelFor`, or a label of its own.
+- `FormField` names the controls inside it. `labelFor` is still the better association — it is what makes the label a click target for its control — but a field without one now publishes its label id and its hint/error ids through context, and `Input`, `Textarea` and `Select` name and describe themselves from it however deeply they are nested. A control that already carries its own `aria-label` or `aria-labelledby` keeps it. An `error` also publishes an `invalid` flag through the same context, so those three controls set their own `aria-invalid` — the parent never reaches into a child to place it — and the error itself is a `role="alert"`, announced when it appears. `required` rides the same channel: the asterisk beside the label is `aria-hidden` (it was being read as part of every field's name — "App name star") and the controls carry `aria-required` instead, so a field that marks itself required still says so on a control that was never passed `required`. Anything else inside a field — `Checkbox`, `Switch`, a custom picker, a row of buttons — does **not** inherit: give it `labelFor`, or a label of its own.
 - Use `AppTopBar` for application chrome that must wrap cleanly at small widths while preserving accessible primary navigation.
 - Use `DashboardShell` for operational apps that need persistent sidebar navigation, a sticky action/status bar, and a mobile navigation drawer.
 - Use `StatCard` for compact metric tiles, not as a general content container.
-- Use `Section variant="plain"` for page-level regions with a divider, icon, eyebrow, heading, and description.
+- Use `Section variant="plain"` for page-level regions with a divider, icon, eyebrow, heading, and description. Both variants emit the eyebrow **before** the heading; the plain one used to emit it after, so the same design language read in two orders depending on the page. `Section` always renders an `h2` — a page that needs an `h1` wants `PageHeader`.
 - Use `InfoBanner` for semantic messages; warning and danger tones announce with `role="alert"`.
 - Use `ExpandableTile` for optional detail blocks that can be controlled with `open` / `onOpenChange` or initialized with `defaultOpen`. Its open state is an overlay that stayed where it was, so do not stack more than a few in one view.
 - Use `SeamGrid` for a set of related cells — stat tiles, rules, facts — so they read as one object rather than as separate cards. Pass a child count that divides evenly by every step (4 → 2 → 1); a hole in a grid of hairlines reads as a missing figure. `seamCorners` is exported for structures that cannot be a `SeamGrid`, such as `DescriptionList`'s `<dl>` and `Stepper`'s `<ol>`.
@@ -78,6 +80,7 @@ Patterns:
 - Use `TableSection` for data regions; it renders `Table` in the plain table style by default to avoid nested card shells.
 - Use `Table rowTone` to mark rows as `info`, `warning`, `danger`, or `success` without custom row styling.
 - Use `Table framed` only when the table is the standalone focal component. Inside a `Card`, `Section` or `TableSection` the container already provides the frame, and two frames read as a box in a box.
+- `ThemeToggle` is a three-step cycle (system → light → dark), so its accessible name states the **action** ("Switch to light theme") rather than the current theme, and the new state is announced through a `role="status"` sibling instead of joining the name. `aria-pressed` is deliberately not used: it is a two-state affordance.
 - Use `SelectMenu`, not `Select`, when the option list has to match the theme: a native `<select>` popup is drawn by the OS and ignores the page's colours on several platforms.
 
 Charts:
