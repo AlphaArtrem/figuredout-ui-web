@@ -39,6 +39,8 @@
         "TextareaProps",
         "Select",
         "SelectProps",
+        "LoadingRegion",
+        "LoadingRegionProps",
         "Skeleton",
         "Spinner",
         "SpinnerProps",

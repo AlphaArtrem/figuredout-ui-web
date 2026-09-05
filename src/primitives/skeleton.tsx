@@ -4,7 +4,11 @@ import { cn } from "../lib/cn.js"
 /* A left-to-right sweep rather than an opacity pulse. A pulse reads as
  * something asking for attention; a sweep reads as something still arriving —
  * and on the light ladder a pulsing sunken block flickered against the card
- * behind it. `motion-reduce` leaves a flat sunken block. */
+ * behind it. `motion-reduce` leaves a flat sunken block.
+ *
+ * `aria-hidden` is deliberate and stays: a shimmering box is a decoration, not
+ * content. What announces the wait is `LoadingRegion` around the block this
+ * replaces — see LOADING_CONVENTION in `loading-region.tsx`. Never both. */
 export function Skeleton({ className, ...props }: HTMLAttributes<HTMLDivElement>) {
   return (
     <div
