@@ -16,6 +16,13 @@ export interface FunnelBarsProps {
   emptyDescription?: ReactNode
   emptyTitle?: ReactNode
   entries: FunnelBarEntry[]
+  /**
+   * Names the grid a screen reader lands in. The default describes a lead
+   * pipeline because that is what this was built for; any consumer breaking
+   * down something else — a trial funnel, a list of disqualification reasons —
+   * has to say so, or its readers are told they are somewhere they are not.
+   */
+  label?: string
   loading?: boolean
   onSelect?: (key: string) => void
 }
@@ -24,6 +31,7 @@ export function FunnelBars({
   emptyDescription = "Leads will appear here once they start flowing in.",
   emptyTitle = "No pipeline data yet",
   entries,
+  label = "Pipeline by status",
   loading = false,
   onSelect,
 }: FunnelBarsProps) {
@@ -46,7 +54,7 @@ export function FunnelBars({
   const max = Math.max(...entries.map((entry) => entry.count), 1)
 
   return (
-    <div className="space-y-2.5" role="table" aria-label="Pipeline by status">
+    <div className="space-y-2.5" role="table" aria-label={label}>
       {entries.map((entry) => {
         const pct = total > 0 ? (entry.count / total) * 100 : 0
         const intensity = 0.35 + 0.65 * (entry.count / max)

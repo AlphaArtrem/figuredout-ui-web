@@ -80,11 +80,18 @@ Patterns:
 - Use `TableSection` for data regions; it renders `Table` in the plain table style by default to avoid nested card shells.
 - Use `Table rowTone` to mark rows as `info`, `warning`, `danger`, or `success` without custom row styling.
 - Use `Table framed` only when the table is the standalone focal component. Inside a `Card`, `Section` or `TableSection` the container already provides the frame, and two frames read as a box in a box.
+- **Always pass `Table label`.** It becomes an `sr-only` `<caption>` naming the table, and while the table is wider than its box the horizontal scroller becomes a `tabindex="0"` `role="region"` named from that caption — which is the only way a keyboard-only reader can reach a column that has scrolled off the right edge. The `tabindex` and the role appear **only** while it actually overflows, so a table that fits is not a tab stop. Give it the heading the table sits under, never the word "table".
+- Table headers are sentence case, sortable or not. They used to be `uppercase` unless the column sorted — sortable headers are `<button>`s and Tailwind's preflight resets `text-transform` — so one header row ran two conventions and the difference encoded nothing.
+- `PageHeader` puts `actions` **beside the title** on narrow screens and bottom-aligned beside the whole title-and-description block from `lg` up. It used to stack them under the description below `lg`, which left a page's primary action alone in the middle of a phone screen.
 - `ThemeToggle` is a three-step cycle (system → light → dark), so its accessible name states the **action** ("Switch to light theme") rather than the current theme, and the new state is announced through a `role="status"` sibling instead of joining the name. `aria-pressed` is deliberately not used: it is a two-state affordance.
 - Use `SelectMenu`, not `Select`, when the option list has to match the theme: a native `<select>` popup is drawn by the OS and ignores the page's colours on several platforms.
 
 Charts:
 `BarChart`, `ChartShell`, `ChartTooltip`, `DonutChart`, `FunnelBars`, `LineChart`, `Sparkline`, `categoricalColor`, `sequentialColor`, `gridColor`, `axisLabelColor`
+
+`Sparkline` needs two points to be a line. Below that it renders the `notEnoughDataLabel` text instead of a chart — recharts falls back to drawing the lone point when a series has no line, and a single pale dot in an empty box reads as a rendering fault. That text is *not* `aria-hidden`, unlike the chart, because it is the only thing saying why the trend is missing.
+
+`FunnelBars` takes a `label`. Its default names a lead pipeline, because that is what it was built for; anything else it breaks down — a trial funnel, a list of disqualification reasons — must pass its own, or its readers are told they are somewhere they are not.
 
 Every chart goes through `ChartShell`: it owns the loading, empty and view-as-table states, so no chart is ever the only way to read its own numbers. All four wrappers disable Recharts' entry animation — it ignores `prefers-reduced-motion`, and a line drawn by animation is invisible in a background tab, in print and to screenshot tooling.
 
