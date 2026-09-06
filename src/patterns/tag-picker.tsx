@@ -187,12 +187,22 @@ export function TagPicker({
       return
     }
     const name = trimmed
-    setQuery("")
-    void Promise.resolve(onCreate(name)).then((created) => {
-      if (typeof created === "string" && !value.includes(created)) {
-        onChange([...value, created])
-      }
-    })
+    /* The query is held until the promise settles, so the create row stays on
+     * screen to show `creating` — and so a failure leaves the typing where the
+     * user can retry it rather than making them remember what they wrote. */
+    void Promise.resolve(onCreate(name)).then(
+      (created) => {
+        setQuery("")
+        if (typeof created === "string" && !value.includes(created)) {
+          onChange([...value, created])
+        }
+      },
+      () => {
+        /* The call site made the request and owns the words for why it failed.
+         * All this has to do is not become an unhandled rejection and not
+         * select an option that was never created. */
+      },
+    )
   }
 
   const activateRow = () => {

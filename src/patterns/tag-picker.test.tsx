@@ -266,3 +266,32 @@ describe("TagPicker", () => {
     expect(screen.getByText("0 of 6 selected")).toBeInTheDocument()
   })
 })
+
+describe("TagPicker when a create fails", () => {
+  it("keeps the query and selects nothing", async () => {
+    const user = userEvent.setup()
+    const onCreate = vi.fn().mockRejectedValue(new Error("409"))
+
+    render(<Harness label="Niche" options={NICHES} onCreate={onCreate} />)
+
+    await user.click(screen.getByRole("combobox"))
+    await user.keyboard("Woodworking")
+    await user.click(screen.getByRole("option", { name: /Add “Woodworking”/ }))
+
+    expect(onCreate).toHaveBeenCalledWith("Woodworking")
+    expect(screen.getByText("0 of 5 selected")).toBeInTheDocument()
+    expect(screen.getByRole("combobox")).toHaveValue("Woodworking")
+  })
+
+  it("holds the query while the create is in flight so the pending row stays", async () => {
+    const user = userEvent.setup()
+
+    render(<Harness label="Niche" options={NICHES} onCreate={vi.fn()} creating />)
+
+    await user.click(screen.getByRole("combobox"))
+    await user.keyboard("Woodworking")
+
+    const row = screen.getByRole("option", { name: /Add “Woodworking”/ })
+    expect(row).toHaveAttribute("aria-disabled", "true")
+  })
+})
