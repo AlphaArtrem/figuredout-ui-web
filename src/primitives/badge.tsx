@@ -24,7 +24,18 @@ export function Badge({ children, className, dot = false, tone = "neutral", ...p
   return (
     <span
       className={cn(
-        "inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-medium ring-1 ring-inset",
+        /* `whitespace-nowrap` is review finding 14. A rounded capsule is a
+         * shape that says "one short thing"; a two-line one reads as a layout
+         * accident because it is. In a narrow table column "In Conversation"
+         * broke inside its own pill and rendered 40px tall against a 24px
+         * badge. Every badge in a consuming product was one narrow column away
+         * from the same break, so the floor belongs here rather than in a
+         * `className` at each call site. `cn` is a join, not a merge, so this
+         * is a floor and not a default: a badge that genuinely has to wrap
+         * needs a prop here, not a class at the call site. Nothing in either
+         * consumer wants one — every badge in the product is a status, a count
+         * or a one- or two-word label. */
+        "inline-flex items-center gap-1.5 whitespace-nowrap rounded-full px-2.5 py-1 text-xs font-medium ring-1 ring-inset",
         TONE_STYLES[tone],
         className,
       )}
