@@ -1,7 +1,10 @@
+"use client"
+
 import { forwardRef } from "react"
 import type { InputHTMLAttributes } from "react"
 import { Check, Minus } from "../icons/index.js"
 import { cn } from "../lib/cn.js"
+import { useCheckableFieldAria } from "./form-field.js"
 
 export interface CheckboxProps extends Omit<InputHTMLAttributes<HTMLInputElement>, "type"> {}
 
@@ -10,11 +13,25 @@ export interface CheckboxProps extends Omit<InputHTMLAttributes<HTMLInputElement
  * other control — and so the indeterminate state renders at all.
  *
  * The input keeps the ref and every prop: it is still the checkbox, just
- * transparent, with the mark painted over it by a sibling. */
+ * transparent, with the mark painted over it by a sibling.
+ *
+ * It also inherits its enclosing `FormField`'s required, invalid and described-
+ * by state — see `useCheckableFieldAria` for why the name is conditional and
+ * those three are not. An `id` counts as a name of its own, because an `id` on
+ * a checkbox exists to be pointed at by a `<label htmlFor>`. */
 export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(function Checkbox(
   { className, ...props },
   ref,
 ) {
+  const fieldAria = useCheckableFieldAria(
+    {
+      "aria-describedby": props["aria-describedby"],
+      "aria-label": props["aria-label"],
+      "aria-labelledby": props["aria-labelledby"],
+    },
+    props["aria-label"] != null || props["aria-labelledby"] != null || props.id != null,
+  )
+
   return (
     <span className={cn("relative inline-flex size-[1.15rem] shrink-0", className)}>
       <input
@@ -29,6 +46,7 @@ export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(function Che
           "disabled:cursor-not-allowed disabled:opacity-50",
         )}
         {...props}
+        {...fieldAria}
       />
       <Check
         size={12}

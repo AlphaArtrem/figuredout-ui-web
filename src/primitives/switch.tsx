@@ -1,19 +1,34 @@
+"use client"
+
 import { forwardRef } from "react"
 import type { InputHTMLAttributes } from "react"
 import { cn } from "../lib/cn.js"
+import { useCheckableFieldAria } from "./form-field.js"
 
 export interface SwitchProps extends Omit<InputHTMLAttributes<HTMLInputElement>, "type"> {
   label?: string
 }
 
+/* Inherits its enclosing `FormField`'s required, invalid and described-by
+ * state. Its own `label` prop counts as a name of its own, as does an `id` —
+ * see `useCheckableFieldAria`. */
 export const Switch = forwardRef<HTMLInputElement, SwitchProps>(function Switch(
   { className, label, ...props },
   ref,
 ) {
+  const fieldAria = useCheckableFieldAria(
+    {
+      "aria-describedby": props["aria-describedby"],
+      "aria-label": props["aria-label"],
+      "aria-labelledby": props["aria-labelledby"],
+    },
+    label != null || props["aria-label"] != null || props["aria-labelledby"] != null || props.id != null,
+  )
+
   return (
     <label className={cn("inline-flex cursor-pointer items-center gap-3 text-sm text-fg", className)}>
       <span className="relative inline-flex">
-        <input ref={ref} type="checkbox" className="peer sr-only" {...props} />
+        <input ref={ref} type="checkbox" className="peer sr-only" {...props} {...fieldAria} />
         {/* The off state carries a ring so the control keeps its edge on all
          * four surfaces — as a bare sunken pill it vanished inside a sunken
          * container. */}

@@ -76,6 +76,33 @@ export function useFieldAria(own: OwnFieldAria, ownInvalid = false): OwnFieldAri
   }
 }
 
+/* The checkable variant, for `Checkbox` and `Switch`.
+ *
+ * `aria-required`, `aria-invalid` and `aria-describedby` are inherited exactly
+ * as `Input`, `Textarea` and `Select` inherit them: a call site that marks the
+ * FIELD required almost never repeats it on the control, and since the asterisk
+ * became `aria-hidden` these attributes are the only thing left saying so.
+ *
+ * The NAME is the careful half, and it is why this is a second hook rather than
+ * one more caller of the first. A checkable control is nearly always named by
+ * something local — a wrapping `<label>`, a sibling `<label htmlFor>`, its own
+ * `aria-label`, `Switch`'s `label` prop — and `aria-labelledby` outranks every
+ * one of those in name computation. Inheriting the field's name unconditionally
+ * would rename a row of options after the group they sit in: "Hard filter —
+ * entities that fail this are excluded" would announce as "Weighting". So the
+ * caller states whether the control already has a name of its own, and the
+ * field's label is taken only when it does not.
+ *
+ * The gap this leaves: a bare `<Checkbox />` inside a wrapping `<label>` inside
+ * a `FormField` still inherits the field's name, because a component cannot see
+ * its own ancestors at render time. Give that checkbox the `id` its label
+ * should carry in `htmlFor`, or an `aria-label`. A whole group of them wants
+ * `TagPicker` or a `fieldset`, not one field label repeated on every box. */
+export function useCheckableFieldAria(own: OwnFieldAria, locallyNamed: boolean): OwnFieldAria {
+  const inherited = useFieldAria(own)
+  return locallyNamed ? { ...inherited, "aria-labelledby": own["aria-labelledby"] } : inherited
+}
+
 export function FormField({
   children,
   className,
