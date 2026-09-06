@@ -27,8 +27,9 @@
     },
     "./styles/tokens.css": "./styles/tokens.css",
     "./tailwind-preset": {
+      "types": "./dist/tailwind-preset.d.ts",
       "import": "./dist/tailwind-preset.js",
-      "types": "./dist/tailwind-preset.d.ts"
+      "require": "./dist/cjs/tailwind-preset.js"
     }
   },
   "files": [
@@ -40,8 +41,8 @@
     "docs"
   ],
   "scripts": {
-    "build": "tsc -p tsconfig.json",
-    "prepare": "tsc -p tsconfig.json",
+    "build": "tsc -p tsconfig.json && tsc -p tsconfig.cjs.json && node -e \"require('fs').writeFileSync('dist/cjs/package.json', '{\\\"type\\\":\\\"commonjs\\\"}\\n')\"",
+    "prepare": "tsc -p tsconfig.json && tsc -p tsconfig.cjs.json && node -e \"require('fs').writeFileSync('dist/cjs/package.json', '{\\\"type\\\":\\\"commonjs\\\"}\\n')\"",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
     "test": "vitest run"

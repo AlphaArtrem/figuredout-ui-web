@@ -1,0 +1,24 @@
+{
+  // A second, CommonJS build of the Tailwind preset alone.
+  //
+  // The package is "type": "module", so dist/tailwind-preset.js is ESM and a
+  // CommonJS `require` of it fails outright on Node 20. That matters because
+  // nothing about a Tailwind preset chooses how it is loaded: Tailwind reads
+  // tailwind.config.ts through jiti, which resolves by `require`, so a consumer
+  // on Node 20 could not use this package's preset at all. The "import"-only
+  // export made the failure look like a missing subpath rather than a missing
+  // CommonJS build.
+  //
+  // dist/cjs/package.json (written by the build script) carries
+  // {"type":"commonjs"} so Node reads the .js files below as CommonJS despite
+  // the package-level "type": "module".
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "module": "CommonJS",
+    "moduleResolution": "Node",
+    "outDir": "./dist/cjs",
+    "declaration": false,
+    "declarationMap": false
+  },
+  "include": ["tailwind-preset.ts"]
+}
