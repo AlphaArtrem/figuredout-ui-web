@@ -59,7 +59,7 @@ Primitives:
 `Badge`, `Button`, `IconButton`, `Card`, `CardHeader`, `CardBody`, `CardFooter`, `Checkbox`, `FormField`, `useFieldAria`, `Input`, `Textarea`, `Select`, `LoadingRegion`, `Skeleton`, `Spinner`, `Switch`, `ThemeToggle`
 
 Patterns:
-`AppTopBar`, `Avatar`, `ConfirmDialog`, `DashboardShell`, `DescriptionList`, `Dialog`, `DropdownMenu`, `EmptyState`, `ExpandableTile`, `FilterBar`, `Hero`, `InfoBanner`, `PageBand`, `PageContent`, `PageHeader`, `Pagination`, `SearchInput`, `SeamGrid`, `SeamCell`, `seamCorners`, `SelectMenu`, `Section`, `SettingsSection`, `SidePanel`, `StatCard`, `StatCardContent`, `Stepper`, `Table`, `TableSection`, `Tabs`, `ToastProvider`, `Tooltip`, `useToast`
+`AppTopBar`, `Avatar`, `ConfirmDialog`, `DashboardShell`, `DescriptionList`, `Dialog`, `DropdownMenu`, `EmptyState`, `ExpandableTile`, `FilterBar`, `Hero`, `InfoBanner`, `PageBand`, `PageContent`, `PageHeader`, `Pagination`, `SearchInput`, `SeamGrid`, `SeamCell`, `seamCorners`, `SelectMenu`, `Section`, `SettingsSection`, `SidePanel`, `StatCard`, `StatCardContent`, `Stepper`, `Table`, `TableSection`, `Tabs`, `TagPicker`, `ToastProvider`, `Tooltip`, `useToast`
 
 ## Composition Notes
 
@@ -86,6 +86,7 @@ Patterns:
 - `PageHeader` puts `actions` **beside the title** on narrow screens and bottom-aligned beside the whole title-and-description block from `lg` up. It used to stack them under the description below `lg`, which left a page's primary action alone in the middle of a phone screen.
 - `ThemeToggle` is a three-step cycle (system → light → dark), so its accessible name states the **action** ("Switch to light theme") rather than the current theme, and the new state is announced through a `role="status"` sibling instead of joining the name. `aria-pressed` is deliberately not used: it is a two-state affordance.
 - Use `SelectMenu`, not `Select`, when the option list has to match the theme: a native `<select>` popup is drawn by the OS and ignores the page's colours on several platforms.
+- Use `TagPicker` for every multi-value choice over a closed list — a wall of checkboxes is unusable past about ten options and says nothing about which question it answers. It is a `role="group"` named from the `FormField` around it, over a multi-selectable listbox driven by `aria-activedescendant`, so focus never leaves the query and typing, filtering and moving are one gesture. Pass `onCreate` and the control offers to add an option the list does not have; omit it and it does not. The package never learns where the options come from.
 
 Charts:
 `BarChart`, `ChartShell`, `ChartTooltip`, `DonutChart`, `FunnelBars`, `LineChart`, `Sparkline`, `categoricalColor`, `sequentialColor`, `gridColor`, `axisLabelColor`

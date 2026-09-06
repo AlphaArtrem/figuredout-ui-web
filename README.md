@@ -61,7 +61,7 @@ Primitives:
 New in this system: `Hero`, `PageBand`, `SeamGrid` / `SeamCell` / `seamCorners`, `StatCardContent`.
 
 Application patterns:
-`AppTopBar`, `Avatar`, `ConfirmDialog`, `DashboardShell`, `DescriptionList`, `Dialog`, `DropdownMenu`, `EmptyState`, `ExpandableTile`, `FilterBar`, `Hero`, `InfoBanner`, `PageBand`, `PageContent`, `PageHeader`, `Pagination`, `SearchInput`, `SeamGrid`, `SelectMenu`, `Section`, `SettingsSection`, `SidePanel`, `StatCard`, `StatCardContent`, `Stepper`, `Table`, `TableSection`, `Tabs`, `ToastProvider`, `Tooltip`, `useToast`
+`AppTopBar`, `Avatar`, `ConfirmDialog`, `DashboardShell`, `DescriptionList`, `Dialog`, `DropdownMenu`, `EmptyState`, `ExpandableTile`, `FilterBar`, `Hero`, `InfoBanner`, `PageBand`, `PageContent`, `PageHeader`, `Pagination`, `SearchInput`, `SeamGrid`, `SelectMenu`, `Section`, `SettingsSection`, `SidePanel`, `StatCard`, `StatCardContent`, `Stepper`, `Table`, `TableSection`, `Tabs`, `TagPicker`, `ToastProvider`, `Tooltip`, `useToast`
 
 Dashboard composition:
 
@@ -69,6 +69,7 @@ Dashboard composition:
 - Use `Section variant="plain"` for page-level dashboard regions that should not create nested card shells.
 - Use `TableSection` for titled data regions; the section is the container, so the table inside it is never framed.
 - Use `Table rowTone` for semantic row status, and `Table framed` only when the table is the standalone focal component — inside a `Card` or `Section` the container already provides the frame.
+- Use `TagPicker` for multi-value choices over a closed list; it carries the search, the chips, the count and the group semantics a row of checkboxes has none of, and takes an optional `onCreate` so a missing option can be added without leaving the form.
 - Use `SelectMenu` for richer single-select controls — and whenever the option list has to match the theme, since a native `<select>` popup is drawn by the OS. Use `ExpandableTile` for compact disclosure panels and `InfoBanner` for status or guidance messages.
 - Use `SeamGrid` for a set of related cells so they read as one object; pass a child count that divides evenly by 4, 2 and 1.
 
