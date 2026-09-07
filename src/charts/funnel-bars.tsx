@@ -25,6 +25,23 @@ export interface FunnelBarsProps {
   label?: string
   loading?: boolean
   onSelect?: (key: string) => void
+  /**
+   * The denominator every count is a share of.
+   *
+   * Defaults to the sum of the counts, which is correct for a **disjoint**
+   * breakdown — a pipeline by status, where every lead sits in exactly one row,
+   * so the shares add up to 100% because the rows partition one population.
+   *
+   * It is wrong for a **funnel**, whose steps are nested subsets of the *same*
+   * population: the top of a funnel is 100% of itself, not a fraction of the
+   * steps below it, and its shares must not add up to 100% by construction
+   * (review finding 111). A funnel passes its first step's count here, and says
+   * on screen what the share is of.
+   *
+   * A count larger than the denominator still prints its real share — a step
+   * over 100% is a fact the reader needs — but its bar stops at full width.
+   */
+  total?: number
 }
 
 export function FunnelBars({
@@ -34,6 +51,7 @@ export function FunnelBars({
   label = "Pipeline by status",
   loading = false,
   onSelect,
+  total,
 }: FunnelBarsProps) {
   if (loading) {
     return (
@@ -45,18 +63,22 @@ export function FunnelBars({
     )
   }
 
-  const total = entries.reduce((sum, entry) => sum + entry.count, 0)
+  const summed = entries.reduce((sum, entry) => sum + entry.count, 0)
 
-  if (entries.length === 0 || total === 0) {
+  if (entries.length === 0 || summed === 0) {
     return <EmptyState title={emptyTitle} description={emptyDescription} />
   }
 
+  /* A caller that passes a denominator owns it, including a zero one — which is
+     a funnel whose first step is empty, and every share of nothing is nothing. */
+  const denominator = total ?? summed
   const max = Math.max(...entries.map((entry) => entry.count), 1)
 
   return (
     <div className="space-y-2.5" role="table" aria-label={label}>
       {entries.map((entry) => {
-        const pct = total > 0 ? (entry.count / total) * 100 : 0
+        const share = denominator > 0 ? (entry.count / denominator) * 100 : 0
+        const width = Math.min(100, share)
         const intensity = 0.35 + 0.65 * (entry.count / max)
         const Wrapper = onSelect ? "button" : "div"
         return (
@@ -83,7 +105,7 @@ export function FunnelBars({
               {entry.label}
             </span>
             <span className="shrink-0 font-mono text-xs tabular-nums text-fg" role="cell">
-              {entry.count} <span className="text-fg-subtle">({pct.toFixed(0)}%)</span>
+              {entry.count} <span className="text-fg-subtle">({share.toFixed(0)}%)</span>
             </span>
             {/* The track carries the ring so an empty stage is still a visible
                 row rather than a blank line. */}
@@ -93,7 +115,7 @@ export function FunnelBars({
             >
               <span
                 className="block h-full rounded-full"
-                style={{ width: `${pct}%`, backgroundColor: sequentialColor, opacity: intensity }}
+                style={{ width: `${width}%`, backgroundColor: sequentialColor, opacity: intensity }}
               />
             </span>
           </Wrapper>
