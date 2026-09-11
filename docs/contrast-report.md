@@ -78,6 +78,20 @@ with deep teal `#1B6579`, green `#4FA87C`, amber `#E8A33D` and terracotta `#D464
 | `--color-danger` on `--color-danger-soft` over `--color-surface` | 5.49:1 | pass |
 | `--color-info` on `--color-info-soft` over `--color-surface` | 6.17:1 | pass |
 
+## `Button variant="warning"`
+
+The ink is `--color-warning` on `--color-warning-soft` composited over the ground the button sits on. A button
+can sit on the page, on a card or in a dialog, so all three grounds are measured. The hover moves only the
+ring, so these are the hover numbers too.
+
+| Scheme | Over `--color-bg` | Over `--color-surface` | Over `--color-surface-raised` | AA body |
+|---|---|---|---|---|
+| Light (`#6d4210` on `rgba(232, 163, 61, 0.18)`) | 6.82:1 | 7.25:1 | 7.56:1 | pass |
+| Dark (`#e8a33d` on `rgba(232, 163, 61, 0.16)`) | 7.30:1 | 6.44:1 | 5.52:1 | pass |
+
+A darker hover wash was rejected: in light mode `--color-warning` is the ink, so a fill built from it moves
+toward the text colour and the ratio falls.
+
 ## Notes
 
 - **Dark mode is the canonical theme.** Its values are the marketing site's own scheme, so the product and

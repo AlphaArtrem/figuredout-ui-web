@@ -177,18 +177,29 @@ export const Steps: Story = {
     docs: {
       description: {
         story:
-          "A seam grid, because steps are a sequence and three gapped cards do not say \"then\". The current step takes the primary wash and `aria-current=\"step\"`, completed steps a success mark.",
+          "A seam grid, because steps are a sequence and three gapped cards do not say \"then\". The current step takes the primary wash and `aria-current=\"step\"`, completed steps a success mark.\n\n`variant=\"compact\"` is one line — \"Step n of N\" over a thin track — with the ordered list kept for assistive technology. `compactBelow=\"lg\"` shows that line below `lg` and the full list from it.",
       },
     },
   },
   render: () => (
     <Stage>
+      <DemoLabel>List</DemoLabel>
       <Stepper
         currentStep="tables"
         steps={[
           { id: "connect", title: "Connect", description: "Credentials verified" },
           { id: "tables", title: "Choose tables", description: "42 of 128 selected" },
           { id: "schedule", title: "Schedule", description: "Not started" },
+        ]}
+      />
+      <DemoLabel>Compact</DemoLabel>
+      <Stepper
+        variant="compact"
+        currentStep="tables"
+        steps={[
+          { id: "connect", title: "Connect" },
+          { id: "tables", title: "Choose tables" },
+          { id: "schedule", title: "Schedule" },
         ]}
       />
     </Stage>

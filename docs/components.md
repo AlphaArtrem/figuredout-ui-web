@@ -34,8 +34,8 @@ the page without leaning on its hairline, which is what leaves `surface-raised` 
 
 ## Canonical
 
-- **Tier 1 primitives**: `Button`, `IconButton`, `Input`, `Textarea`, `Select`, `Checkbox`, `Switch`,
-  `FormField`, `Badge`, `Card`, `Spinner`, `Skeleton`, `ThemeToggle`
+- **Tier 1 primitives**: `Button`, `IconButton`, `Input`, `Textarea`, `Select`, `NumberField`, `Checkbox`,
+  `Switch`, `FormField`, `Badge`, `Card`, `Spinner`, `Skeleton`, `ThemeToggle`
 - **Tier 2 composites**: `Table`, `Dialog`, `ConfirmDialog`, `SidePanel`, `Tabs`, `Tooltip`, `DropdownMenu`,
   `SelectMenu`, `ToastProvider` with `useToast`, `EmptyState`, `SearchInput`, `FilterBar`, `Pagination`,
   `ExpandableTile`
@@ -57,6 +57,9 @@ the page without leaning on its hairline, which is what leaves `surface-raised` 
 | titling a page | `PageHeader` |
 | offering options with descriptions, or a list that must match the theme | `SelectMenu` |
 | offering a plain list of values | `Select` |
+| editing a bounded integer | `NumberField` |
+| an action that is consequential but not destructive | `Button variant="warning"` |
+| showing a long sequence of steps on a phone | `Stepper compactBelow="lg"` |
 | hiding optional detail | `ExpandableTile` |
 | interrupting | `Dialog`, or `ConfirmDialog` for a yes/no |
 | showing detail without leaving the page | `SidePanel` |
@@ -102,3 +105,8 @@ the page without leaning on its hairline, which is what leaves `surface-raised` 
 - **A native `<select>` popup belongs to the OS.** `color-scheme` and option colours are requests, and
   several platforms ignore them. Where the list must match the theme, use `SelectMenu`.
 - **Semantic text is measured against its soft wash, not the surface.** See `docs/contrast-report.md`.
+- **A `ReactNode` slot inside a `p` is a trap.** `StatCard`'s value was a `p`, so the package's own `Skeleton`
+  (a `div`) made invalid HTML and a hydration warning. A slot that will plausibly hold a block renders in a `div`.
+- **A composite's parts are not named after the field.** `aria-labelledby` outranks every local name, so a
+  part that inherits the field's label announces as the field. Build the part's name from the field's words
+  (`useFieldLabelId`), as `NumberField`'s buttons do.

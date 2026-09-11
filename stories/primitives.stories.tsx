@@ -11,6 +11,7 @@ import {
   FormField,
   IconButton,
   Input,
+  NumberField,
   Select,
   Skeleton,
   Spinner,
@@ -44,7 +45,7 @@ export const Buttons: Story = {
     docs: {
       description: {
         story:
-          "Five variants, two sizes, and every one takes a leading or trailing icon. `secondary` rests on `surface-raised` with a ring so it reads as a control on any of the four surfaces — on plain `surface` it was a white rectangle on a white card. `soft` wears ghost's hover tint at rest, for an action sitting under copy it has to line up with: untinted, its padding reads as a bad indent. `danger` uses `text-danger-fg`, not `primary-fg`, which in dark mode is a near-black green on a light red.",
+          "Six variants, two sizes, and every one takes a leading or trailing icon. `warning` is for an action that is consequential but not destructive — the warning wash, ink and ring, 5.5:1 or better in both schemes. `secondary` rests on `surface-raised` with a ring so it reads as a control on any of the four surfaces — on plain `surface` it was a white rectangle on a white card. `soft` wears ghost's hover tint at rest, for an action sitting under copy it has to line up with: untinted, its padding reads as a bad indent. `danger` uses `text-danger-fg`, not `primary-fg`, which in dark mode is a near-black green on a light red.",
       },
     },
   },
@@ -56,6 +57,7 @@ export const Buttons: Story = {
         <Button variant="secondary">Cancel</Button>
         <Button variant="ghost">Learn more</Button>
         <Button variant="soft">View source</Button>
+        <Button variant="warning">Impersonate</Button>
         <Button variant="danger">Delete</Button>
         <Button disabled>Disabled</Button>
       </div>
@@ -89,6 +91,34 @@ export const Buttons: Story = {
       </div>
     </Stage>
   ),
+}
+
+function NumberFieldDemo() {
+  const [retries, setRetries] = useState(3)
+  const [workers, setWorkers] = useState(10)
+  return (
+    <Stage>
+      <DemoLabel>Inside a FormField — the buttons read "Decrease Max retries"</DemoLabel>
+      <FormField label="Max retries" hint="Between 1 and 5." required>
+        <NumberField min={1} max={5} value={retries} onValueChange={setRetries} />
+      </FormField>
+      <DemoLabel>With its own label, at its upper bound</DemoLabel>
+      <NumberField label="Workers" min={1} max={10} value={workers} onValueChange={setWorkers} />
+    </Stage>
+  )
+}
+
+export const NumberFields: Story = {
+  name: "NumberField",
+  parameters: {
+    docs: {
+      description: {
+        story:
+          "A bounded integer. A text input with `inputmode=\"numeric\"` and the spin-button role, between 44 × 44 Decrease and Increase buttons that disable at their bound. Typing is clamped; a half-typed value is left alone until it parses. Inside a `FormField` the input takes the field's name, required and invalid state, and the buttons are named *from* the label rather than *as* it.",
+      },
+    },
+  },
+  render: () => <NumberFieldDemo />,
 }
 
 export const Badges: Story = {

@@ -56,7 +56,7 @@ export default {
 ## Component surface
 
 Primitives:
-`Badge`, `Button`, `IconButton`, `Card`, `CardHeader`, `CardBody`, `CardFooter`, `Checkbox`, `FormField`, `Input`, `Textarea`, `Select`, `Skeleton`, `Spinner`, `Switch`, `ThemeToggle`
+`Badge`, `Button`, `IconButton`, `Card`, `CardHeader`, `CardBody`, `CardFooter`, `Checkbox`, `FormField`, `Input`, `Textarea`, `Select`, `NumberField`, `Skeleton`, `Spinner`, `Switch`, `ThemeToggle`
 
 New in this system: `Hero`, `PageBand`, `SeamGrid` / `SeamCell` / `seamCorners`, `StatCardContent`.
 
