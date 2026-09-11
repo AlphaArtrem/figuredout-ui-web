@@ -29,6 +29,27 @@ describe("Button", () => {
     expect(screen.queryByRole("status")).toBeNull()
   })
 
+  it("is primary when no variant is given", () => {
+    render(<Button>Save</Button>)
+
+    const button = screen.getByRole("button", { name: "Save" })
+    expect(button.className).toContain("bg-primary text-primary-fg")
+    expect(button.className).not.toContain("warning")
+  })
+
+  /* play_2_hire future-scope §27.2: Impersonate is consequential rather than
+   * destructive, and `primary` was the only variant between secondary and red. */
+  it("has a warning variant: the warning wash, the warning ink and a warning ring", () => {
+    render(<Button variant="warning">Impersonate</Button>)
+
+    const button = screen.getByRole("button", { name: "Impersonate" })
+    expect(button.className).toContain("bg-warning-soft")
+    expect(button.className).toContain("text-warning")
+    expect(button.className).toContain("ring-warning/40")
+    expect(button.className).not.toContain("bg-danger")
+    expect(button.className).not.toContain("bg-primary")
+  })
+
   it("keeps an IconButton's own name and still reports busy", () => {
     render(<IconButton aria-label="Delete row" loading icon={<span />} />)
 
