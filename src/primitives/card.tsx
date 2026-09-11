@@ -12,6 +12,13 @@ export interface CardProps extends Omit<HTMLAttributes<HTMLDivElement>, "title">
   logo?: ReactNode
   number?: ReactNode
   title?: ReactNode
+  /**
+   * The element the title renders in. Defaults to `div`: a card is not a
+   * heading, and a block that has to be reachable by heading is usually a
+   * `Section`. Pass a heading tag when a card genuinely is the unit a reader
+   * navigates by — the look does not change, only the outline does.
+   */
+  titleAs?: "div" | "h2" | "h3" | "h4" | "h5" | "h6"
   tone?: CardTone
 }
 
@@ -51,6 +58,7 @@ export const Card = forwardRef<HTMLDivElement, CardProps>(function Card(
     logo,
     number,
     title,
+    titleAs: TitleTag = "div",
     tone = "neutral",
     ...props
   },
@@ -81,7 +89,12 @@ export const Card = forwardRef<HTMLDivElement, CardProps>(function Card(
               {number ? (
                 <div className="font-mono text-xs font-bold uppercase tracking-[0.1em] text-fg-subtle">{number}</div>
               ) : null}
-              {title ? <div className="text-sm font-semibold text-fg">{title}</div> : null}
+              {/* `m-0` only on a heading tag, which carries a user-agent margin
+               * a `div` does not; the default `div` keeps exactly the classes
+               * it has always had. */}
+              {title ? (
+                <TitleTag className={cn(TitleTag !== "div" && "m-0", "text-sm font-semibold text-fg")}>{title}</TitleTag>
+              ) : null}
               {description ? <div className="text-sm text-fg-muted">{description}</div> : null}
             </div>
           </div>

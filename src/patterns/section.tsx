@@ -5,6 +5,15 @@ export interface SectionProps extends Omit<HTMLAttributes<HTMLDivElement>, "titl
   actions?: ReactNode
   description?: ReactNode
   eyebrow?: ReactNode
+  /**
+   * The heading's level. Defaults to 2, because a `Section` is a region of a
+   * page and the page's header owns the `h1`. Pass `1` only when this section
+   * IS the page's header — a marketing page that opens with a display-size
+   * plain section has no other `h1`, and without this it had none at all. The
+   * level changes the tag and nothing else: the type is decided by `variant`
+   * and `size`, never by the level.
+   */
+  headingLevel?: 1 | 2 | 3 | 4 | 5 | 6
   icon?: ReactNode
   /**
    * `display` gives the plain variant the page-level scale — a fluid heading up
@@ -22,12 +31,15 @@ export function Section({
   className,
   description,
   eyebrow,
+  headingLevel = 2,
   icon,
   size = "default",
   title,
   variant = "card",
   ...props
 }: SectionProps) {
+  const Heading = `h${headingLevel}` as const
+
   if (variant === "plain") {
     const isDisplay = size === "display"
 
@@ -59,7 +71,7 @@ export function Section({
                 {icon}
               </span>
             ) : null}
-            <h2
+            <Heading
               className={cn(
                 "m-0 text-fg",
                 isDisplay
@@ -68,7 +80,7 @@ export function Section({
               )}
             >
               {title}
-            </h2>
+            </Heading>
           </div>
           <div className="grid min-w-0 gap-3">
             {description ? (
@@ -110,7 +122,7 @@ export function Section({
                 {eyebrow}
               </div>
             ) : null}
-            <h2 className="m-0 text-lg font-semibold text-fg">{title}</h2>
+            <Heading className="m-0 text-lg font-semibold text-fg">{title}</Heading>
             {description ? <p className="m-0 text-sm text-fg-muted">{description}</p> : null}
           </div>
         </div>

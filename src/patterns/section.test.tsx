@@ -90,3 +90,55 @@ describe("Section, card", () => {
     ).toBe(true)
   })
 })
+
+/* `headingLevel` exists so a marketing page that opens with a display-size
+ * plain Section can make that heading its `h1` without a local copy of the
+ * markup (finding 27's workaround). The default must stay `h2` for every
+ * existing Section, and the level must change the tag and nothing else. */
+describe("Section, heading level", () => {
+  it("renders an h2 by default in both variants", () => {
+    render(
+      <>
+        <Section variant="plain" title="Plain">
+          <p>Body</p>
+        </Section>
+        <Section title="Card">
+          <p>Body</p>
+        </Section>
+      </>,
+    )
+
+    expect(screen.getByRole("heading", { level: 2, name: "Plain" })).toBeInTheDocument()
+    expect(screen.getByRole("heading", { level: 2, name: "Card" })).toBeInTheDocument()
+  })
+
+  it("renders the level it is given, with the same classes the h2 had", () => {
+    const { container } = render(
+      <>
+        <Section variant="plain" size="display" title="Display h2">
+          <p>Body</p>
+        </Section>
+        <Section variant="plain" size="display" headingLevel={1} eyebrow="Pricing" title="Display h1">
+          <p>Body</p>
+        </Section>
+      </>,
+    )
+
+    const h2 = screen.getByRole("heading", { level: 2, name: "Display h2" })
+    const h1 = screen.getByRole("heading", { level: 1, name: "Display h1" })
+    expect(h1.className).toBe(h2.className)
+    expect(container.querySelectorAll("h1")).toHaveLength(1)
+    expect(comesBefore(screen.getByText("Pricing"), h1)).toBe(true)
+  })
+
+  it("passes the level to the card variant too", () => {
+    render(
+      <Section headingLevel={3} title="Nested region">
+        <p>Body</p>
+      </Section>,
+    )
+
+    expect(screen.getByRole("heading", { level: 3, name: "Nested region" })).toBeInTheDocument()
+    expect(screen.queryByRole("heading", { level: 2 })).toBeNull()
+  })
+})
