@@ -8,7 +8,7 @@ import { cn } from "../lib/cn.js"
 import { trapFocus } from "../lib/overlay.js"
 import { IconButton } from "../primitives/button.js"
 
-type PanelSize = "md" | "lg"
+type PanelSize = "md" | "lg" | "xl" | "2xl"
 
 export interface SidePanelProps {
   children: ReactNode
@@ -16,13 +16,24 @@ export interface SidePanelProps {
   initialFocusRef?: RefObject<HTMLElement>
   onOpenChange: (open: boolean) => void
   open: boolean
+  /** `md` (576 px) by default. `xl` and `2xl` widen only where the viewport has the room. */
   size?: PanelSize
   title: ReactNode
 }
 
+/* The panel is `w-full`, so below its cap it is the whole screen at every size.
+ *
+ * The two wider sizes are for a panel whose content is the reason it was opened
+ * — a conversation, a document — rather than a summary of a row. They stay at
+ * `lg`'s 672 px until `lg` (1024 px) and only then widen: `xl` to 896 px, which
+ * still leaves 128 px of the list behind it at 1024, and `2xl` to 1152 px from
+ * `xl` (1280 px). A size whose cap is nearly the viewport would stop reading as
+ * a panel over a page. */
 const SIZE_STYLES: Record<PanelSize, string> = {
   md: "max-w-xl",
   lg: "max-w-2xl",
+  xl: "max-w-2xl lg:max-w-4xl",
+  "2xl": "max-w-2xl lg:max-w-4xl xl:max-w-6xl",
 }
 
 function usePanelFocus({
