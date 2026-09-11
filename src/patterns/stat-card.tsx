@@ -60,9 +60,14 @@ export function StatCardContent({ delta, description, icon, title, tone = "neutr
           </div>
         ) : null}
       </div>
-      <p className="mt-2 whitespace-nowrap font-mono text-[clamp(1.25rem,10.5cqi,2.75rem)] font-semibold leading-none tracking-[-0.02em] tabular-nums text-fg">
+      {/* A `div`, not a `p`: the slot is a `ReactNode`, and the obvious thing to
+          put in it while the figure loads is this package's own `Skeleton`, which
+          is a `div`. Inside a `p` that is invalid HTML — the parser closes the
+          `p` early and hydration disagrees (play_2_hire `traps.md` §97). Preflight
+          zeroes a `p`'s margins, so the tile looks exactly as it did. */}
+      <div className="mt-2 whitespace-nowrap font-mono text-[clamp(1.25rem,10.5cqi,2.75rem)] font-semibold leading-none tracking-[-0.02em] tabular-nums text-fg">
         {value}
-      </p>
+      </div>
       <div className="mt-3 flex items-center gap-2">
         {delta ? <Badge tone={tone}>{delta}</Badge> : null}
         {description ? <div className="flex-1 text-[0.8125rem] leading-relaxed text-fg-muted">{description}</div> : null}

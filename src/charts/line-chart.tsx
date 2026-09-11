@@ -1,5 +1,6 @@
 "use client"
 
+import type { ReactNode } from "react"
 import {
   CartesianGrid,
   Line,
@@ -19,20 +20,36 @@ export interface LineChartProps<T extends object> {
   data: T[]
   height?: number
   loading?: boolean
+  /** What a one-point series says instead of drawing a lone dot. */
+  notEnoughDataLabel?: ReactNode
   series: ChartSeries[]
+  /**
+   * Formats the tooltip, the table AND the value axis's ticks, so the three
+   * never disagree about the unit.
+   */
   valueFormatter?: (value: number) => string
   xFormatter?: (value: string) => string
   xKey: keyof T & string
+  /** The unit the value axis is in — "US dollars". Rendered as a caption above the axis. */
+  yAxisLabel?: ReactNode
 }
 
+/* The value axis measures its own ticks (`width="auto"`), because they are now
+ * formatted: a hardcoded 36 px fitted `180` and would clip `$1,250` or push the
+ * plot. Recharts sizes the axis to the widest rendered tick.
+ *
+ * Below two points there is no line to draw — see `ChartShell`'s
+ * `notEnoughData`. An empty series keeps the shell's empty state. */
 export function LineChart<T extends object>({
   data,
   height = 280,
   loading = false,
+  notEnoughDataLabel = "Not enough data yet",
   series,
   valueFormatter = (value) => String(value),
   xFormatter = (value) => value,
   xKey,
+  yAxisLabel,
 }: LineChartProps<T>) {
   const resolvedSeries = series.map((entry, index) => ({
     ...entry,
@@ -51,10 +68,12 @@ export function LineChart<T extends object>({
 
   return (
     <ChartShell
+      caption={yAxisLabel}
       data={data}
       height={height}
       loading={loading}
       legend={resolvedSeries}
+      notEnoughData={data.length === 1 ? notEnoughDataLabel : undefined}
       rowKey={(row) => String((row as Record<string, unknown>)[xKey])}
       tableColumns={tableColumns}
       emptyTitle="No trend data yet"
@@ -72,9 +91,10 @@ export function LineChart<T extends object>({
             />
             <YAxis
               tick={{ fill: axisLabelColor, fontSize: 11 }}
+              tickFormatter={(value) => valueFormatter(Number(value))}
               axisLine={false}
               tickLine={false}
-              width={36}
+              width="auto"
               allowDecimals={false}
             />
             <Tooltip
