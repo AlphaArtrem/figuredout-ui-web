@@ -37,12 +37,28 @@ export interface FormFieldProps extends HTMLAttributes<HTMLDivElement> {
  * controls set `aria-required` themselves — same mechanism, same reason. */
 interface FieldContextValue {
   describedBy?: string
+  /* The label's id whether or not `labelFor` is set. `labelId` below is the
+   * NAME a control inherits, and is withheld when the native association
+   * already names it; this one is for composing a different name out of the
+   * field's words — see `useFieldLabelId`. */
+  fieldLabelId?: string
   invalid?: boolean
   labelId?: string
   required?: boolean
 }
 
 const FieldContext = createContext<FieldContextValue | null>(null)
+
+/* The id of the enclosing FormField's label, or undefined outside one.
+ *
+ * For a composite control whose parts need names built FROM the field's words
+ * rather than equal to them: `NumberField`'s buttons announce as "Decrease Max
+ * retries" by pointing `aria-labelledby` at their own verb and at this id.
+ * Handing the parts the field's name itself is `traps.md` §80 — every button in
+ * the control would announce as "Max retries". */
+export function useFieldLabelId(): string | undefined {
+  return useContext(FieldContext)?.fieldLabelId
+}
 
 interface OwnFieldAria {
   "aria-describedby"?: string | undefined
@@ -121,6 +137,7 @@ export function FormField({
   const context = useMemo<FieldContextValue>(() => {
     const describedBy = [hint ? hintId : null, error ? errorId : null].filter(Boolean).join(" ")
     return {
+      fieldLabelId: labelId,
       ...(describedBy ? { describedBy } : {}),
       ...(error ? { invalid: true } : {}),
       ...(required ? { required: true } : {}),
