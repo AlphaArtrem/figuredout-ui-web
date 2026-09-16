@@ -109,6 +109,8 @@ Every chart goes through `ChartShell`: it owns the loading, empty and view-as-ta
 Icons:
 Approved Phosphor exports are available from `@figuredout/ui-web/icons`, including `Gear`, `List`, `Pause`, `Plus`, `WarningCircle`, and the shared `PhosphorIcon` / `PhosphorIconProps` types.
 
+`WhatsappLogo`, `InstagramLogo` and `MessengerLogo` are third-party brand marks. Render them only in each platform's own brand colours, never tinted with a palette token: a mark in the wrong colour breaks the owner's brand guidelines.
+
 ## Usage Rules
 
 - Keep components reusable and presentational.
