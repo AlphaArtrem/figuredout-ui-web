@@ -163,6 +163,12 @@ const uiPreset: Config = {
         "4xl": ["var(--text-4xl)", { lineHeight: "var(--leading-4xl)" }],
         display: ["var(--text-display)", { lineHeight: "var(--leading-display)" }],
       },
+      height: {
+        "shell-bar": "var(--shell-bar-height)",
+      },
+      minHeight: {
+        "shell-bar": "var(--shell-bar-height)",
+      },
       maxWidth: {
         measure: "var(--measure)",
       },

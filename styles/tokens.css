@@ -158,6 +158,12 @@
   /* Page-level layout. Previously every app hardcoded its own measure and
    * gutter, and DashboardShell carried a third set. */
   --measure: 1200px;
+  /* The one height of an app shell's top bar and of its sidebar header, border
+     included, so the two bottom hairlines meet in a single line. 4.5rem and not
+     4rem: DashboardShell's sidebar identity at its fullest (title, a status badge
+     wrapped under it in the 16rem docked sidebar, subtitle) measures 67.5px,
+     which a 4rem bar clips. */
+  --shell-bar-height: 4.5rem;
   --gut: clamp(1rem, 4vw, 2.5rem);
 
   /* The hairline a SeamGrid draws its 1px gap over. Same value as --color-edge

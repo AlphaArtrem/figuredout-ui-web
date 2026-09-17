@@ -81,6 +81,7 @@ Patterns:
 - `Stepper variant="compact"` renders "Step *n* of *N*" over a thin progress track, with the ordered `aria-current="step"` list still in the DOM, visually hidden. `compactBelow="lg"` (or `sm`/`md`) shows that line below the breakpoint and the full list from it; exactly one form is displayed at any width. `formatPosition` words the line.
 - Use `ExpandableTile` for optional detail blocks that can be controlled with `open` / `onOpenChange` or initialized with `defaultOpen`. Its open state is an overlay that stayed where it was, so do not stack more than a few in one view.
 - Use `SeamGrid` for a set of related cells — stat tiles, rules, facts — so they read as one object rather than as separate cards. Pass a child count that divides evenly by every step (4 → 2 → 1); a hole in a grid of hairlines reads as a missing figure. `seamCorners` is exported for structures that cannot be a `SeamGrid`, such as `DescriptionList`'s `<dl>` and `Stepper`'s `<ol>`.
+- In an app shell, give the top bar and the sidebar header `h-shell-bar` so their dividers line up.
 - Use `PageBand` for page-level regions: content stays inside `--measure`, the divider runs edge to edge.
 - Use `Hero` only for marketing or landing surfaces, and only with a square-ish asset — its overlap and copy offset are derived from a 1:1 ratio.
 - Use `StatCardContent` when a `StatCard` is a `SeamGrid` cell: the grid owns the surface, padding and corners.

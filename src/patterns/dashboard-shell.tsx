@@ -69,7 +69,10 @@ export function DashboardShell({
 
   const sidebar = (
     <div className="flex h-full min-h-0 flex-col bg-surface text-fg">
-      <div className="flex min-h-16 items-center gap-3 border-b border-edge px-4">
+      {/* `h-shell-bar`, as the top bar is: the two bottom hairlines are one line
+       * across the shell. They used to be `min-h-16` here and `min-h-14` there,
+       * 8 px apart. */}
+      <div className="flex h-shell-bar shrink-0 items-center gap-3 border-b border-edge px-4">
         {logo ? <div className="flex shrink-0 items-center">{logo}</div> : null}
         <div className="grid min-w-0 gap-0.5">
           {/* Status rides with the identity, not with the actions: it describes
@@ -135,8 +138,8 @@ export function DashboardShell({
       ) : null}
 
       <div className="flex min-w-0 flex-1 flex-col">
-        <header className="sticky top-0 z-nav border-b border-edge bg-[color-mix(in_srgb,var(--color-bg)_82%,transparent)] backdrop-blur-xl">
-          <div className="flex min-h-14 items-center gap-3 px-4 py-2 lg:px-6">
+        <header className="sticky top-0 z-nav h-shell-bar border-b border-edge bg-[color-mix(in_srgb,var(--color-bg)_82%,transparent)] backdrop-blur-xl">
+          <div className="flex h-full items-center gap-3 px-4 lg:px-6">
             <IconButton
               aria-label="Open navigation"
               className="lg:hidden"

@@ -79,6 +79,8 @@ the page without leaning on its hairline, which is what leaves `surface-raised` 
 
 - `AppTopBar` owns app-level title, subtitle, primary navigation, sticky positioning and right-aligned
   actions. `DashboardShell` owns persistent sidebar navigation, the mobile drawer, sticky actions and status.
+- `DashboardShell`'s top bar and sidebar header are both `h-shell-bar` (`--shell-bar-height`), so their bottom
+  hairlines are one line. An app building its own shell should use the same class for both.
 - `PageBand` owns page width (`--measure`) and the edge-to-edge divider between regions; `Section
   variant="plain"` owns the region's icon, eyebrow, heading and lede, stacked flush left at every width.
   `size="display"` gives it the

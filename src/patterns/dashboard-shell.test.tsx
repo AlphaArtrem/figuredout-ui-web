@@ -93,4 +93,21 @@ describe("DashboardShell", () => {
     fireEvent.keyDown(document, { key: "Escape" })
     expect(screen.queryByRole("button", { name: "Close navigation overlay" })).not.toBeInTheDocument()
   })
+
+  /* The top bar and the sidebar header used to be min-h-14 and min-h-16, so
+   * their bottom hairlines sat 8px apart. jsdom does not lay out, so this pins
+   * the contract that makes them meet: both take the one shared height. */
+  it("gives the top bar and the sidebar header the same shell bar height", () => {
+    render(
+      <DashboardShell title="Workspace" navItems={navItems}>
+        <div>Dashboard content</div>
+      </DashboardShell>,
+    )
+
+    const bar = screen.getByRole("banner")
+    const sidebarHeader = within(screen.getByRole("complementary")).getByText("Workspace").closest(".border-b")
+
+    expect(bar).toHaveClass("h-shell-bar")
+    expect(sidebarHeader).toHaveClass("h-shell-bar")
+  })
 })
