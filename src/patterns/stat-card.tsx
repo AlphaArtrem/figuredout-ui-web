@@ -50,8 +50,16 @@ export function StatCard({ className, delta, description, icon, tone = "neutral"
 export function StatCardContent({ delta, description, icon, title, tone = "neutral", value }: StatCardProps) {
   return (
     <>
-      <div className="flex items-start justify-between gap-3">
-        <p className="m-0 min-w-0 font-mono text-[0.6875rem] font-semibold uppercase tracking-[0.1em] text-fg-subtle">
+      {/* In a narrow tile the icon moves above the caption instead of beside it.
+          Beside it, a 156 px phone tile left the caption 72 px, and a caption
+          word longer than that ("CONVERSATIONS") cannot wrap, so it ran under
+          the icon. 12rem is the tile's content width below which a long caption
+          word and the 44 px icon column no longer fit side by side. The tile is
+          its own container (or SeamGrid's cell is), so this follows the tile,
+          not the viewport. `break-words` is the last resort for a caption word
+          wider than even the whole tile. */}
+      <div className="flex items-start justify-between gap-3 [@container(max-width:12rem)]:flex-col-reverse">
+        <p className="m-0 min-w-0 break-words font-mono text-[0.6875rem] font-semibold uppercase tracking-[0.1em] text-fg-subtle">
           {title}
         </p>
         {icon ? (

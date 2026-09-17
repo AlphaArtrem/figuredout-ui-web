@@ -102,6 +102,8 @@ the page without leaning on its hairline, which is what leaves `surface-raised` 
   `SearchInput` guard against it with `self-start`; stacks use `align-content: start`.
 - **Container units need a container.** `StatCardContent` sizes its figure with `cqi`; a cell holding it must
   declare `container-type: inline-size` or the units fall back to the viewport and the figure overflows.
+  The same container moves `StatCardContent`'s icon above its caption below a 12rem content width, so a
+  long caption word in a two-column phone grid does not run under the icon.
 - **A native `<select>` popup belongs to the OS.** `color-scheme` and option colours are requests, and
   several platforms ignore them. Where the list must match the theme, use `SelectMenu`.
 - **Semantic text is measured against its soft wash, not the surface.** See `docs/contrast-report.md`.
