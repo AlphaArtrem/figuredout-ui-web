@@ -7,6 +7,7 @@ import {
   DonutChart,
   FunnelBars,
   Gauge,
+  Heatmap,
   Legend,
   LineChart,
   ProgressRing,
@@ -380,6 +381,49 @@ export const Weighted: Story = {
       </Stage>
     )
   },
+}
+
+const HOURS = ["8", "10", "12", "14", "16", "18", "20"]
+const DAYS = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
+const ACTIVITY = [
+  [2, 8, 14, 11, 9, 5, 1],
+  [3, 10, 16, 12, 10, 6, 2],
+  [1, 7, 12, 13, 11, 4, null],
+  [4, 11, 18, 15, 12, 7, 3],
+  [2, 9, 13, 10, 14, 9, 4],
+  [0, 2, 5, 6, 4, 3, 1],
+  [0, 1, 3, 2, 2, 1, 0],
+]
+
+export const Heat: Story = {
+  name: "Heatmap",
+  parameters: {
+    docs: {
+      description: {
+        story:
+          "A value per row × column. The colour is `--chart-seq` mixed into the track, so the faintest non-zero cell is still a cell and `null` (bare track) is visibly different from zero. It is an HTML table underneath: every value is in the page and a screen reader walks it by header.",
+      },
+    },
+  },
+  render: () => (
+    <Stage>
+      <Heatmap
+        label="Activity by weekday and hour"
+        rows={DAYS.map((day) => ({ key: day, label: day }))}
+        columns={HOURS.map((hour) => ({ key: hour, label: hour }))}
+        values={ACTIVITY}
+      />
+      <DemoLabel className="mt-4">With values printed</DemoLabel>
+      <Heatmap
+        label="Activity by weekday and hour"
+        rows={DAYS.slice(0, 3).map((day) => ({ key: day, label: day }))}
+        columns={HOURS.map((hour) => ({ key: hour, label: hour }))}
+        values={ACTIVITY.slice(0, 3)}
+        showValues
+        showScale={false}
+      />
+    </Stage>
+  ),
 }
 
 export const Legends: Story = {
