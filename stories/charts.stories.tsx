@@ -10,6 +10,7 @@ import {
   Legend,
   LineChart,
   ProgressRing,
+  RankedBars,
   Sparkline,
   StackedBar,
   StepSegments,
@@ -322,6 +323,35 @@ export const Stacked: Story = {
       </Stage>
     )
   },
+}
+
+export const Ranked: Story = {
+  name: "RankedBars",
+  parameters: {
+    docs: {
+      description: {
+        story:
+          "Categories compared on one measure. The leader fills the track unless `max` fixes the scale (100 for scores, so two lists can be compared). `meta` is a quiet note before the value. Selectable rows keep their table semantics: the row is the target, a real button named by the label is what receives focus. `FunnelBars` is this component with a share-of-a-denominator reading.",
+      },
+    },
+  },
+  render: () => (
+    <Stage>
+      <div className="max-w-md">
+        <RankedBars
+          label="Sessions by source"
+          valueFormatter={(value) => value.toLocaleString("en-US")}
+          onSelect={() => undefined}
+          items={[
+            { key: "direct", label: "Direct", value: 1284, meta: "+12%" },
+            { key: "search", label: "Search", value: 902 },
+            { key: "referral", label: "Referral", value: 413 },
+            { key: "email", label: "Email", value: 170, tone: "warning", meta: "below target" },
+          ]}
+        />
+      </div>
+    </Stage>
+  ),
 }
 
 export const Weighted: Story = {
