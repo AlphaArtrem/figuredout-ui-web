@@ -84,6 +84,7 @@ const uiPreset: Config = {
         "chart-seq": withAlpha("--chart-seq"),
         "chart-grid": withAlpha("--chart-grid"),
         "chart-axis-label": withAlpha("--chart-axis-label"),
+        "chart-track": withAlpha("--chart-track"),
       } satisfies Record<string, ColorValue> as unknown as Record<string, string>,
       borderColor: {
         edge: "var(--color-edge)",

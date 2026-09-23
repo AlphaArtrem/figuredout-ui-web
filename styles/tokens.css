@@ -90,6 +90,12 @@
   --chart-seq: #15586b;
   --chart-grid: rgba(3, 10, 14, 0.1);
   --chart-axis-label: #47575f;
+  /* The unfilled part of a meter — a ring's track, an empty step, the rest of
+   * a weighted segment. Named apart from --color-edge for --seam's reason: a
+   * track is not a hairline, and the two want to move independently. Declared
+   * in both themes rather than as var(--color-edge), so a `.dark` island
+   * inside a light page resolves its own value instead of inheriting light's. */
+  --chart-track: #e2e9ee;
   /* The fallbacks matter: without them an app that has not wired next/font — or
    * any surface that renders the package outside Next, such as Storybook —
    * silently falls back to the browser default, which is a serif. */
@@ -228,6 +234,7 @@
   --chart-seq: #90c2e7;
   --chart-grid: rgba(240, 237, 239, 0.12);
   --chart-axis-label: #afb1b4;
+  --chart-track: #132c38;
   --shadow-raised:
     0 1px 2px rgba(0, 0, 0, 0.24),
     0 18px 40px rgba(0, 0, 0, 0.3);

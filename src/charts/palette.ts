@@ -14,3 +14,7 @@ export function categoricalColor(index: number): string {
 export const sequentialColor = "var(--chart-seq)"
 export const gridColor = "var(--chart-grid)"
 export const axisLabelColor = "var(--chart-axis-label)"
+/** The unfilled part of a meter: a ring's track, an empty step. */
+export const trackColor = "var(--chart-track)"
+
+export { toneColor } from "../lib/tone.js"

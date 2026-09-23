@@ -1,23 +1,14 @@
 import type { HTMLAttributes } from "react"
 import { cn } from "../lib/cn.js"
+import { TONE_CHIP_CLASSES } from "../lib/tone.js"
+import type { Tone } from "../lib/tone.js"
 
-type BadgeTone = "neutral" | "primary" | "success" | "warning" | "danger" | "info"
+type BadgeTone = Tone
 
 export interface BadgeProps extends HTMLAttributes<HTMLSpanElement> {
   /** Renders a leading dot, turning the badge into a status rather than a label. */
   dot?: boolean
   tone?: BadgeTone
-}
-
-/* The ring is the tone's own hue, not neutral --color-edge: a success badge
- * should read as one object, not as a green fill inside a grey outline. */
-const TONE_STYLES: Record<BadgeTone, string> = {
-  neutral: "bg-surface-sunken text-fg-muted ring-edge",
-  primary: "bg-primary-soft text-primary ring-primary/30",
-  success: "bg-success-soft text-success ring-success/30",
-  warning: "bg-warning-soft text-warning ring-warning/30",
-  danger: "bg-danger-soft text-danger ring-danger/30",
-  info: "bg-info-soft text-info ring-info/30",
 }
 
 export function Badge({ children, className, dot = false, tone = "neutral", ...props }: BadgeProps) {
@@ -36,7 +27,7 @@ export function Badge({ children, className, dot = false, tone = "neutral", ...p
          * consumer wants one — every badge in the product is a status, a count
          * or a one- or two-word label. */
         "inline-flex items-center gap-1.5 whitespace-nowrap rounded-full px-2.5 py-1 text-xs font-medium ring-1 ring-inset",
-        TONE_STYLES[tone],
+        TONE_CHIP_CLASSES[tone],
         className,
       )}
       {...props}
