@@ -22,9 +22,6 @@ unapproved:
   barrel export or broken story fails a check without anyone running a command by hand.
 - **Contrast measurement as a script** (invariant 6). Acceptance: a token change that drops a pair below AA
   is reported by a command.
-- **`IconButton` padding.** Its `px-0` loses the cascade to `Button`'s `px-3`/`px-4`, so every icon button's
-  glyph renders at 12px (see `docs/components.md`, gotchas). Acceptance: an `md` IconButton at 36px wide shows
-  its glyph at the size it was given, and every existing icon button is re-checked for the larger glyph.
 - **Release/versioning rule** for export changes (invariant 7). Acceptance: a consumer can tell from the
   installed version whether an export exists.
 

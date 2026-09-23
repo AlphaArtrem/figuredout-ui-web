@@ -230,11 +230,8 @@ export const Composer = forwardRef<HTMLTextAreaElement, ComposerProps>(function 
         <IconButton
           aria-label={sendLabel}
           icon={<PaperPlaneTilt size={16} weight="fill" aria-hidden="true" />}
-          /* 44px on a phone, where it is a thumb target; 36px from `sm`.
-           * `!px-0` because IconButton's own `px-0` loses the cascade to
-           * Button's `px-4` (both are single-class rules and `px-4` is emitted
-           * later), which squeezes the glyph to 4px once the button is 36px. */
-          className="shrink-0 !px-0 sm:min-h-9 sm:w-9"
+          /* 44px on a phone, where it is a thumb target; 36px from `sm`. */
+          className="shrink-0 sm:min-h-9 sm:w-9"
           loading={sending}
           loadingLabel={sendingLabel}
           disabled={!canSend}

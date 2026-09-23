@@ -16,6 +16,9 @@ export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   loadingLabel?: string
   leadingIcon?: ReactNode
   trailingIcon?: ReactNode
+  /** A square button holding one glyph and no padding. Give it an accessible
+   * name (`aria-label`, or an `sr-only` child). `IconButton` sets it for you. */
+  iconOnly?: boolean
 }
 
 /* PENDING_CONVENTION — how this package says "a write is running".
@@ -73,6 +76,17 @@ const SIZE_STYLES: Record<ButtonSize, string> = {
   md: "min-h-11 gap-2.5 rounded-md px-4 text-sm",
 }
 
+/* Icon-only sizes are their own table rather than `px-0` passed over the top of
+ * SIZE_STYLES. `cn` only joins classes, so two utilities for one property both
+ * land on the element and the stylesheet decides — and Tailwind emits `px-3`/
+ * `px-4` after `px-0`. That left every icon button 12–16px of side padding: its
+ * glyph drew at 12px whatever size it was given, and at 36px wide at 4px.
+ * No padding here, so the glyph draws at the size the caller gave it. */
+const ICON_SIZE_STYLES: Record<ButtonSize, string> = {
+  sm: "min-h-9 w-9 rounded-sm text-sm",
+  md: "min-h-11 w-11 rounded-md text-sm",
+}
+
 export const Button = forwardRef<HTMLButtonElement, ButtonProps>(function Button(
   {
     className,
@@ -82,6 +96,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(function Button
     trailingIcon,
     loading = false,
     loadingLabel = DEFAULT_LOADING_LABEL,
+    iconOnly = false,
     size = "md",
     type = "button",
     variant = "primary",
@@ -102,7 +117,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(function Button
         "motion-reduce:transform-none motion-reduce:transition-none",
         "focus-visible:outline-none focus-visible:ring-4 active:scale-[0.98]",
         "disabled:cursor-not-allowed disabled:opacity-55",
-        SIZE_STYLES[size],
+        iconOnly ? ICON_SIZE_STYLES[size] : SIZE_STYLES[size],
         VARIANT_STYLES[variant],
         className,
       )}
@@ -113,7 +128,9 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(function Button
       ) : (
         leadingIcon
       )}
-      {children}
+      {/* A square button has room for one glyph, so while loading the spinner
+        * takes the icon's place instead of sitting beside it. */}
+      {loading && iconOnly ? null : children}
       {loading ? (
         <span role="status" className="sr-only">
           {loadingLabel}
@@ -125,22 +142,17 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(function Button
   )
 })
 
-export interface IconButtonProps extends Omit<ButtonProps, "children"> {
+export interface IconButtonProps extends Omit<ButtonProps, "children" | "iconOnly"> {
   "aria-label": string
   icon: ReactNode
 }
 
 export const IconButton = forwardRef<HTMLButtonElement, IconButtonProps>(function IconButton(
-  { className, icon, size = "md", ...props },
+  { icon, size = "md", ...props },
   ref,
 ) {
   return (
-    <Button
-      ref={ref}
-      size={size}
-      className={cn(size === "sm" ? "w-9 px-0" : "w-11 px-0", className)}
-      {...props}
-    >
+    <Button ref={ref} size={size} iconOnly {...props}>
       {icon}
     </Button>
   )

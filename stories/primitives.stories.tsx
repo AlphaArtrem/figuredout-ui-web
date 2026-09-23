@@ -109,6 +109,52 @@ function NumberFieldDemo() {
   )
 }
 
+export const IconButtons: Story = {
+  name: "IconButton sizes",
+  parameters: {
+    docs: {
+      description: {
+        story:
+          "An icon button is a square with no side padding: 36px at `sm`, 44px at `md`, the glyph drawn at the size it was given. Size the glyph to the square — 14–16px at `sm`, 16–18px at `md`. Until 0.2.1 the square kept `Button`'s 12–16px padding, so every glyph drew at 12px whatever it was given. While loading, the spinner takes the glyph's place. `Button iconOnly` is the same square for an icon-only button that needs other children, such as an `sr-only` label.",
+      },
+    },
+  },
+  render: () => (
+    <Stage>
+      {(["sm", "md"] as const).map((size) => (
+        <div key={size}>
+          <DemoLabel>{size === "sm" ? "sm — 36px, 16px glyph" : "md — 44px, 18px glyph"}</DemoLabel>
+          <div className="flex flex-wrap items-center gap-3">
+            {(["primary", "secondary", "ghost", "soft", "warning", "danger"] as const).map((variant) => (
+              <IconButton
+                key={variant}
+                aria-label={`Add (${variant}, ${size})`}
+                size={size}
+                variant={variant}
+                icon={<Plus size={size === "sm" ? 16 : 18} aria-hidden="true" />}
+              />
+            ))}
+            <IconButton
+              aria-label={`Delete (loading, ${size})`}
+              size={size}
+              variant="secondary"
+              loading
+              icon={<Trash size={size === "sm" ? 16 : 18} aria-hidden="true" />}
+            />
+            <IconButton
+              aria-label={`Row actions (disabled, ${size})`}
+              size={size}
+              variant="ghost"
+              disabled
+              icon={<DotsThree size={size === "sm" ? 16 : 18} aria-hidden="true" />}
+            />
+          </div>
+        </div>
+      ))}
+    </Stage>
+  ),
+}
+
 export const NumberFields: Story = {
   name: "NumberField",
   parameters: {

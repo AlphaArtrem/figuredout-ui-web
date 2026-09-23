@@ -57,4 +57,42 @@ describe("Button", () => {
     expect(button).toHaveAttribute("aria-busy", "true")
     expect(screen.getByRole("status")).toHaveTextContent("Loading")
   })
+
+  /* The icon-only sizes used to be `px-0` passed over Button's `px-3`/`px-4`.
+   * `cn` only joins classes, so both utilities reached the element and the
+   * stylesheet's order picked `px-3`/`px-4`: every glyph drew at 12px, and at
+   * 36px wide at 4px. The square sizes must carry no side padding at all. */
+  it.each([
+    ["sm", ["w-9", "min-h-9", "rounded-sm"]],
+    ["md", ["w-11", "min-h-11", "rounded-md"]],
+  ] as const)("draws a %s IconButton square, with no side padding", (size, expected) => {
+    render(<IconButton aria-label="Delete row" size={size} icon={<span />} />)
+
+    const classes = screen.getByRole("button", { name: "Delete row" }).className.split(" ")
+    expect(classes).toEqual(expect.arrayContaining([...expected]))
+    expect(classes.filter((name) => /^px-/.test(name))).toEqual([])
+  })
+
+  it("keeps a labelled Button's side padding", () => {
+    render(
+      <>
+        <Button size="sm">Small</Button>
+        <Button>Medium</Button>
+      </>,
+    )
+
+    expect(screen.getByRole("button", { name: "Small" }).className.split(" ")).toContain("px-3")
+    expect(screen.getByRole("button", { name: "Medium" }).className.split(" ")).toContain("px-4")
+  })
+
+  it("puts the spinner in the icon's place while an IconButton is loading", () => {
+    const { rerender } = render(
+      <IconButton aria-label="Send" icon={<span data-testid="glyph" />} />,
+    )
+    expect(screen.getByTestId("glyph")).toBeTruthy()
+
+    rerender(<IconButton aria-label="Send" loading icon={<span data-testid="glyph" />} />)
+    expect(screen.queryByTestId("glyph")).toBeNull()
+    expect(screen.getByRole("button", { name: "Send" })).toHaveAttribute("aria-busy", "true")
+  })
 })

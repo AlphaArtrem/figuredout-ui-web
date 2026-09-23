@@ -141,12 +141,12 @@ Do not add a second chart that restates one already on the screen. `COMPONENT_GU
 - **A composite's parts are not named after the field.** `aria-labelledby` outranks every local name, so a
   part that inherits the field's label announces as the field. Build the part's name from the field's words
   (`useFieldLabelId`), as `NumberField`'s buttons do.
-- **`IconButton`'s `px-0` loses to `Button`'s `px-3`/`px-4`.** Both are single-class rules and Tailwind emits the
-  larger padding later, so an icon button keeps 12–16px of side padding and its glyph is squeezed: at the stock
-  sizes every icon renders at 12px whatever `size` it was given, and an `md` IconButton narrowed to 36px
-  (`sm:w-9`) leaves the glyph 4px wide. Found while building `Composer`, which passes `!px-0`; IconButton itself
-  is unchanged because fixing it enlarges every icon button's glyph across every consumer — a visual change to
-  decide on its own.
+- **A `className` does not override a component's own utility for the same property.** `cn` only joins
+  classes; when two single-class rules set one property, the one Tailwind emits later wins, whatever order they
+  were passed in. `IconButton` passed `px-0` over `Button`'s `px-3`/`px-4` and lost: until 0.2.1 every icon
+  button drew its glyph at 12px whatever size it was given, and 4px at 36px wide. A variation a component owns
+  is a prop that picks different base classes (`Button iconOnly`), not an override. A consumer's one-off
+  change of a property the component already sets needs a responsive variant (`sm:w-9`) or `!`.
 - **A chat pane that grows the page has an unbounded ancestor.** `ChatPane` and `MessageList` are `min-h-0`
   throughout; the page scrolls instead of the list only when something above them is a flex or grid item
   without `min-h-0`, or has no height at all.

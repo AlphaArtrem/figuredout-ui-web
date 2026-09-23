@@ -135,7 +135,7 @@ export function NumberField({
       <Button
         variant="secondary"
         size="md"
-        className="w-11 px-0"
+        iconOnly
         disabled={disabled || atMin}
         onClick={() => press(-1)}
         {...buttonName(decreaseLabel, decreaseId)}
@@ -177,7 +177,7 @@ export function NumberField({
       <Button
         variant="secondary"
         size="md"
-        className="w-11 px-0"
+        iconOnly
         disabled={disabled || atMax}
         onClick={() => press(1)}
         {...buttonName(increaseLabel, increaseId)}

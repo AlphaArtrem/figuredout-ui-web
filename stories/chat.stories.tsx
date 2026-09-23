@@ -155,8 +155,8 @@ export const Thread: Story = {
             footer={
               <Composer
                 placeholder="Reply as yourself…"
-                attachAction={<IconButton aria-label="Attach a file" variant="ghost" icon={<Paperclip size={18} aria-hidden="true" />} className="!px-0 sm:min-h-9 sm:w-9" />}
-                actions={<IconButton aria-label="Insert emoji" variant="ghost" icon={<Smiley size={18} aria-hidden="true" />} className="hidden !px-0 sm:inline-flex sm:min-h-9 sm:w-9" />}
+                attachAction={<IconButton aria-label="Attach a file" variant="ghost" icon={<Paperclip size={18} aria-hidden="true" />} className="sm:min-h-9 sm:w-9" />}
+                actions={<IconButton aria-label="Insert emoji" variant="ghost" icon={<Smiley size={18} aria-hidden="true" />} className="hidden sm:inline-flex sm:min-h-9 sm:w-9" />}
                 quickReplies={[
                   { id: "share", label: "Share matching listings", icon: <Lightning size={13} weight="fill" aria-hidden="true" /> },
                   { id: "visit", label: "Book a visit", icon: <Lightning size={13} weight="fill" aria-hidden="true" /> },
