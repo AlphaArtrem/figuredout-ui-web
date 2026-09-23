@@ -5,7 +5,7 @@ Edit in place. No per-session sections. Last reviewed 2026-09-23 from the reposi
 
 ## What exists
 
-- `@figuredout/ui-web` version `0.1.0` (`package.json`, `components.manifest.json`). React UI primitives,
+- `@figuredout/ui-web` version `0.2.0` (`package.json`, `components.manifest.json`). React UI primitives,
   patterns, chart wrappers, a Phosphor icon surface, CSS tokens (`styles/tokens.css`) and a Tailwind preset
   (`tailwind-preset.ts`, shipped as ESM and CJS). The component list lives in `README.md` — not repeated here.
 - Consumed from GitHub as a git dependency: `dist/` is gitignored and the `prepare` script builds on install
@@ -15,7 +15,8 @@ Edit in place. No per-session sections. Last reviewed 2026-09-23 from the reposi
 - No CI configuration in the repository (no `.github/`). All validation in `AGENTS.md` is run by hand.
 - A `chat` group in the main entry (`src/chat/`): `ChatPane`, `ChatHeader`, `MessageList`, `MessageBubble`,
   `SystemEvent`, `DayDivider`, `TypingIndicator`, `Composer`.
-- Latest change (2026-09-23): two additive branches merged; the version is bumped in the next commit.
+- Latest release (2026-09-23): `0.2.0`, a minor bump for additive exports only (invariant 7). It merges two
+  branches:
   - `ds/dataviz` — the data-visualisation set: `ProgressRing`, `Gauge`, `StepSegments`, `StackedBar`,
     `WeightedSegments`, `RankedBars`, `Heatmap`, `Legend` in `/charts`, `ScoreChip` in the main entry,
     `LineChart area`/`highlightIndex`, `StatCard aside`, and the `--chart-track` token. `FunnelBars` now renders
