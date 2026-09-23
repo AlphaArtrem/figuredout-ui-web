@@ -7,13 +7,17 @@ import {
   DescriptionList,
   Dialog,
   FormField,
+  IconButton,
   InfoBanner,
   Input,
+  NotificationList,
+  Popover,
   SidePanel,
   Tooltip,
   useToast,
 } from "../index"
-import { UsersThree } from "../src/icons/index"
+import { Bell, CheckCircle, Clock, UsersThree, WarningCircle } from "../src/icons/index"
+import type { NotificationItem } from "../index"
 import { DemoLabel, Stage } from "./demo-data"
 
 const meta = {
@@ -269,4 +273,66 @@ export const Avatars: Story = {
       </div>
     </Stage>
   ),
+}
+
+const NOTIFICATIONS: NotificationItem[] = [
+  { id: "handover", tone: "warning", icon: <WarningCircle size={17} />, title: <><strong>Priya Nair</strong> asked for a person</>, subtitle: "The assistant paused at 5 of 7 questions", time: "6m", unread: true, href: "#handover" },
+  { id: "token", tone: "warning", icon: <Clock size={17} />, title: <>A connection token expires in <strong>6 days</strong></>, subtitle: "New conversations stop arriving once it lapses", time: "2h", unread: true, onSelect: () => undefined },
+  { id: "scores", tone: "success", icon: <CheckCircle size={17} />, title: "3 new records scored above 85", subtitle: "Ritika Kaul, Arjun Mehta, Meera Iyer", time: "4h", onSelect: () => undefined },
+  { id: "invite", tone: "primary", icon: <UsersThree size={17} />, title: "Dhruv accepted your invite", subtitle: "Member · Waterfront, Downtown", time: "1d", onSelect: () => undefined },
+]
+
+export const Notifications: Story = {
+  name: "Popover, NotificationList",
+  parameters: {
+    docs: {
+      description: {
+        story:
+          "`NotificationList` is the content of a notifications panel — header with a count and a mark-all-read slot, rows with a status-coloured tile, rich title, subtitle, time and unread dot — and nothing that decides where the panel lives. Here it is in a `Popover`: a non-modal `role=\"dialog\"` anchored to its trigger on the shared floating surface. `DropdownMenu` could not host it — it only takes command items — which is why the package now has a Popover. Escape closes it and gives focus back to the bell; so does a click outside or tabbing away. On a phone, put the same list in a `SidePanel`.",
+      },
+    },
+  },
+  render: function NotificationsStory() {
+    const [items, setItems] = useState(NOTIFICATIONS)
+    const unread = items.filter((item) => item.unread).length
+    return (
+      <Stage>
+        <div className="flex justify-end">
+          <Popover
+            label="Notifications"
+            trigger={(props) => (
+              <IconButton
+                {...props}
+                aria-label={unread ? `Notifications, ${unread} unread` : "Notifications"}
+                variant="secondary"
+                icon={
+                  <span className="relative flex">
+                    <Bell size={18} aria-hidden="true" />
+                    {unread ? <span aria-hidden="true" className="absolute -right-0.5 -top-0.5 size-2 rounded-full bg-warning ring-2 ring-surface-raised" /> : null}
+                  </span>
+                }
+              />
+            )}
+          >
+            <NotificationList
+              items={items}
+              onMarkAllRead={() => setItems((current) => current.map((item) => ({ ...item, unread: false })))}
+              footer={
+                <Button variant="ghost" size="sm" className="w-full">
+                  Notification settings
+                </Button>
+              }
+            />
+          </Popover>
+        </div>
+        <DemoLabel>The same list, resting on the page</DemoLabel>
+        <div className="max-w-md rounded-xl bg-surface p-1 ring-1 ring-inset ring-edge">
+          <NotificationList items={NOTIFICATIONS} headingLevel={3} title="Recent activity" />
+        </div>
+        <div className="max-w-md rounded-xl bg-surface p-1 ring-1 ring-inset ring-edge">
+          <NotificationList items={[]} headingLevel={3} />
+        </div>
+      </Stage>
+    )
+  },
 }

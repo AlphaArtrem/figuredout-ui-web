@@ -1,6 +1,6 @@
 # State
 
-Edit in place. No per-session sections. Last reviewed 2026-09-17 from the repository (git history,
+Edit in place. No per-session sections. Last reviewed 2026-09-23 from the repository (git history,
 `package.json`, source tree); nothing here was re-run.
 
 ## What exists
@@ -10,13 +10,22 @@ Edit in place. No per-session sections. Last reviewed 2026-09-17 from the reposi
   (`tailwind-preset.ts`, shipped as ESM and CJS). The component list lives in `README.md` — not repeated here.
 - Consumed from GitHub as a git dependency: `dist/` is gitignored and the `prepare` script builds on install
   (commit `e8cefeb`). Commit message records that older `0.0.1` tarballs are vendored in several consuming repos.
-- Tests: 42 `*.test.tsx` files under `src/` plus `tailwind-preset.test.ts` (Vitest + Testing Library, jsdom).
+- Tests: 49 `*.test.tsx` files under `src/` plus `tailwind-preset.test.ts` (Vitest + Testing Library, jsdom).
 - Storybook 10 explorer in `stories/` and `.storybook/`; `hybrid-mockup/` is a static, unbuilt design reference.
 - No CI configuration in the repository (no `.github/`). All validation in `AGENTS.md` is run by hand.
-- Latest change (2026-09-23, branch `ds/dataviz`): the data-visualisation set — `ProgressRing`, `Gauge`,
-  `StepSegments`, `StackedBar`, `WeightedSegments`, `RankedBars`, `Heatmap`, `Legend` in `/charts`, `ScoreChip`
-  in the main entry, `LineChart area`/`highlightIndex`, `StatCard aside`, and the `--chart-track` token.
-  `FunnelBars` now renders through `RankedBars`. The version was not bumped (still `0.1.0`).
+- A `chat` group in the main entry (`src/chat/`): `ChatPane`, `ChatHeader`, `MessageList`, `MessageBubble`,
+  `SystemEvent`, `DayDivider`, `TypingIndicator`, `Composer`.
+- Latest change (2026-09-23): two additive branches merged; the version is bumped in the next commit.
+  - `ds/dataviz` — the data-visualisation set: `ProgressRing`, `Gauge`, `StepSegments`, `StackedBar`,
+    `WeightedSegments`, `RankedBars`, `Heatmap`, `Legend` in `/charts`, `ScoreChip` in the main entry,
+    `LineChart area`/`highlightIndex`, `StatCard aside`, and the `--chart-track` token. `FunnelBars` now renders
+    through `RankedBars`.
+  - `ds/chat-nav` — the chat group; `SegmentedControl`, `CommandPalette` + `useCommandPaletteShortcut`,
+    `BottomNav`, `Popover`, `NotificationList` and the `Kbd` primitive; icons `ArrowDown`, `Bell`, `Checks`,
+    `Lightning`, `Paperclip`, `Smiley`; token `--color-chat-assistant`; preset animation `typing-dot`. `Dialog`'s
+    focus hook moved to `src/lib/use-dialog-focus.ts` so `CommandPalette` shares it.
+- Previous change (2026-09-16): WhatsApp/Instagram/Messenger logo exports added then removed the same day; the
+  version was not bumped.
 
 ## Settled decisions (and why)
 
@@ -27,6 +36,11 @@ Edit in place. No per-session sections. Last reviewed 2026-09-17 from the reposi
   whole is a `StackedBar`; a comparison is `RankedBars`; a trend is a sparkline or line/area chart; a score in a
   list is a `ScoreChip`; "n of total" is `StepSegments` (the product's dashboard redesign, 2026-09-23).
 - Build on install rather than vendoring tarballs, so a git install is usable and cannot go stale (`e8cefeb`).
+- A `Popover` primitive rather than hosting notifications in `DropdownMenu`: the menu only takes command items
+  (`role="menuitem"` buttons), and a notification list is a titled region with links, a header action and a
+  footer. The popover is non-modal and reuses `POPOVER_SURFACE` and `useViewportClamp` (2026-09-23).
+- Chat components live in their own `src/chat/` group but ship from the main entry, like primitives and
+  patterns; only charts and icons have their own subpaths (2026-09-23).
 
 ## Invariants
 

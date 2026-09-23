@@ -80,6 +80,11 @@
   --color-accent-fg: #fdf3f1;
   --color-banner-fg: #030a0e;
   --color-banner-muted: #47575f;
+  /* The assistant's chat bubble: an outgoing message the product wrote rather
+   * than a person. A solid, quieter reading of the primary hue, so it sits on
+   * the same side as a person's outgoing message (`primary-soft`) and is still
+   * told apart from it at a glance. Not a status colour and never one. */
+  --color-chat-assistant: #dcebf3;
 
   --chart-cat-1: #15586b;
   --chart-cat-2: #1c4b80;
@@ -224,6 +229,7 @@
   --color-accent-fg: #030a0e;
   --color-banner-fg: #f0edef;
   --color-banner-muted: #afb1b4;
+  --color-chat-assistant: #15394a;
 
   --chart-cat-1: #90c2e7;
   --chart-cat-2: #5cbb8b;
