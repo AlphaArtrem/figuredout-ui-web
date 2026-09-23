@@ -10,17 +10,22 @@ Edit in place. No per-session sections. Last reviewed 2026-09-17 from the reposi
   (`tailwind-preset.ts`, shipped as ESM and CJS). The component list lives in `README.md` — not repeated here.
 - Consumed from GitHub as a git dependency: `dist/` is gitignored and the `prepare` script builds on install
   (commit `e8cefeb`). Commit message records that older `0.0.1` tarballs are vendored in several consuming repos.
-- Tests: 32 `*.test.tsx` files under `src/` plus `tailwind-preset.test.ts` (Vitest + Testing Library, jsdom).
+- Tests: 42 `*.test.tsx` files under `src/` plus `tailwind-preset.test.ts` (Vitest + Testing Library, jsdom).
 - Storybook 10 explorer in `stories/` and `.storybook/`; `hybrid-mockup/` is a static, unbuilt design reference.
 - No CI configuration in the repository (no `.github/`). All validation in `AGENTS.md` is run by hand.
-- Latest change (2026-09-16): WhatsApp/Instagram/Messenger logo exports added then removed the same day; the
-  version was not bumped.
+- Latest change (2026-09-23, branch `ds/dataviz`): the data-visualisation set — `ProgressRing`, `Gauge`,
+  `StepSegments`, `StackedBar`, `WeightedSegments`, `RankedBars`, `Heatmap`, `Legend` in `/charts`, `ScoreChip`
+  in the main entry, `LineChart area`/`highlightIndex`, `StatCard aside`, and the `--chart-track` token.
+  `FunnelBars` now renders through `RankedBars`. The version was not bumped (still `0.1.0`).
 
 ## Settled decisions (and why)
 
 - Presentational only: props in, callbacks out, no data fetching (`AGENTS.md` package contract).
 - React, ReactDOM, `next-themes` and Tailwind are consumer-provided peers.
 - Four-step surface ladder and the shared component rules — see `docs/components.md`.
+- Chart forms follow the data, not taste: a ring is only ever one value toward a limit or goal; a split of one
+  whole is a `StackedBar`; a comparison is `RankedBars`; a trend is a sparkline or line/area chart; a score in a
+  list is a `ScoreChip`; "n of total" is `StepSegments` (the product's dashboard redesign, 2026-09-23).
 - Build on install rather than vendoring tarballs, so a git install is usable and cannot go stale (`e8cefeb`).
 
 ## Invariants

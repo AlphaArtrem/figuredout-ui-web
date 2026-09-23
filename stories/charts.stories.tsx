@@ -30,7 +30,7 @@ const meta = {
     docs: {
       description: {
         component:
-          "Recharts wrappers. What the design system owns is the **furniture** — legend, axis type, the view-as-table escape hatch, the hover card — because that is what makes a chart look like it belongs to the same product as the table beside it. Series colours come from `categoricalColor()` and the `--chart-*` tokens; never pass a literal.",
+          "Recharts wrappers for axes-and-series charts, and plain SVG/HTML for the meters and bars (`ProgressRing`, `Gauge`, `StepSegments`, `StackedBar`, `WeightedSegments`, `RankedBars`, `Heatmap`). What the design system owns is the **furniture** — legend, axis type, the view-as-table escape hatch, the hover card — because that is what makes a chart look like it belongs to the same product as the table beside it. Series colours come from `categoricalColor()` and the `--chart-*` tokens; never pass a literal.",
       },
     },
   },

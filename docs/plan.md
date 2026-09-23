@@ -10,6 +10,7 @@ Phased build order. Each phase's acceptance is a demonstration, not a passing su
 | 2. Surface-ladder redesign | 2026-08-13 – 08-16 | Every component on the four-step ladder in light and dark; holds together at phone width |
 | 3. Consumable from GitHub | 2026-08-22 – 08-30 | `npm i github:AlphaArtrem/figuredout-ui-web` yields a built package; FiguredoutAI palette applied with contrast report |
 | 4. Accessibility and form hardening | 2026-09-04 – 09-11 | Named controls, announced pending/error states, keyboard-reachable wide tables, `TagPicker`, `NumberField`, warning button, compact `Stepper` |
+| 5. Data visualisation set | 2026-09-23 (`ds/dataviz`) | Every chart form the dashboard redesign uses — ring, gauge, step segments, stacked bar, weighted segments, ranked bars, heatmap, area line, score chip — themed in light and dark, with stories and tests |
 
 ## Not yet planned
 

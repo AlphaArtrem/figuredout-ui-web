@@ -56,7 +56,7 @@ something.
 ## Exports
 
 Primitives:
-`Badge`, `Button`, `IconButton`, `Card`, `CardHeader`, `CardBody`, `CardFooter`, `Checkbox`, `FormField`, `useFieldAria`, `useFieldLabelId`, `Input`, `Textarea`, `Select`, `LoadingRegion`, `NumberField`, `Skeleton`, `Spinner`, `Switch`, `ThemeToggle`
+`Badge`, `Button`, `IconButton`, `Card`, `CardHeader`, `CardBody`, `CardFooter`, `Checkbox`, `FormField`, `useFieldAria`, `useFieldLabelId`, `Input`, `Textarea`, `Select`, `LoadingRegion`, `NumberField`, `ScoreChip`, `scoreTone`, `Skeleton`, `Spinner`, `Switch`, `ThemeToggle`
 
 Patterns:
 `AppTopBar`, `Avatar`, `ConfirmDialog`, `DashboardShell`, `DescriptionList`, `Dialog`, `DropdownMenu`, `EmptyState`, `ExpandableTile`, `FilterBar`, `Hero`, `InfoBanner`, `PageBand`, `PageContent`, `PageHeader`, `Pagination`, `SearchInput`, `SeamGrid`, `SeamCell`, `seamCorners`, `SelectMenu`, `Section`, `SettingsSection`, `SidePanel`, `StatCard`, `StatCardContent`, `Stepper`, `Table`, `TableSection`, `Tabs`, `TagPicker`, `ToastProvider`, `Tooltip`, `useToast`
@@ -72,7 +72,8 @@ Patterns:
 - `Button variant="warning"` is for an action that is consequential but not destructive — borrowing someone's seat, publishing, overriding. The warning wash, warning ink and a warning ring; its contrast is in `docs/contrast-report.md`. Red stays `danger`'s, for what cannot be undone.
 - Use `AppTopBar` for application chrome that must wrap cleanly at small widths while preserving accessible primary navigation.
 - Use `DashboardShell` for operational apps that need persistent sidebar navigation, a sticky action/status bar, and a mobile navigation drawer.
-- Use `StatCard` for compact metric tiles, not as a general content container. Its `value` renders in a `div`, so `value={<Skeleton className="h-9 w-20" />}` is valid while the figure loads; it used to be a `p`, which cannot hold a block.
+- Use `StatCard` for compact metric tiles, not as a general content container. Its `value` renders in a `div`, so `value={<Skeleton className="h-9 w-20" />}` is valid while the figure loads; it used to be a `p`, which cannot hold a block. `aside` puts a small visual beside the figure — a `Sparkline`, `StepSegments` or a small `ProgressRing` — in up to two fifths of the tile; the figure's size steps down so it never wraps. Without `aside` the markup is exactly what it was. What the aside draws must also be in the text.
+- Use `ScoreChip` for a score in a table column or a list row. `thresholds` sets the tone (default success from 75, warning from 60, danger below — `scoreTone()` applies the same rule elsewhere); `null`/`NaN` is a neutral dash announced as `missingLabel` ("No score"), never a zero. Its wash, ink and ring are `Badge`'s.
 - Use `Section variant="plain"` for page-level regions with a divider, icon, eyebrow, heading, and description. Both variants emit the eyebrow **before** the heading; the plain one used to emit it after, so the same design language read in two orders depending on the page. `Section` renders an `h2` by default; `headingLevel` changes the tag and never the type. Pass `headingLevel={1}` only when a display-size plain `Section` is the page's own header (a marketing page that `PageHeader`'s dashboard scale would shrink) — otherwise a page that needs an `h1` wants `PageHeader`.
 - `Card` renders its `title` in a `div` by default, because a card is not a heading. `titleAs="h3"` (or `h2`–`h6`) makes a card heading-navigable without changing its look; a block that is a region of the page is still a `Section`.
 - Use `InfoBanner` for semantic messages; warning and danger tones announce with `role="alert"`. Hand `actions` the controls themselves — a fragment of buttons is fine. From `sm` they sit beside the text; below `sm` they move under it, in a wrapping row aligned with the text, so a phone keeps the sentence at full width instead of wrapping it into a narrow column. Do not stack them yourself.
@@ -97,7 +98,33 @@ Patterns:
 - Use `TagPicker` for every multi-value choice over a closed list — a wall of checkboxes is unusable past about ten options and says nothing about which question it answers. It is a `role="group"` named from the `FormField` around it, over a multi-selectable listbox driven by `aria-activedescendant`, so focus never leaves the query and typing, filtering and moving are one gesture. Pass `onCreate` and the control offers to add an option the list does not have; omit it and it does not. The package never learns where the options come from.
 
 Charts:
-`BarChart`, `ChartShell`, `ChartTooltip`, `DonutChart`, `FunnelBars`, `LineChart`, `Sparkline`, `categoricalColor`, `sequentialColor`, `gridColor`, `axisLabelColor`
+`BarChart`, `ChartShell`, `ChartTooltip`, `DonutChart`, `FunnelBars`, `Gauge`, `Heatmap`, `Legend`, `LineChart`, `ProgressRing`, `RankedBars`, `Sparkline`, `StackedBar`, `StepSegments`, `WeightedSegments`, `categoricalColor`, `sequentialColor`, `gridColor`, `axisLabelColor`, `trackColor`, `toneColor`, and the `ChartTone` type
+
+### Choosing a chart
+
+| The data is… | Use |
+| --- | --- |
+| one value toward a limit or goal (usage vs cap, setup done, a score out of 100) | `ProgressRing` — **and nothing else is a ring**: never a ring for a count with no denominator, never a ring per category |
+| one whole split into parts | `StackedBar` (or `DonutChart` when there are few parts) |
+| categories compared on one measure | `RankedBars` |
+| a share of a denominator (a pipeline, a funnel) | `FunnelBars` |
+| a trend | `Sparkline` beside a figure, `LineChart` (with `area` when the size matters) as a chart |
+| a score in a table or list | `ScoreChip` |
+| "n of total" discrete steps | `StepSegments` |
+| a total made of weighted parts | `WeightedSegments` |
+| one reading on a bounded scale | `Gauge` |
+| a value per row × column | `Heatmap` |
+
+Do not add a second chart that restates one already on the screen. A part takes a `tone` only when it is a status; otherwise leave `tone` and `color` unset and the categorical palette applies in order.
+
+- **Meters** (`ProgressRing`, `Gauge`, `StepSegments`) are `role="meter"` and require a `label`, their accessible name. The drawing is `aria-hidden`; the figure is text, and `aria-valuetext` defaults to "*value* of *max*" (`valueText` overrides it on the ring). `ProgressRing`'s centre defaults to the share of `max` and may read 120% while the arc stops at full. Its caption shows from 56 px up. `Gauge`'s `marker` is a tick across the track, spoken with the value. `StepSegments` is warning until complete and success once complete unless `tone` says otherwise; keep it to a dozen or so steps.
+- `StackedBar` is a named group: the bar is `aria-hidden` and the numbers are the legend's (value and, by default, share). With `legend={false}` they stay in an `sr-only` list. `onSelect` makes the legend entries buttons — the keyboard path — and the segments clickable.
+- `RankedBars` scales to its largest value unless `max` fixes the scale; a value past `max` stops at full width. It renders in the order given, so sort first. A selectable row keeps `role="row"`; a real button named by the label is stretched over it. **`FunnelBars` is `RankedBars`** with `max` set to its denominator and a "count (share%)" value — change the shared layout in `RankedBars`.
+- `WeightedSegments` sizes each part by `weight` and fills it by `value`. The shortfall is hatched in the warning hue (`shortfall="warning"`, the default) or left as track (`"neutral"`). Each part's figure is printed as `value/weight` and spoken as "value of weight".
+- `Heatmap` is a captioned `<table>` with row and column headers, so it needs no view-as-table: every value is already in the page, `sr-only` unless `showValues`. `null` is "no data" (bare track), which is not zero (the faintest fill).
+- `Legend` is the key every chart draws — `ChartShell` and `StackedBar` use it. `layout="stacked"` right-aligns the values; `onSelect` makes entries buttons.
+- `LineChart area` fills under each series with a 12% wash of its colour (not stacked). `highlightIndex` marks one point with a dashed guide and a ringed dot per series.
+- Arcs and bar fills ease between values with `duration-normal`/`ease-standard` and stop under `prefers-reduced-motion`.
 
 `Sparkline` needs two points to be a line. Below that it renders the `notEnoughDataLabel` text instead of a chart — recharts falls back to drawing the lone point when a series has no line, and a single pale dot in an empty box reads as a rendering fault. That text is *not* `aria-hidden`, unlike the chart, because it is the only thing saying why the trend is missing.
 

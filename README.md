@@ -56,12 +56,21 @@ export default {
 ## Component surface
 
 Primitives:
-`Badge`, `Button`, `IconButton`, `Card`, `CardHeader`, `CardBody`, `CardFooter`, `Checkbox`, `FormField`, `Input`, `Textarea`, `Select`, `NumberField`, `Skeleton`, `Spinner`, `Switch`, `ThemeToggle`
+`Badge`, `Button`, `IconButton`, `Card`, `CardHeader`, `CardBody`, `CardFooter`, `Checkbox`, `FormField`, `Input`, `Textarea`, `Select`, `NumberField`, `ScoreChip`, `Skeleton`, `Spinner`, `Switch`, `ThemeToggle`
 
 New in this system: `Hero`, `PageBand`, `SeamGrid` / `SeamCell` / `seamCorners`, `StatCardContent`.
 
 Application patterns:
 `AppTopBar`, `Avatar`, `ConfirmDialog`, `DashboardShell`, `DescriptionList`, `Dialog`, `DropdownMenu`, `EmptyState`, `ExpandableTile`, `FilterBar`, `Hero`, `InfoBanner`, `PageBand`, `PageContent`, `PageHeader`, `Pagination`, `SearchInput`, `SeamGrid`, `SelectMenu`, `Section`, `SettingsSection`, `SidePanel`, `StatCard`, `StatCardContent`, `Stepper`, `Table`, `TableSection`, `Tabs`, `TagPicker`, `ToastProvider`, `Tooltip`, `useToast`
+
+Charts (`@figuredout/ui-web/charts`):
+`BarChart`, `ChartShell`, `ChartTooltip`, `DonutChart`, `FunnelBars`, `Gauge`, `Heatmap`, `Legend`, `LineChart`, `ProgressRing`, `RankedBars`, `Sparkline`, `StackedBar`, `StepSegments`, `WeightedSegments`, plus `categoricalColor`, `sequentialColor`, `gridColor`, `axisLabelColor`, `trackColor`, `toneColor`
+
+Choosing a chart: split of one whole → `StackedBar` (or `DonutChart`); comparison across categories →
+`RankedBars`; trend → `Sparkline` or `LineChart area`; one value toward a limit or goal → `ProgressRing`, and
+nothing else is a ring; a score in a table or list → `ScoreChip`; "n of total" steps → `StepSegments`; a total
+made of weighted parts → `WeightedSegments`; a value per row × column → `Heatmap`. Do not add a second chart
+that restates one already on the screen.
 
 Dashboard composition:
 
@@ -104,7 +113,7 @@ npm run build-storybook
 - Structure: `--color-edge`, `--color-edge-strong`
 - Brand and focus: `--color-primary`, `--color-primary-hover`, `--color-primary-fg`, `--color-primary-soft`, `--color-focus-ring`
 - Status: `--color-success`, `--color-warning`, `--color-danger`, `--color-info` plus `-soft` companions
-- Data viz: `--chart-cat-1` through `--chart-cat-6`, `--chart-seq`, `--chart-grid`, `--chart-axis-label`
+- Data viz: `--chart-cat-1` through `--chart-cat-6`, `--chart-seq`, `--chart-grid`, `--chart-axis-label`, `--chart-track` (the unfilled part of a meter)
 - Typography: `--font-sans`, `--font-mono`, `--text-xs` through `--text-4xl`, `--leading-xs` through `--leading-4xl`
 - Layout and motion: spacing, radius, shadow, duration, easing, and z-index tokens in `styles/tokens.css`
 
@@ -114,4 +123,4 @@ npm run build-storybook
 - Hex colors do not belong in feature code.
 - Do not introduce a second accent color.
 - Do not use black drop shadows, `linear`, or `ease-in-out`.
-- Status colors stay reserved for semantic feedback and are not reused as chart series.
+- Status colors stay reserved for semantic feedback and are not reused as chart series. A chart part takes a `tone` only when it *is* a status (passed, at risk, failed); otherwise it takes the categorical palette.

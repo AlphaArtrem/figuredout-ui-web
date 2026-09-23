@@ -92,6 +92,23 @@ ring, so these are the hover numbers too.
 A darker hover wash was rejected: in light mode `--color-warning` is the ink, so a fill built from it moves
 toward the text colour and the ratio falls.
 
+## Meter fills on `--chart-track`
+
+The filled part of a `ProgressRing`, `Gauge`, `StepSegments` or `WeightedSegments` is a tone colour against
+`--chart-track`, and it is the part that carries the value, so it is held to the 3:1 non-text bar. The track
+itself is not: it only shows how much is left, and the figure is always printed as text.
+
+| Fill on `--chart-track` | Light (`#e2e9ee`) | Dark (`#132c38`) | 3:1 |
+|---|---|---|---|
+| `--color-primary` | 6.49:1 | 7.65:1 | pass |
+| `--color-success` | 5.89:1 | 6.18:1 | pass |
+| `--color-warning` | 7.03:1 | 6.74:1 | pass |
+| `--color-danger` | 6.63:1 | 5.33:1 | pass |
+| `--color-info` | 7.23:1 | 6.97:1 | pass |
+| `--color-fg-subtle` (neutral) | 6.12:1 | 4.45:1 | pass |
+
+The track against `--color-surface` is 1.17:1 in light and 1.26:1 in dark — deliberately quiet.
+
 ## Notes
 
 - **Dark mode is the canonical theme.** Its values are the marketing site's own scheme, so the product and

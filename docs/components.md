@@ -35,15 +35,16 @@ the page without leaning on its hairline, which is what leaves `surface-raised` 
 ## Canonical
 
 - **Tier 1 primitives**: `Button`, `IconButton`, `Input`, `Textarea`, `Select`, `NumberField`, `Checkbox`,
-  `Switch`, `FormField`, `Badge`, `Card`, `Spinner`, `Skeleton`, `ThemeToggle`
+  `Switch`, `FormField`, `Badge`, `ScoreChip`, `Card`, `Spinner`, `Skeleton`, `ThemeToggle`
 - **Tier 2 composites**: `Table`, `Dialog`, `ConfirmDialog`, `SidePanel`, `Tabs`, `Tooltip`, `DropdownMenu`,
   `SelectMenu`, `ToastProvider` with `useToast`, `EmptyState`, `SearchInput`, `FilterBar`, `Pagination`,
   `ExpandableTile`
 - **Tier 3 patterns**: `AppTopBar`, `DashboardShell`, `PageHeader`, `PageBand`, `Section`, `SettingsSection`,
   `SeamGrid` (+ `SeamCell`, `seamCorners`), `StatCard` (+ `StatCardContent`), `Stepper`, `DescriptionList`,
   `Avatar`, `InfoBanner`, `TableSection`, `Hero`
-- **Charts**: `ChartShell`, `LineChart`, `BarChart`, `DonutChart`, `Sparkline`, `FunnelBars`, `ChartTooltip`,
-  and the `categoricalColor` / `sequentialColor` / `gridColor` / `axisLabelColor` helpers
+- **Charts**: `ChartShell`, `LineChart` (+ `area`), `BarChart`, `DonutChart`, `Sparkline`, `FunnelBars`, `RankedBars`,
+  `StackedBar`, `WeightedSegments`, `ProgressRing`, `Gauge`, `StepSegments`, `Heatmap`, `Legend`, `ChartTooltip`,
+  and the `categoricalColor` / `sequentialColor` / `gridColor` / `axisLabelColor` / `trackColor` / `toneColor` helpers
 
 ## Choosing a component
 
@@ -66,6 +67,16 @@ the page without leaning on its hairline, which is what leaves `surface-raised` 
 | reporting the result of an action | `useToast` |
 | reporting the state of something on the page | `InfoBanner` |
 | a marketing or landing surface | `Hero` |
+| showing one value toward a limit or goal | `ProgressRing` — the only use of a ring |
+| showing one whole split into parts | `StackedBar` |
+| comparing categories on one measure | `RankedBars` |
+| showing a trend | `Sparkline` in a tile (`StatCard aside`), `LineChart area` as a chart |
+| showing a score in a table or list | `ScoreChip` |
+| showing "n of total" steps | `StepSegments` |
+| showing a total made of weighted parts | `WeightedSegments` |
+| showing a value per row × column | `Heatmap` |
+
+Do not add a second chart that restates one already on the screen. `COMPONENT_GUIDE.md` has the full chart table.
 
 ## Rules
 
@@ -111,6 +122,13 @@ the page without leaning on its hairline, which is what leaves `surface-raised` 
 - **Semantic text is measured against its soft wash, not the surface.** See `docs/contrast-report.md`.
 - **A `ReactNode` slot inside a `p` is a trap.** `StatCard`'s value was a `p`, so the package's own `Skeleton`
   (a `div`) made invalid HTML and a hydration warning. A slot that will plausibly hold a block renders in a `div`.
+- **`FunnelBars` renders through `RankedBars`.** Their row layout, selectable row and track are one piece of
+  code; a change to either's look belongs in `ranked-bars.tsx`. `FunnelBars` only supplies the denominator,
+  the "count (share%)" value and its magnitude shading.
+- **A meter needs a name.** `ProgressRing`, `Gauge` and `StepSegments` are `role="meter"`, which has no name of
+  its own — `label` is required for that reason, not as a visible caption.
+- **Tones live in `src/lib/tone.ts`.** `Badge` and `ScoreChip` share its class map, the charts its `toneColor`.
+  Adding a tone there is adding it everywhere at once.
 - **A composite's parts are not named after the field.** `aria-labelledby` outranks every local name, so a
   part that inherits the field's label announces as the field. Build the part's name from the field's words
   (`useFieldLabelId`), as `NumberField`'s buttons do.
