@@ -18,6 +18,29 @@ describe("StackedBar", () => {
     expect(within(group).getByText("25%")).toBeTruthy()
   })
 
+  /* Live walk, 2026-09-23: a count of 13 at 3% was announced "133%" — the
+   * count and the share were adjacent text with only a margin between them. */
+  it("reads each legend entry as label, count and share, not as one run-on number", () => {
+    render(
+      <StackedBar
+        label="Leads by status"
+        segments={[
+          { key: "new", label: "New", value: 13 },
+          { key: "won", label: "Won", value: 387 },
+        ]}
+      />,
+    )
+
+    const entries = within(screen.getByRole("group", { name: "Leads by status" })).getAllByRole("listitem")
+    expect(entries.map((entry) => entry.textContent)).toEqual(["New: 13, 3%", "Won: 387, 97%"])
+  })
+
+  it("adds no share separator when the share is off", () => {
+    render(<StackedBar label="Outcome" segments={SEGMENTS} showPercent={false} />)
+
+    expect(screen.getAllByRole("listitem")[0]!.textContent).toBe("Passed: 30")
+  })
+
   it("draws a segment per non-zero value, sized by its share, and hides the drawing", () => {
     const { container } = render(<StackedBar label="Outcome" segments={SEGMENTS} />)
 

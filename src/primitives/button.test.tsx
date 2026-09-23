@@ -85,6 +85,17 @@ describe("Button", () => {
     expect(screen.getByRole("button", { name: "Medium" }).className.split(" ")).toContain("px-4")
   })
 
+  /* Dashboard redesign live walk, 2026-09-23: at 390px a PageHeader action drew
+   * its icon on a line above its label, because a parent's reach made the button
+   * a wrapping flex row. The glyph and the label are one line, always. */
+  it("keeps its icon and label on one line", () => {
+    render(<Button leadingIcon={<span aria-hidden="true" />}>Matching weights</Button>)
+
+    const classes = screen.getByRole("button", { name: "Matching weights" }).className.split(" ")
+    expect(classes).toContain("flex-nowrap")
+    expect(classes).toContain("whitespace-nowrap")
+  })
+
   it("puts the spinner in the icon's place while an IconButton is loading", () => {
     const { rerender } = render(
       <IconButton aria-label="Send" icon={<span data-testid="glyph" />} />,

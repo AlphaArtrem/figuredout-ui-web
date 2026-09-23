@@ -55,7 +55,13 @@ export function Legend({ className, items, label, layout = "inline", onSelect }:
             />
             <span className={cn("min-w-0", stacked && "flex-1 truncate")}>{item.label}</span>
             {item.value != null ? (
-              <span className="shrink-0 font-mono font-semibold tabular-nums text-fg">{item.value}</span>
+              <>
+                {/* The label and the value are adjacent text nodes, so without a
+                  * separator a screen reader runs them together ("Won12"). The
+                  * gap a sighted reader sees is layout; this one is spoken. */}
+                <span className="sr-only">: </span>
+                <span className="shrink-0 font-mono font-semibold tabular-nums text-fg">{item.value}</span>
+              </>
             ) : null}
           </>
         )

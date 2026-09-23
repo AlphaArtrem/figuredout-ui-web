@@ -449,7 +449,7 @@ export const Legends: Story = {
     docs: {
       description: {
         story:
-          "Swatch, label and optional value. `ChartShell` draws its series legend with it, and `StackedBar` its segments, so every chart's key looks the same. Colours resolve like the charts: an explicit colour, then a tone, then the categorical palette by position.",
+          "Swatch, label and optional value. `ChartShell` draws its series legend with it, and `StackedBar` its segments, so every chart's key looks the same. Colours resolve like the charts: an explicit colour, then a tone, then the categorical palette by position. An entry with a value carries a visually hidden `: ` between label and value (and `StackedBar` a `, ` before the share), so a screen reader hears \"Passed: 184, 69%\" rather than one run-on number.",
       },
     },
   },

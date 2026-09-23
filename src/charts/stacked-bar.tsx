@@ -92,7 +92,12 @@ export function StackedBar({
               <>
                 {valueFormatter(segment.value)}
                 {showPercent ? (
-                  <span className="ml-1 font-normal text-fg-subtle">{segment.percent}%</span>
+                  <>
+                    {/* `ml-1` is a gap only on screen: the count and the share
+                      * are adjacent text, and "13" then "3%" was read as "133%". */}
+                    <span className="sr-only">, </span>
+                    <span className="ml-1 font-normal text-fg-subtle">{segment.percent}%</span>
+                  </>
                 ) : null}
               </>
             ),

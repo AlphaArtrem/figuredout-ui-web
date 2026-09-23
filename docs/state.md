@@ -5,7 +5,7 @@ Edit in place. No per-session sections. Last reviewed 2026-09-23 from the reposi
 
 ## What exists
 
-- `@figuredout/ui-web` version `0.2.1` (`package.json`, `components.manifest.json`). React UI primitives,
+- `@figuredout/ui-web` version `0.2.2` (`package.json`, `components.manifest.json`). React UI primitives,
   patterns, chart wrappers, a Phosphor icon surface, CSS tokens (`styles/tokens.css`) and a Tailwind preset
   (`tailwind-preset.ts`, shipped as ESM and CJS). The component list lives in `README.md` — not repeated here.
 - Consumed from GitHub as a git dependency: `dist/` is gitignored and the `prepare` script builds on install
@@ -15,7 +15,15 @@ Edit in place. No per-session sections. Last reviewed 2026-09-23 from the reposi
 - No CI configuration in the repository (no `.github/`). All validation in `AGENTS.md` is run by hand.
 - A `chat` group in the main entry (`src/chat/`): `ChatPane`, `ChatHeader`, `MessageList`, `MessageBubble`,
   `SystemEvent`, `DayDivider`, `TypingIndicator`, `Composer`.
-- Latest release (2026-09-23): `0.2.1`, a patch with no export change. `IconButton` was drawing every glyph at
+- Latest release (2026-09-23): `0.2.2`, a patch with no export change, from the product's dashboard redesign
+  live walk. **Chart legends read correctly aloud:** `Legend` puts a visually hidden `: ` between an entry's
+  label and value, and `StackedBar` a `, ` between the count and the share — "13" then "3%" was announced
+  "133%". Entries now read "New: 13, 3%"; `ChartShell`'s series legend has no values and is unchanged. **Page
+  header buttons keep their icon beside their label:** `PageHeader`'s `[&>*]:flex-wrap` reach made every bare
+  `Button` passed as an action a wrapping flex row, so at 390px "Matching weights" drew its icon on a line above
+  its label. The reach now skips `button` and `a` children (`[&>*:not(button):not(a)]:flex-wrap`), and
+  `Button` carries `flex-nowrap`. No visual change except the fixed wrap.
+- Previous release (2026-09-23): `0.2.1`, a patch with no export change. `IconButton` was drawing every glyph at
   12px: its `px-0` lost the cascade to `Button`'s `px-3`/`px-4` (`docs/components.md`, gotchas). `Button` now
   takes `iconOnly`, which swaps its size classes for a padding-free square (36px `sm`, 44px `md`); `IconButton`
   and `NumberField`'s steppers use it, and `Composer` dropped its `!px-0` workaround. An icon-only button that

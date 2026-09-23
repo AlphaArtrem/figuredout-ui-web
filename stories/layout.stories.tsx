@@ -16,7 +16,7 @@ import {
   StatCardContent,
   Switch,
 } from "../index"
-import { ChartBar, Gear, House, Plus, Table, Target } from "../src/icons/index"
+import { ArrowClockwise, ChartBar, Gear, House, Plus, SlidersHorizontal, Table, Target } from "../src/icons/index"
 import { DemoLabel, Stage } from "./demo-data"
 
 const meta = {
@@ -141,6 +141,25 @@ export const PageHeaders: Story = {
           </>
         }
       />
+      <DemoLabel className="mt-8">Phone width (390px), bare icon buttons</DemoLabel>
+      {/* The live walk's case: buttons passed bare wrap as whole buttons down the
+          capped action column, and each keeps its icon beside its label. */}
+      <div className="max-w-[390px] p-6 ring-1 ring-inset ring-edge">
+        <PageHeader
+          title="Leads"
+          description="Every lead in the pipeline, with the editor that fits them best."
+          actions={
+            <>
+              <Button variant="secondary" leadingIcon={<SlidersHorizontal size={16} aria-hidden="true" />}>
+                Matching weights
+              </Button>
+              <Button variant="secondary" leadingIcon={<ArrowClockwise size={16} aria-hidden="true" />}>
+                Refresh
+              </Button>
+            </>
+          }
+        />
+      </div>
     </Stage>
   ),
 }

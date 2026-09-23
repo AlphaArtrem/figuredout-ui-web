@@ -73,8 +73,14 @@ export function PageHeader({ actions, breadcrumb, description, eyebrow, title }:
          * column is capped. It overflowed instead, and `justify-end` sent the
          * overflow LEFT, printing the buttons over the title. The utility says
          * "whatever row you brought, let it wrap"; on a child that is not a flex
-         * container it does nothing at all. */
-        <div className="col-start-2 row-start-1 flex flex-wrap items-center justify-end gap-2 self-center [&>*]:flex-wrap lg:row-span-2 lg:self-end">
+         * container it does nothing at all.
+         *
+         * Except a button: `Button` is itself `inline-flex`, so when a call site
+         * passed its buttons bare (a fragment) the reach made each BUTTON a
+         * wrapping row, and at 390px "Matching weights" dropped its icon onto a
+         * line above its label. Buttons and links are the items this group
+         * wraps, never rows to be wrapped, so the reach skips them. */
+        <div className="col-start-2 row-start-1 flex flex-wrap items-center justify-end gap-2 self-center [&>*:not(button):not(a)]:flex-wrap lg:row-span-2 lg:self-end">
           {actions}
         </div>
       ) : null}

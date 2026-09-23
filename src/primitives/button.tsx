@@ -113,7 +113,11 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(function Button
       disabled={isDisabled}
       aria-busy={loading || undefined}
       className={cn(
-        "inline-flex items-center justify-center whitespace-nowrap font-medium transition duration-normal ease-standard",
+        /* `flex-nowrap` as well as `whitespace-nowrap`: the glyph and the label
+         * are two flex items, and a button whose items wrap puts its icon on a
+         * line above its label. Tailwind emits `flex-nowrap` after `flex-wrap`,
+         * so a stray `flex-wrap` in `className` does not undo it. */
+        "inline-flex flex-nowrap items-center justify-center whitespace-nowrap font-medium transition duration-normal ease-standard",
         "motion-reduce:transform-none motion-reduce:transition-none",
         "focus-visible:outline-none focus-visible:ring-4 active:scale-[0.98]",
         "disabled:cursor-not-allowed disabled:opacity-55",

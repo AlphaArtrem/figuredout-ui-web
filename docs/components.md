@@ -147,6 +147,13 @@ Do not add a second chart that restates one already on the screen. `COMPONENT_GU
   button drew its glyph at 12px whatever size it was given, and 4px at 36px wide. A variation a component owns
   is a prop that picks different base classes (`Button iconOnly`), not an override. A consumer's one-off
   change of a property the component already sets needs a responsive variant (`sm:w-9`) or `!`.
+- **A reach into children hits every child, buttons included.** `PageHeader` used `[&>*]:flex-wrap` so a row a
+  call site brings can wrap; a call site that passed its `Button`s bare got each button made a wrapping row, and
+  at 390px the icon went above the label. `Button` is `inline-flex`, so any `[&>*]:flex-*` reach restyles it. Scope
+  the reach (`[&>*:not(button):not(a)]`), and keep a component's own layout invariant in its base classes.
+- **Adjacent text nodes are read as one word.** A margin separates "13" and "3%" on screen but not aloud:
+  "133%". Put a visually hidden separator (`<span className="sr-only">, </span>`) between values that sit in
+  separate elements with only spacing between them, as `Legend` and `StackedBar` do.
 - **A chat pane that grows the page has an unbounded ancestor.** `ChatPane` and `MessageList` are `min-h-0`
   throughout; the page scrolls instead of the list only when something above them is a flex or grid item
   without `min-h-0`, or has no height at all.

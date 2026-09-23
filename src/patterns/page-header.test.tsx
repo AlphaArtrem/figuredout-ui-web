@@ -44,6 +44,28 @@ describe("PageHeader action placement (finding 12)", () => {
     expect(header?.className).toContain("lg:grid-cols-[minmax(0,1fr)_auto]")
   })
 
+  /* Live walk, 2026-09-23: `[&>*]:flex-wrap` reached bare buttons too, so each
+   * Button became a wrapping row and at 390px "Matching weights" put its icon
+   * above its label. The reach is for rows a call site brings, not buttons. */
+  it("lets a call site's own row wrap, but never a bare button or link", () => {
+    render(
+      <PageHeader
+        title="Leads"
+        actions={
+          <>
+            <button type="button">Matching weights</button>
+            <button type="button">Refresh</button>
+          </>
+        }
+      />,
+    )
+
+    const group = screen.getByRole("button", { name: "Refresh" }).parentElement
+    expect(group?.className).toContain("flex-wrap")
+    expect(group?.className).toContain("[&>*:not(button):not(a)]:flex-wrap")
+    expect(group?.className).not.toContain("[&>*]:flex-wrap")
+  })
+
   it("gives the description the whole row below lg, and column one from lg up", () => {
     render(<PageHeader title="Editors" description="Copy." actions={<button type="button">Add</button>} />)
 
