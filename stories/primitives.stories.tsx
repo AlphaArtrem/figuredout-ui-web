@@ -447,7 +447,7 @@ export const Theme: Story = {
     docs: {
       description: {
         story:
-          "A ghost button cycling system → light → dark, with the current mode's icon and label. It reads `next-themes`, which the consuming app provides.",
+          "An icon-only ghost button toggling light ↔ dark in one press. It follows the device until pressed, shows the current theme's icon, and is named for the action. It reads `next-themes`, which the consuming app provides.",
       },
     },
   },

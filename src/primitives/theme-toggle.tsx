@@ -2,39 +2,35 @@
 
 import { useEffect, useState } from "react"
 import { useTheme } from "next-themes"
-import { Desktop, Moon, Sun } from "../icons/index.js"
-import { Button } from "./button.js"
+import { Moon, Sun } from "../icons/index.js"
+import { IconButton } from "./button.js"
 
-type ThemeChoice = "system" | "light" | "dark"
+type ResolvedTheme = "light" | "dark"
 
-const CYCLE: ThemeChoice[] = ["system", "light", "dark"]
+const LABEL: Record<ResolvedTheme, string> = { light: "Light", dark: "Dark" }
+const ICON = { light: Sun, dark: Moon }
 
-const LABEL: Record<ThemeChoice, string> = { system: "System", light: "Light", dark: "Dark" }
-const ICON = { system: Desktop, light: Sun, dark: Moon }
-
-/* NAME_IS_THE_ACTION — how this control says what it is and what it does.
+/* ONE_PRESS_TWO_THEMES — what this control does, and why it no longer cycles.
  *
- * A button's accessible name should answer "what happens if I press this",
- * because that is the only thing a user needs before pressing it. This one used
- * to answer "what is the theme right now", twice: the visible label said
- * "System" and an `sr-only` span said "Theme: System", so the name computed to
- * "System Theme: System" and never mentioned that pressing it changes anything.
+ * It used to cycle system → light → dark and show the current step's name. Two
+ * things were wrong with that. From "system" on a light device, the first press
+ * chose "light": nothing on screen changed, so switching looked like it took two
+ * presses. And "system" is not a theme anyone looks at — it is where a visitor
+ * starts, not a place to go back to.
  *
- * It cycles over three values, so `aria-pressed` is the wrong primitive — that
- * is a two-state control's affordance, and "pressed: false" says nothing about
- * which of the other two you would land on.
+ * So the control toggles between the two themes a person can see. It reads
+ * `resolvedTheme`, so a visitor who has never touched it gets their device's
+ * setting (the consumer's `ThemeProvider` keeps `defaultTheme="system"`), and the
+ * first press always lands on the other one and stores it.
  *
- * So: `aria-label` names the action ("Switch to light theme"), and it changes as
- * the cycle advances, which means a user who stays on the control after pressing
- * it hears the next step. The current state is carried by a `role="status"`
- * region that is a SIBLING of the button rather than a child of it — this is
- * phase 03's PENDING_CONVENTION mechanism (an `sr-only` `role="status"` node
- * mounted at the moment something changes), moved outside the button on purpose,
- * because there the whole point was to append to the name and here the whole
- * point is not to be part of it. It starts empty so mounting announces nothing;
- * only a press fills it. */
-export function ThemeToggle() {
-  const { theme, setTheme } = useTheme()
+ * NAME_IS_THE_ACTION still holds: the icon shows the theme on screen, and the
+ * accessible name says what a press will do ("Switch to dark theme"). The new
+ * state is announced through a `role="status"` region that is a SIBLING of the
+ * button, so it never joins the name. It starts empty, so mounting announces
+ * nothing, and only a press fills it. `aria-pressed` stays off: a pressed dark
+ * mode would read as "dark mode, on" while the label reads as an action. */
+export function ThemeToggle({ size = "md" }: { size?: "sm" | "md" } = {}) {
+  const { resolvedTheme, setTheme } = useTheme()
   const [mounted, setMounted] = useState(false)
   const [announcement, setAnnouncement] = useState("")
 
@@ -42,30 +38,29 @@ export function ThemeToggle() {
     setMounted(true)
   }, [])
 
+  // The theme is unknown until the client has read storage and the media query;
+  // a placeholder the button's size keeps the bar from shifting when it appears.
   if (!mounted) {
-    return <div className="h-11 w-24 rounded-md bg-surface-raised" aria-hidden="true" />
+    return <div className={size === "sm" ? "h-9 w-9 rounded-sm" : "h-11 w-11 rounded-md"} aria-hidden="true" />
   }
 
-  const current = (theme ?? "system") as ThemeChoice
-  const currentIndex = CYCLE.indexOf(current)
-  const next = CYCLE[(currentIndex + 1 + CYCLE.length) % CYCLE.length] ?? "system"
+  const current: ResolvedTheme = resolvedTheme === "dark" ? "dark" : "light"
+  const next: ResolvedTheme = current === "dark" ? "light" : "dark"
   const Icon = ICON[current]
 
   return (
     <>
-      <Button
+      <IconButton
         variant="ghost"
-        size="sm"
-        leadingIcon={<Icon size={16} aria-hidden="true" />}
+        size={size}
+        icon={<Icon size={size === "sm" ? 16 : 20} aria-hidden="true" />}
         onClick={() => {
           setTheme(next)
           setAnnouncement(`Theme set to ${LABEL[next].toLowerCase()}.`)
         }}
         aria-label={`Switch to ${LABEL[next].toLowerCase()} theme`}
-        title={`Theme: ${LABEL[current]}. Switch to ${LABEL[next].toLowerCase()}.`}
-      >
-        <span className="hidden sm:inline">{LABEL[current]}</span>
-      </Button>
+        title={`Switch to ${LABEL[next].toLowerCase()} theme`}
+      />
       <span role="status" className="sr-only">
         {announcement}
       </span>
