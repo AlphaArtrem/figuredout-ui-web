@@ -218,6 +218,23 @@ export const Tooltips: Story = {
   ),
 }
 
+export const Areas: Story = {
+  name: "LineChart — area and highlight",
+  parameters: {
+    docs: {
+      description: {
+        story:
+          "`area` fills under each line with a 12% wash of its own colour, for a trend whose size matters as well as its shape. The fills are not stacked. `highlightIndex` marks one point — the peak, today — with a dashed guide and a ringed dot on every series.",
+      },
+    },
+  },
+  render: () => (
+    <Stage>
+      <LineChart data={weeklyData} xKey="week" series={series} area highlightIndex={3} />
+    </Stage>
+  ),
+}
+
 export const Rings: Story = {
   name: "ProgressRing",
   parameters: {
