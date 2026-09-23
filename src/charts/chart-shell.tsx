@@ -8,6 +8,7 @@ import { Skeleton } from "../primitives/skeleton.js"
 import { EmptyState } from "../patterns/empty-state.js"
 import { Table } from "../patterns/table.js"
 import type { TableColumn } from "../patterns/table.js"
+import { Legend } from "./legend.js"
 import type { ChartSeries } from "./types.js"
 
 export interface ChartShellProps<T> {
@@ -59,18 +60,7 @@ export function ChartShell<T>({
 
   const legendList =
     legend && legend.length > 1 ? (
-      <ul className="flex flex-wrap gap-x-4 gap-y-1.5">
-        {legend.map((entry) => (
-          <li key={entry.key} className="flex items-center gap-1.5 text-xs text-fg-muted">
-            <span
-              aria-hidden="true"
-              className="h-2 w-2 shrink-0 rounded-full"
-              style={{ backgroundColor: entry.color }}
-            />
-            {entry.label}
-          </li>
-        ))}
-      </ul>
+      <Legend items={legend} />
     ) : null
 
   return (

@@ -1,5 +1,15 @@
 import type { Meta, StoryObj } from "@storybook/react-vite"
-import { BarChart, ChartShell, ChartTooltip, DonutChart, FunnelBars, LineChart, Sparkline } from "../src/charts/index"
+import {
+  BarChart,
+  ChartShell,
+  ChartTooltip,
+  DonutChart,
+  FunnelBars,
+  Legend,
+  LineChart,
+  Sparkline,
+  categoricalColor,
+} from "../src/charts/index"
 import { SeamGrid, Section, StatCardContent } from "../index"
 import { DemoLabel, Stage, weeklyData } from "./demo-data"
 
@@ -194,6 +204,39 @@ export const Tooltips: Story = {
           ]}
         />
         <ChartTooltip active label="Snowflake" payload={[{ name: "Share", value: "26.4%", color: "var(--chart-cat-2)" }]} />
+      </div>
+    </Stage>
+  ),
+}
+
+export const Legends: Story = {
+  name: "Legend",
+  parameters: {
+    docs: {
+      description: {
+        story:
+          "Swatch, label and optional value. `ChartShell` draws its series legend with it, and `StackedBar` its segments, so every chart's key looks the same. Colours resolve like the charts: an explicit colour, then a tone, then the categorical palette by position.",
+      },
+    },
+  },
+  render: () => (
+    <Stage>
+      <Legend
+        items={[
+          { key: "a", label: "Direct", value: "412" },
+          { key: "b", label: "Search", value: "288" },
+          { key: "c", label: "Referral", color: categoricalColor(2) },
+        ]}
+      />
+      <div className="max-w-xs">
+        <Legend
+          layout="stacked"
+          items={[
+            { key: "ok", label: "Passed", tone: "success", value: "184" },
+            { key: "warn", label: "Needs review", tone: "warning", value: "61" },
+            { key: "bad", label: "Failed", tone: "danger", value: "23" },
+          ]}
+        />
       </div>
     </Stage>
   ),
