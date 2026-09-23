@@ -6,6 +6,7 @@ import {
   DescriptionList,
   EmptyState,
   Pagination,
+  ScoreChip,
   SeamGrid,
   StatCard,
   StatCardContent,
@@ -222,6 +223,30 @@ export const Empty: Story = {
           </Button>
         }
       />
+    </Stage>
+  ),
+}
+
+export const ScoreChips: Story = {
+  name: "ScoreChip",
+  parameters: {
+    docs: {
+      description: {
+        story:
+          "A score in a table column or a list row, where a ring would be decoration. Tone comes from `thresholds` — by default success from 75, warning from 60, danger below — and a missing score is a muted dash that says \"No score\" to a screen reader, never a zero. The wash, ink and ring are `Badge`'s. A minimum width lines a column of them up.",
+      },
+    },
+  },
+  render: () => (
+    <Stage>
+      <div className="flex flex-wrap items-center gap-3">
+        <ScoreChip value={92} />
+        <ScoreChip value={75} />
+        <ScoreChip value={68} />
+        <ScoreChip value={41} />
+        <ScoreChip value={null} />
+        <ScoreChip value={7} thresholds={{ success: 8, warning: 5 }} />
+      </div>
     </Stage>
   ),
 }
