@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react-vite"
+import { useState } from "react"
 import {
   BarChart,
   ChartShell,
@@ -10,7 +11,9 @@ import {
   LineChart,
   ProgressRing,
   Sparkline,
+  StackedBar,
   StepSegments,
+  WeightedSegments,
   categoricalColor,
 } from "../src/charts/index"
 import { SeamGrid, Section, StatCardContent } from "../index"
@@ -277,6 +280,76 @@ export const Steps: Story = {
       </div>
     </Stage>
   ),
+}
+
+export const Stacked: Story = {
+  name: "StackedBar",
+  parameters: {
+    docs: {
+      description: {
+        story:
+          "One whole split into its parts. Segments that are statuses take a `tone`; otherwise leave it unset and they take the categorical palette in order. With `onSelect` the legend entries are buttons — the keyboard path — and the segments are clickable too.",
+      },
+    },
+  },
+  render: function Render() {
+    const [picked, setPicked] = useState<string | null>(null)
+    return (
+      <Stage>
+        <StackedBar
+          label="Outcome"
+          segments={[
+            { key: "passed", label: "Passed", value: 184, tone: "success" },
+            { key: "review", label: "Needs review", value: 61, tone: "warning" },
+            { key: "failed", label: "Failed", value: 23, tone: "danger" },
+          ]}
+        />
+        <DemoLabel className="mt-4">Categorical, stacked legend, selectable</DemoLabel>
+        <div className="max-w-sm">
+          <StackedBar
+            label="Traffic by channel"
+            legendLayout="stacked"
+            onSelect={setPicked}
+            segments={[
+              { key: "direct", label: "Direct", value: 412 },
+              { key: "search", label: "Search", value: 288 },
+              { key: "referral", label: "Referral", value: 131 },
+              { key: "social", label: "Social", value: 64 },
+            ]}
+          />
+        </div>
+        <p className="m-0 text-xs text-fg-subtle">Selected: {picked ?? "nothing"}</p>
+      </Stage>
+    )
+  },
+}
+
+export const Weighted: Story = {
+  name: "WeightedSegments",
+  parameters: {
+    docs: {
+      description: {
+        story:
+          "A total built from weighted parts: each segment's width is its weight, its fill what was earned of it. The shortfall is hatched in warning by default, so a missed point does not depend on telling two hues apart; `shortfall=\"neutral\"` leaves it as track.",
+      },
+    },
+  },
+  render: () => {
+    const segments = [
+      { key: "fit", label: "Fit", value: 36, weight: 40 },
+      { key: "reach", label: "Reach", value: 25, weight: 25 },
+      { key: "timing", label: "Timing", value: 8, weight: 20 },
+      { key: "quality", label: "Quality", value: 15, weight: 15 },
+    ]
+    return (
+      <Stage>
+        <div className="grid max-w-lg gap-6">
+          <WeightedSegments label="Score by criterion" segments={segments} />
+          <WeightedSegments label="Score by criterion" segments={segments} shortfall="neutral" tone="primary" />
+        </div>
+      </Stage>
+    )
+  },
 }
 
 export const Legends: Story = {
