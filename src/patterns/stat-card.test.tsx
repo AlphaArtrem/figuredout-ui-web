@@ -30,3 +30,18 @@ describe("StatCard's value slot", () => {
     expect(screen.getByText("Qualified leads").tagName).toBe("P")
   })
 })
+
+describe("StatCard's aside", () => {
+  it("renders a visual beside the figure when given one", () => {
+    render(<StatCard title="Replies" value="412" aside={<span data-testid="spark" />} />)
+
+    const aside = screen.getByTestId("spark").parentElement!
+    expect(aside.previousElementSibling!.textContent).toBe("412")
+  })
+
+  it("leaves the figure exactly where it was without one", () => {
+    const { container } = render(<StatCardContent title="Replies" value="412" />)
+
+    expect(screen.getByText("412").parentElement).toBe(container)
+  })
+})

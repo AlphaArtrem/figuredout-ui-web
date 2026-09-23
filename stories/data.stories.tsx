@@ -13,6 +13,7 @@ import {
   Table,
   TableSection,
 } from "../index"
+import { ProgressRing, Sparkline, StepSegments } from "../src/charts/index"
 import { Clock, Plus, Target, Tray } from "../src/icons/index"
 import { DemoLabel, Stage, numberFormat, rowTone, sourceRows, statusTone } from "./demo-data"
 import type { SourceRow } from "./demo-data"
@@ -223,6 +224,54 @@ export const Empty: Story = {
           </Button>
         }
       />
+    </Stage>
+  ),
+}
+
+export const StatCardAside: Story = {
+  name: "StatCard with an aside",
+  parameters: {
+    docs: {
+      description: {
+        story:
+          "`aside` puts a small visual beside the figure — a `Sparkline`, a `StepSegments`, a small `ProgressRing`. It takes up to two fifths of the tile and the figure shrinks to make room rather than wrapping. It decorates the figure, so what it shows must also be in the text.",
+      },
+    },
+  },
+  render: () => (
+    <Stage>
+      <SeamGrid columns={3}>
+        <div>
+          <StatCardContent
+            title="Replies"
+            value="1,284"
+            delta="+12%"
+            tone="success"
+            description="vs last week"
+            aside={
+              <Sparkline
+                data={[40, 52, 48, 61, 58, 72, 80].map((value, index) => ({ label: `D${index + 1}`, value }))}
+              />
+            }
+          />
+        </div>
+        <div>
+          <StatCardContent
+            title="Fields collected"
+            value="5 of 7"
+            description="Two still missing"
+            aside={<StepSegments label="Fields collected" value={5} total={7} showCount={false} />}
+          />
+        </div>
+        <div>
+          <StatCardContent
+            title="Plan usage"
+            value="320"
+            description="of 500 this month"
+            aside={<ProgressRing label="Plan usage" value={320} max={500} size="sm" />}
+          />
+        </div>
+      </SeamGrid>
     </Stage>
   ),
 }

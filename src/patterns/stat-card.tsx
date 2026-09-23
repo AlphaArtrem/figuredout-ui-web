@@ -3,6 +3,13 @@ import { cn } from "../lib/cn.js"
 import { Badge } from "../primitives/badge.js"
 
 export interface StatCardProps {
+  /**
+   * A small visual beside the figure — a `Sparkline`, a `StepSegments`, a small
+   * `ProgressRing`. It sits at the figure's baseline edge and takes up to two
+   * fifths of the tile; the figure shrinks to make room rather than wrapping.
+   * Decoration of the figure, so anything it shows must also be in the text.
+   */
+  aside?: ReactNode
   className?: string
   delta?: ReactNode
   description?: ReactNode
@@ -20,7 +27,7 @@ export interface StatCardProps {
  * The figure is sized against its CONTAINER, not the viewport: a narrow cell
  * gets smaller digits instead of a second line. The clamp's middle value is set
  * from the longest string the slot actually holds. */
-export function StatCard({ className, delta, description, icon, tone = "neutral", title, value }: StatCardProps) {
+export function StatCard({ aside, className, delta, description, icon, tone = "neutral", title, value }: StatCardProps) {
   return (
     <div
       className={cn(
@@ -32,6 +39,7 @@ export function StatCard({ className, delta, description, icon, tone = "neutral"
       )}
     >
       <StatCardContent
+        aside={aside}
         delta={delta}
         description={description}
         icon={icon}
@@ -47,7 +55,7 @@ export function StatCard({ className, delta, description, icon, tone = "neutral"
  * The tile's contents without a surface of its own, for use as a SeamGrid cell.
  * SeamGrid owns the background, padding and corners; this owns the figure.
  */
-export function StatCardContent({ delta, description, icon, title, tone = "neutral", value }: StatCardProps) {
+export function StatCardContent({ aside, delta, description, icon, title, tone = "neutral", value }: StatCardProps) {
   return (
     <>
       {/* In a narrow tile the icon moves above the caption instead of beside it.
@@ -73,9 +81,21 @@ export function StatCardContent({ delta, description, icon, title, tone = "neutr
           is a `div`. Inside a `p` that is invalid HTML — the parser closes the
           `p` early and hydration disagrees (play_2_hire `traps.md` §97). Preflight
           zeroes a `p`'s margins, so the tile looks exactly as it did. */}
-      <div className="mt-2 whitespace-nowrap font-mono text-[clamp(1.25rem,10.5cqi,2.75rem)] font-semibold leading-none tracking-[-0.02em] tabular-nums text-fg">
-        {value}
-      </div>
+      {aside != null ? (
+        /* The figure's clamp drops from 10.5cqi to 7cqi: it now shares the
+           row with the aside, and a figure that wraps or runs under the chart
+           is worse than a smaller one. */
+        <div className="mt-2 flex items-end justify-between gap-3">
+          <div className="min-w-0 whitespace-nowrap font-mono text-[clamp(1.25rem,7cqi,2.75rem)] font-semibold leading-none tracking-[-0.02em] tabular-nums text-fg">
+            {value}
+          </div>
+          <div className="flex w-2/5 min-w-0 max-w-32 shrink-0 justify-end">{aside}</div>
+        </div>
+      ) : (
+        <div className="mt-2 whitespace-nowrap font-mono text-[clamp(1.25rem,10.5cqi,2.75rem)] font-semibold leading-none tracking-[-0.02em] tabular-nums text-fg">
+          {value}
+        </div>
+      )}
       <div className="mt-3 flex items-center gap-2">
         {delta ? <Badge tone={tone}>{delta}</Badge> : null}
         {description ? <div className="flex-1 text-[0.8125rem] leading-relaxed text-fg-muted">{description}</div> : null}
