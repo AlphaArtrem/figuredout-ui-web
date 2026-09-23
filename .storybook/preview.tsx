@@ -55,6 +55,7 @@ const preview: Preview = {
           "Data",
           "Navigation & input",
           "Feedback & overlays",
+          "Chat",
           "Charts",
         ],
       },
