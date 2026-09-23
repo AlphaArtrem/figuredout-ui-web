@@ -56,12 +56,15 @@ export default {
 ## Component surface
 
 Primitives:
-`Badge`, `Button`, `IconButton`, `Card`, `CardHeader`, `CardBody`, `CardFooter`, `Checkbox`, `FormField`, `Input`, `Textarea`, `Select`, `NumberField`, `Skeleton`, `Spinner`, `Switch`, `ThemeToggle`
+`Badge`, `Button`, `IconButton`, `Card`, `CardHeader`, `CardBody`, `CardFooter`, `Checkbox`, `FormField`, `Input`, `Textarea`, `Select`, `Kbd`, `NumberField`, `Skeleton`, `Spinner`, `Switch`, `ThemeToggle`
 
 New in this system: `Hero`, `PageBand`, `SeamGrid` / `SeamCell` / `seamCorners`, `StatCardContent`.
 
 Application patterns:
-`AppTopBar`, `Avatar`, `ConfirmDialog`, `DashboardShell`, `DescriptionList`, `Dialog`, `DropdownMenu`, `EmptyState`, `ExpandableTile`, `FilterBar`, `Hero`, `InfoBanner`, `PageBand`, `PageContent`, `PageHeader`, `Pagination`, `SearchInput`, `SeamGrid`, `SelectMenu`, `Section`, `SettingsSection`, `SidePanel`, `StatCard`, `StatCardContent`, `Stepper`, `Table`, `TableSection`, `Tabs`, `TagPicker`, `ToastProvider`, `Tooltip`, `useToast`
+`AppTopBar`, `Avatar`, `BottomNav`, `CommandPalette`, `ConfirmDialog`, `DashboardShell`, `DescriptionList`, `Dialog`, `DropdownMenu`, `EmptyState`, `ExpandableTile`, `FilterBar`, `Hero`, `InfoBanner`, `NotificationList`, `PageBand`, `PageContent`, `PageHeader`, `Pagination`, `Popover`, `SearchInput`, `SeamGrid`, `SegmentedControl`, `SelectMenu`, `Section`, `SettingsSection`, `SidePanel`, `StatCard`, `StatCardContent`, `Stepper`, `Table`, `TableSection`, `Tabs`, `TagPicker`, `ToastProvider`, `Tooltip`, `useCommandPaletteShortcut`, `useToast`
+
+Chat (also from `@figuredout/ui-web`):
+`ChatPane`, `ChatHeader`, `MessageList`, `MessageBubble`, `SystemEvent`, `DayDivider`, `TypingIndicator`, `Composer`
 
 Dashboard composition:
 
@@ -72,6 +75,19 @@ Dashboard composition:
 - Use `TagPicker` for multi-value choices over a closed list; it carries the search, the chips, the count and the group semantics a row of checkboxes has none of, and takes an optional `onCreate` so a missing option can be added without leaving the form.
 - Use `SelectMenu` for richer single-select controls — and whenever the option list has to match the theme, since a native `<select>` popup is drawn by the OS. Use `ExpandableTile` for compact disclosure panels and `InfoBanner` for status or guidance messages.
 - Use `SeamGrid` for a set of related cells so they read as one object; pass a child count that divides evenly by 4, 2 and 1.
+
+Conversation screens:
+
+- Give `ChatPane` a parent with a **bounded height** (`h-dvh`, a grid row, a `min-h-0` flex item) and it becomes a
+  header, a scrolling middle and a pinned footer. Put a `MessageList` in the middle and a `Composer` in the footer.
+- `MessageList` anchors a short thread to the bottom, follows new messages only while the reader is at the bottom,
+  keeps the reader's place when history is prepended, and offers "jump to latest" otherwise. Call its handle's
+  `scrollToBottom()` after the user sends.
+- `MessageBubble` has three voices: `incoming`, `outgoing` (a person on this side) and `assistant` (outgoing text the
+  product wrote).
+- Use `SegmentedControl` for a single choice that filters something elsewhere, `CommandPalette` with
+  `useCommandPaletteShortcut` for ⌘K search, `BottomNav` for a phone's primary navigation, and `NotificationList`
+  inside a `Popover` (or a `SidePanel` on a phone) for notifications.
 
 ## Component Explorer
 
@@ -103,6 +119,7 @@ npm run build-storybook
 - Ink: `--color-fg`, `--color-fg-muted`, `--color-fg-subtle`
 - Structure: `--color-edge`, `--color-edge-strong`
 - Brand and focus: `--color-primary`, `--color-primary-hover`, `--color-primary-fg`, `--color-primary-soft`, `--color-focus-ring`
+- Chat: `--color-chat-assistant` (the assistant's bubble — not a status colour)
 - Status: `--color-success`, `--color-warning`, `--color-danger`, `--color-info` plus `-soft` companions
 - Data viz: `--chart-cat-1` through `--chart-cat-6`, `--chart-seq`, `--chart-grid`, `--chart-axis-label`
 - Typography: `--font-sans`, `--font-mono`, `--text-xs` through `--text-4xl`, `--leading-xs` through `--leading-4xl`

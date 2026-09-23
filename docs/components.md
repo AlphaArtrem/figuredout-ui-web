@@ -35,10 +35,13 @@ the page without leaning on its hairline, which is what leaves `surface-raised` 
 ## Canonical
 
 - **Tier 1 primitives**: `Button`, `IconButton`, `Input`, `Textarea`, `Select`, `NumberField`, `Checkbox`,
-  `Switch`, `FormField`, `Badge`, `Card`, `Spinner`, `Skeleton`, `ThemeToggle`
+  `Switch`, `FormField`, `Badge`, `Card`, `Spinner`, `Skeleton`, `ThemeToggle`, `Kbd`
 - **Tier 2 composites**: `Table`, `Dialog`, `ConfirmDialog`, `SidePanel`, `Tabs`, `Tooltip`, `DropdownMenu`,
   `SelectMenu`, `ToastProvider` with `useToast`, `EmptyState`, `SearchInput`, `FilterBar`, `Pagination`,
-  `ExpandableTile`
+  `ExpandableTile`, `SegmentedControl`, `Popover`, `CommandPalette` (+ `useCommandPaletteShortcut`),
+  `NotificationList`, `BottomNav`
+- **Chat**: `ChatPane`, `ChatHeader`, `MessageList`, `MessageBubble`, `SystemEvent`, `DayDivider`,
+  `TypingIndicator`, `Composer`
 - **Tier 3 patterns**: `AppTopBar`, `DashboardShell`, `PageHeader`, `PageBand`, `Section`, `SettingsSection`,
   `SeamGrid` (+ `SeamCell`, `seamCorners`), `StatCard` (+ `StatCardContent`), `Stepper`, `DescriptionList`,
   `Avatar`, `InfoBanner`, `TableSection`, `Hero`
@@ -65,6 +68,12 @@ the page without leaning on its hairline, which is what leaves `surface-raised` 
 | showing detail without leaving the page | `SidePanel` |
 | reporting the result of an action | `useToast` |
 | reporting the state of something on the page | `InfoBanner` |
+| switching what a list or chart below shows | `SegmentedControl` (use `Tabs` when each choice owns a panel) |
+| searching or jumping anywhere (⌘K) | `CommandPalette` + `useCommandPaletteShortcut` |
+| a phone's primary navigation | `BottomNav` |
+| a panel of anything anchored to a button | `Popover` (use `DropdownMenu` for a list of commands) |
+| a notifications panel | `NotificationList` in a `Popover`, or in a `SidePanel` on a phone |
+| a conversation | `ChatPane` + `ChatHeader` + `MessageList` + `Composer` |
 | a marketing or landing surface | `Hero` |
 
 ## Rules
@@ -114,3 +123,12 @@ the page without leaning on its hairline, which is what leaves `surface-raised` 
 - **A composite's parts are not named after the field.** `aria-labelledby` outranks every local name, so a
   part that inherits the field's label announces as the field. Build the part's name from the field's words
   (`useFieldLabelId`), as `NumberField`'s buttons do.
+- **`IconButton`'s `px-0` loses to `Button`'s `px-3`/`px-4`.** Both are single-class rules and Tailwind emits the
+  larger padding later, so an icon button keeps 12–16px of side padding and its glyph is squeezed: at the stock
+  sizes every icon renders at 12px whatever `size` it was given, and an `md` IconButton narrowed to 36px
+  (`sm:w-9`) leaves the glyph 4px wide. Found while building `Composer`, which passes `!px-0`; IconButton itself
+  is unchanged because fixing it enlarges every icon button's glyph across every consumer — a visual change to
+  decide on its own.
+- **A chat pane that grows the page has an unbounded ancestor.** `ChatPane` and `MessageList` are `min-h-0`
+  throughout; the page scrolls instead of the list only when something above them is a flex or grid item
+  without `min-h-0`, or has no height at all.

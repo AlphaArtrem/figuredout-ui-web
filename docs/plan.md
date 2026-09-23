@@ -10,16 +10,20 @@ Phased build order. Each phase's acceptance is a demonstration, not a passing su
 | 2. Surface-ladder redesign | 2026-08-13 – 08-16 | Every component on the four-step ladder in light and dark; holds together at phone width |
 | 3. Consumable from GitHub | 2026-08-22 – 08-30 | `npm i github:AlphaArtrem/figuredout-ui-web` yields a built package; FiguredoutAI palette applied with contrast report |
 | 4. Accessibility and form hardening | 2026-09-04 – 09-11 | Named controls, announced pending/error states, keyboard-reachable wide tables, `TagPicker`, `NumberField`, warning button, compact `Stepper` |
+| 5. Chat and navigation | 2026-09-23 | A full-height conversation (`ChatPane`, `MessageList`, `Composer`…) that anchors to the bottom and keeps the reader's place; ⌘K `CommandPalette`, `SegmentedControl`, `BottomNav`, `Popover` + `NotificationList` — all in Storybook, light and dark |
 
 ## Not yet planned
 
-Nothing beyond phase 4 is recorded in the repository. Candidate work visible in the repo, unscheduled and
+Nothing beyond phase 5 is recorded in the repository. Candidate work visible in the repo, unscheduled and
 unapproved:
 
 - **Automated checks** for invariants 1–4 in `state.md` (no CI exists). Acceptance: a deliberately missing
   barrel export or broken story fails a check without anyone running a command by hand.
 - **Contrast measurement as a script** (invariant 6). Acceptance: a token change that drops a pair below AA
   is reported by a command.
+- **`IconButton` padding.** Its `px-0` loses the cascade to `Button`'s `px-3`/`px-4`, so every icon button's
+  glyph renders at 12px (see `docs/components.md`, gotchas). Acceptance: an `md` IconButton at 36px wide shows
+  its glyph at the size it was given, and every existing icon button is re-checked for the larger glyph.
 - **Release/versioning rule** for export changes (invariant 7). Acceptance: a consumer can tell from the
   installed version whether an export exists.
 
