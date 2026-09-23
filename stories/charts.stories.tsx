@@ -5,12 +5,16 @@ import {
   ChartTooltip,
   DonutChart,
   FunnelBars,
+  Gauge,
   Legend,
   LineChart,
+  ProgressRing,
   Sparkline,
+  StepSegments,
   categoricalColor,
 } from "../src/charts/index"
 import { SeamGrid, Section, StatCardContent } from "../index"
+import { CheckCircle } from "../src/icons/index"
 import { DemoLabel, Stage, weeklyData } from "./demo-data"
 
 const meta = {
@@ -204,6 +208,72 @@ export const Tooltips: Story = {
           ]}
         />
         <ChartTooltip active label="Snowflake" payload={[{ name: "Share", value: "26.4%", color: "var(--chart-cat-2)" }]} />
+      </div>
+    </Stage>
+  ),
+}
+
+export const Rings: Story = {
+  name: "ProgressRing",
+  parameters: {
+    docs: {
+      description: {
+        story:
+          "**One value toward a limit or a goal — nothing else.** Plan usage against its cap, setup steps done, a score out of 100. A count with no denominator is a figure, not a ring; parts of one whole are a `StackedBar`; a comparison is `RankedBars`. One ring per value, never a ring per category. The arc stops at full, the label does not: 120% is the fact the reader needs.",
+      },
+    },
+  },
+  render: () => (
+    <Stage>
+      <div className="flex flex-wrap items-center gap-8">
+        <ProgressRing label="Plan usage" value={320} max={500} size="lg" caption="of 500" />
+        <ProgressRing label="Setup" value={4} max={6} valueLabel="4/6" tone="warning" />
+        <ProgressRing label="Setup" value={6} max={6} tone="success" icon={<CheckCircle weight="bold" />} />
+        <ProgressRing label="Plan usage" value={560} max={500} tone="danger" />
+        <ProgressRing label="Score" value={82} valueLabel="82" size="sm" tone="success" />
+        <ProgressRing label="Score" value={0} size="sm" />
+      </div>
+    </Stage>
+  ),
+}
+
+export const Gauges: Story = {
+  name: "Gauge",
+  parameters: {
+    docs: {
+      description: {
+        story:
+          "One reading on a bounded scale, where its position on the scale is the point. `marker` draws a tick across the track for a target or last period's value, and is spoken with the value.",
+      },
+    },
+  },
+  render: () => (
+    <Stage>
+      <div className="flex flex-wrap items-end gap-10">
+        <Gauge label="Health" value={72} caption="health score" />
+        <Gauge label="Utilisation" value={58} max={80} marker={64} size={160} tone="info" caption="of 80 hours" />
+      </div>
+    </Stage>
+  ),
+}
+
+export const Steps: Story = {
+  name: "StepSegments",
+  parameters: {
+    docs: {
+      description: {
+        story:
+          "\"n of total\" for a small known total, one segment per step. By default it is warning until complete and success once complete — the question \"n of total\" nearly always answers is *is it finished?*",
+      },
+    },
+  },
+  render: () => (
+    <Stage>
+      <div className="flex flex-wrap items-center gap-8">
+        <StepSegments label="Fields collected" value={5} total={7} />
+        <StepSegments label="Fields collected" value={7} total={7} />
+        <StepSegments label="Checks passed" value={2} total={4} tone="info" size="sm" />
+        <StepSegments label="Checks passed" value={3} total={4} showCount={false} />
       </div>
     </Stage>
   ),
