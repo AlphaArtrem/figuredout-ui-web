@@ -1,11 +1,11 @@
 "use client"
 
-import { useCallback, useEffect, useId, useLayoutEffect, useRef, useState } from "react"
-import type { MutableRefObject, ReactNode, RefObject } from "react"
+import { useCallback, useEffect, useId, useRef, useState } from "react"
+import type { ReactNode, RefObject } from "react"
 import { createPortal } from "react-dom"
 import { X } from "../icons/index.js"
 import { cn } from "../lib/cn.js"
-import { trapFocus } from "../lib/overlay.js"
+import { useDialogFocus } from "../lib/use-dialog-focus.js"
 import { Button, IconButton } from "../primitives/button.js"
 
 type DialogSize = "sm" | "md" | "lg"
@@ -26,70 +26,6 @@ const SIZE_STYLES: Record<DialogSize, string> = {
   sm: "max-w-md",
   md: "max-w-2xl",
   lg: "max-w-4xl",
-}
-
-function useDialogFocus({
-  containerRef,
-  initialFocusRef,
-  onOpenChange,
-  open,
-}: {
-  containerRef: MutableRefObject<HTMLDivElement | null>
-  initialFocusRef?: RefObject<HTMLElement> | undefined
-  onOpenChange: (open: boolean) => void
-  open: boolean
-}) {
-  const previousActiveRef = useRef<HTMLElement | null>(null)
-
-  useLayoutEffect(() => {
-    if (!open) {
-      return
-    }
-
-    previousActiveRef.current = document.activeElement instanceof HTMLElement ? document.activeElement : null
-  }, [open])
-
-  useEffect(() => {
-    if (!open || !containerRef.current) {
-      return
-    }
-
-    const container = containerRef.current
-
-    const focusTarget = initialFocusRef?.current
-    window.requestAnimationFrame(() => {
-      if (focusTarget) {
-        focusTarget.focus()
-      } else {
-        const firstFocusable = container.querySelector<HTMLElement>(
-          "button:not([disabled]), [href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex='-1'])",
-        )
-        ;(firstFocusable ?? container).focus()
-      }
-    })
-
-    const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key === "Escape") {
-        event.preventDefault()
-        onOpenChange(false)
-        return
-      }
-
-      trapFocus(event, container)
-    }
-
-    document.addEventListener("keydown", handleKeyDown)
-    return () => {
-      document.removeEventListener("keydown", handleKeyDown)
-      const previousActive = previousActiveRef.current
-      window.requestAnimationFrame(() => {
-        if (previousActive?.isConnected) {
-          previousActive.focus()
-        }
-      })
-      previousActiveRef.current = null
-    }
-  }, [containerRef, initialFocusRef, onOpenChange, open])
 }
 
 export function Dialog({
