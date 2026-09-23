@@ -11,6 +11,7 @@ import {
   FormField,
   IconButton,
   Input,
+  Kbd,
   NumberField,
   Select,
   Skeleton,
@@ -422,6 +423,27 @@ export const Theme: Story = {
           </Button>
         </div>
       </div>
+    </Stage>
+  ),
+}
+
+export const Keys: Story = {
+  name: "Kbd",
+  parameters: {
+    docs: {
+      description: {
+        story:
+          "A key the reader presses. Mono like a figure, hairlined like a control, and on no surface of its own — it borrows whatever it is written on. One `Kbd` per key; a chord is several side by side.",
+      },
+    },
+  },
+  render: () => (
+    <Stage>
+      <p className="m-0 flex flex-wrap items-center gap-1.5 text-sm text-fg-muted">
+        Press <Kbd>⌘</Kbd>
+        <Kbd>K</Kbd> to search, <Kbd>↑</Kbd>
+        <Kbd>↓</Kbd> to move, <Kbd>esc</Kbd> to close.
+      </p>
     </Stage>
   ),
 }

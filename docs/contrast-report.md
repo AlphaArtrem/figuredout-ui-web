@@ -92,6 +92,19 @@ ring, so these are the hover numbers too.
 A darker hover wash was rejected: in light mode `--color-warning` is the ink, so a fill built from it moves
 toward the text colour and the ratio falls.
 
+## Chat and navigation (2026-09-23)
+
+`--color-chat-assistant` is new: the assistant's chat bubble, a solid, quieter reading of the primary hue. The
+bubble holds body text in `--color-fg`; the assistant's label and the typing dots on it are `--color-primary`.
+`BottomNav`'s default count badge is `--color-surface-sunken` ink on a solid `--color-warning` pill.
+
+| Pair | Light | Dark | AA body |
+|---|---|---|---|
+| `--color-fg` on `--color-chat-assistant` | 16.34:1 | 10.53:1 | pass |
+| `--color-fg-muted` on `--color-chat-assistant` | 9.51:1 | 5.69:1 | pass |
+| `--color-primary` on `--color-chat-assistant` | 6.52:1 | 6.44:1 | pass |
+| `--color-surface-sunken` on `--color-warning` | 7.03:1 | 9.49:1 | pass |
+
 ## Notes
 
 - **Dark mode is the canonical theme.** Its values are the marketing site's own scheme, so the product and

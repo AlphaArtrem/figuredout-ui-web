@@ -75,6 +75,7 @@ const uiPreset: Config = {
         "accent-fg": withAlpha("--color-accent-fg"),
         "banner-fg": withAlpha("--color-banner-fg"),
         "banner-muted": withAlpha("--color-banner-muted"),
+        "chat-assistant": withAlpha("--color-chat-assistant"),
         "chart-cat-1": withAlpha("--chart-cat-1"),
         "chart-cat-2": withAlpha("--chart-cat-2"),
         "chart-cat-3": withAlpha("--chart-cat-3"),
@@ -139,11 +140,21 @@ const uiPreset: Config = {
           from: { opacity: "0", transform: "translateX(24px)" },
           to: { opacity: "1", transform: "none" },
         },
+        /* One dot of a typing indicator: it lifts and brightens, then settles.
+         * Staggered per dot by `animation-delay`; stopped outright under
+         * `prefers-reduced-motion`, where the dots hold a static fade instead. */
+        "typing-dot": {
+          "0%, 60%, 100%": { opacity: "0.35", transform: "none" },
+          "30%": { opacity: "1", transform: "translateY(-2px)" },
+        },
       },
       animation: {
         shimmer: "shimmer 1.6s linear infinite",
         rise: "rise var(--motion-normal) var(--ease-standard)",
         "slide-in-right": "slide-in-right var(--motion-normal) var(--ease-standard)",
+        /* Five normal beats per cycle: slow enough to read as "still going"
+         * rather than as an alert. */
+        "typing-dot": "typing-dot calc(var(--motion-normal) * 5) var(--ease-standard) infinite",
       },
       transitionTimingFunction: {
         standard: "var(--ease-standard)",
