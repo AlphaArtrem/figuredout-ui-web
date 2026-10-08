@@ -5,7 +5,7 @@ Edit in place. No per-session sections. Last reviewed 2026-09-23 from the reposi
 
 ## What exists
 
-- `@figuredout/ui-web` version `0.2.3` (`package.json`, `components.manifest.json`). React UI primitives,
+- `@figuredout/ui-web` version `0.2.4` (`package.json`, `components.manifest.json`). React UI primitives,
   patterns, chart wrappers, a Phosphor icon surface, CSS tokens (`styles/tokens.css`) and a Tailwind preset
   (`tailwind-preset.ts`, shipped as ESM and CJS). The component list lives in `README.md` — not repeated here.
 - Consumed from GitHub as a git dependency: `dist/` is gitignored and the `prepare` script builds on install
@@ -15,7 +15,10 @@ Edit in place. No per-session sections. Last reviewed 2026-09-23 from the reposi
 - No CI configuration in the repository (no `.github/`). All validation in `AGENTS.md` is run by hand.
 - A `chat` group in the main entry (`src/chat/`): `ChatPane`, `ChatHeader`, `MessageList`, `MessageBubble`,
   `SystemEvent`, `DayDivider`, `TypingIndicator`, `Composer`.
-- Latest release (2026-09-24): `0.2.3`, a patch with no export change. **`ThemeToggle` toggles light ↔ dark in
+- Latest release (2026-10-08): `0.2.4`, additive: three icons join the `icons` entry — `Phone`, `Camera` and
+  `ArrowRight`, re-exported from Phosphor like the rest. Asked for by the product's channel cards (a phone for
+  WhatsApp, a camera for Instagram, a trailing arrow on the connect buttons). No other change.
+- Previous release (2026-09-24): `0.2.3`, a patch with no export change. **`ThemeToggle` toggles light ↔ dark in
   one press and shows only its icon.** It used to cycle system → light → dark with the step's name beside the
   icon. From "system" on a light device the first press chose "light", which changed nothing on screen, so
   switching took two presses. It now reads `resolvedTheme`: the device decides until the first press, which

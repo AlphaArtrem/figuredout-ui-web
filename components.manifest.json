@@ -1,6 +1,6 @@
 {
   "packageName": "@figuredout/ui-web",
-  "version": "0.2.3",
+  "version": "0.2.4",
   "styleAssets": [
     {
       "id": "tokens",
@@ -300,7 +300,10 @@
         "UserCircle",
         "UsersThree",
         "WarningCircle",
-        "X"
+        "X",
+        "ArrowRight",
+        "Camera",
+        "Phone"
       ]
     }
   ]
