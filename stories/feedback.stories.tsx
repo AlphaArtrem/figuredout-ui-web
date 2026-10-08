@@ -199,7 +199,7 @@ export const Toasts: Story = {
     docs: {
       description: {
         story:
-          "Bottom-right stack, four tones, optional action, auto-dismiss at 4s. The shell is one raised surface with the tone carried by the icon halo. With no description the icon and title centre on each other; with one they top-align, so the icon always sits on the title.\n\nWrap the app in `ToastProvider` once — this Storybook does it in `.storybook/preview`.",
+          "Bottom-right stack, four tones, optional action, auto-dismiss at 4s. The action is a 44px (`md`) touch target; pass `action.size: \"sm\"` for the compact 36px one. The shell is one raised surface with the tone carried by the icon halo. With no description the icon and title centre on each other; with one they top-align, so the icon always sits on the title.\n\nWrap the app in `ToastProvider` once — this Storybook does it in `.storybook/preview`.",
       },
     },
   },
@@ -226,7 +226,7 @@ export const Toasts: Story = {
             </Button>
           ))}
         </div>
-        <DemoLabel>Title only, and with an action</DemoLabel>
+        <DemoLabel>Title only, and with an action (44px default, compact 36px)</DemoLabel>
         <div className="flex flex-wrap gap-3">
           <Button size="sm" variant="secondary" onClick={() => toast.pushToast({ tone: "info", title: "Filters cleared" })}>
             Title only
@@ -244,6 +244,19 @@ export const Toasts: Story = {
             }
           >
             With action
+          </Button>
+          <Button
+            size="sm"
+            variant="secondary"
+            onClick={() =>
+              toast.pushToast({
+                tone: "info",
+                title: "Filter removed",
+                action: { label: "Undo", size: "sm", onClick: () => undefined },
+              })
+            }
+          >
+            With compact action
           </Button>
         </div>
       </Stage>

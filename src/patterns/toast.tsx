@@ -12,6 +12,8 @@ export interface ToastOptions {
   action?: {
     label: string
     onClick: () => void
+    /** `md` (44px, the touch target) by default; `sm` (36px) is the compact one. */
+    size?: "sm" | "md"
   }
   description?: string
   duration?: number
@@ -110,7 +112,7 @@ export function ToastProvider({ children }: { children: ReactNode }) {
                   /* `soft`, not `ghost`: an untinted action under the
                    * description is just its own padding, and reads as text that
                    * failed to line up with the line above it. */
-                  <Button variant="soft" size="sm" onClick={toast.action.onClick}>
+                  <Button variant="soft" size={toast.action.size ?? "md"} onClick={toast.action.onClick}>
                     {toast.action.label}
                   </Button>
                 ) : null}

@@ -38,4 +38,46 @@ describe("ToastProvider", () => {
       expect(screen.queryByRole("status")).not.toBeInTheDocument()
     })
   })
+
+  it("draws the action button at the 44px size unless asked for the compact one", async () => {
+    const user = userEvent.setup()
+
+    function ActionHarness() {
+      const { pushToast } = useToast()
+      return (
+        <>
+          <Button
+            onClick={() =>
+              pushToast({ title: "Default", duration: 60000, action: { label: "Undo", onClick: () => undefined } })
+            }
+          >
+            Default
+          </Button>
+          <Button
+            onClick={() =>
+              pushToast({
+                title: "Compact",
+                duration: 60000,
+                action: { label: "Redo", size: "sm", onClick: () => undefined },
+              })
+            }
+          >
+            Compact
+          </Button>
+        </>
+      )
+    }
+
+    render(
+      <ToastProvider>
+        <ActionHarness />
+      </ToastProvider>,
+    )
+
+    await user.click(screen.getByRole("button", { name: "Default" }))
+    expect(screen.getByRole("button", { name: "Undo" })).toHaveClass("min-h-11")
+
+    await user.click(screen.getByRole("button", { name: "Compact" }))
+    expect(screen.getByRole("button", { name: "Redo" })).toHaveClass("min-h-9")
+  })
 })

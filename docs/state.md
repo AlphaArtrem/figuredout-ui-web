@@ -5,7 +5,7 @@ Edit in place. No per-session sections. Last reviewed 2026-09-23 from the reposi
 
 ## What exists
 
-- `@figuredout/ui-web` version `0.2.5` (`package.json`, `components.manifest.json`). React UI primitives,
+- `@figuredout/ui-web` version `0.2.6` (`package.json`, `components.manifest.json`). React UI primitives,
   patterns, chart wrappers, a Phosphor icon surface, CSS tokens (`styles/tokens.css`) and a Tailwind preset
   (`tailwind-preset.ts`, shipped as ESM and CJS). The component list lives in `README.md` — not repeated here.
 - Consumed from GitHub as a git dependency: `dist/` is gitignored and the `prepare` script builds on install
@@ -15,7 +15,12 @@ Edit in place. No per-session sections. Last reviewed 2026-09-23 from the reposi
 - No CI configuration in the repository (no `.github/`). All validation in `AGENTS.md` is run by hand.
 - A `chat` group in the main entry (`src/chat/`): `ChatPane`, `ChatHeader`, `MessageList`, `MessageBubble`,
   `SystemEvent`, `DayDivider`, `TypingIndicator`, `Composer`.
-- Latest release (2026-10-08): `0.2.5`, a patch with no export change. **`NumberField`'s input is 64px wide again.**
+- Latest release (2026-10-09): `0.2.6`, a patch with no export change. **The toast's action button is 44px tall.**
+  It hard-coded `size="sm"` (36px) with no way to change it, so apps could not reach the 44px touch target. It
+  now defaults to `md`; `ToastOptions.action` gains an optional `size?: "sm" | "md"` for callers that want the
+  compact one. **Visual change for consumers:** every toast with an action grows 8px taller. The dismiss
+  button is unchanged (36px).
+- Previous release (2026-10-08): `0.2.5`, a patch with no export change. **`NumberField`'s input is 64px wide again.**
   It passed `w-16` to `Input`, whose own `w-full` is joined to the caller's class by a plain `cn` (no
   tailwind-merge) and is emitted after `w-16` by Tailwind, so the input filled the row. The 64px now lives on a
   `w-16 shrink-0` wrapper around the input, which fills it. Consumers that worked around it with
