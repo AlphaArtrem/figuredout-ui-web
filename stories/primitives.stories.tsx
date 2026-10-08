@@ -161,7 +161,7 @@ export const NumberFields: Story = {
     docs: {
       description: {
         story:
-          "A bounded integer. A text input with `inputmode=\"numeric\"` and the spin-button role, between 44 × 44 Decrease and Increase buttons that disable at their bound. Typing is clamped; a half-typed value is left alone until it parses. Inside a `FormField` the input takes the field's name, required and invalid state, and the buttons are named *from* the label rather than *as* it.",
+          "A bounded integer. A text input with `inputmode=\"numeric\"` and the spin-button role, between 44 × 44 Decrease and Increase buttons that disable at their bound. The input fills a 64px box (the box carries the width, because `Input`'s own `w-full` overrides a `w-16` passed to it). Typing is clamped; a half-typed value is left alone until it parses. Inside a `FormField` the input takes the field's name, required and invalid state, and the buttons are named *from* the label rather than *as* it.",
       },
     },
   },

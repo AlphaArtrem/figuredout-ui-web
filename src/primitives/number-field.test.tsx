@@ -28,6 +28,17 @@ function Controlled({
 }
 
 describe("NumberField", () => {
+  it("draws the input in a 64px box that fills it", () => {
+    render(<Controlled label="Retries" />)
+
+    const input = screen.getByRole("spinbutton", { name: "Retries" })
+    // The width is the wrapper's: a `w-16` on the input itself would lose to
+    // Input's `w-full` (plain class join, no tailwind-merge).
+    expect(input.parentElement).toHaveClass("w-16", "shrink-0")
+    expect(input).toHaveClass("w-full")
+    expect(input).not.toHaveClass("w-16")
+  })
+
   it("is a labelled numeric spin button that states its bounds", () => {
     render(<Controlled label="Retries" />)
 

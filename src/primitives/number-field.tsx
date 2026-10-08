@@ -54,6 +54,11 @@ const INTEGER = /^-?\d+$/
  * they read "Decrease Max retries" without the field's words being copied into
  * a string. A `label` prop, when given, is used for all three directly.
  *
+ * WIDTH. The 64px lives on a wrapper, not on the `Input`: `Input` joins its own
+ * `w-full` and the caller's class with a plain `cn` (no tailwind-merge), and
+ * Tailwind emits `w-full` after `w-16`, so a `w-16` passed in lost. The input
+ * fills a box that is 64px wide and does not shrink in the flex row.
+ *
  * Both buttons are 44 × 44, and each is disabled at its own bound. A press that
  * reaches the bound moves focus to the input, because the button that was
  * pressed is about to become disabled and a disabled button drops focus to the
@@ -147,33 +152,35 @@ export function NumberField({
         ) : null}
         <Minus size={16} aria-hidden="true" />
       </Button>
-      <Input
-        ref={inputRef}
-        id={id}
-        name={name}
-        type="text"
-        inputMode="numeric"
-        role="spinbutton"
-        autoComplete="off"
-        className="w-16 text-center tabular-nums"
-        aria-label={ariaLabelledBy ? undefined : ownName}
-        aria-labelledby={ariaLabelledBy}
-        aria-describedby={ariaDescribedBy}
-        aria-valuenow={value}
-        aria-valuemin={min}
-        aria-valuemax={max}
-        disabled={disabled}
-        invalid={invalid}
-        required={required}
-        value={draft ?? String(value)}
-        onChange={(event) => {
-          const text = event.target.value
-          setDraft(text)
-          if (INTEGER.test(text.trim())) commit(Number(text.trim()))
-        }}
-        onBlur={() => setDraft(null)}
-        onKeyDown={onKeyDown}
-      />
+      <div className="w-16 shrink-0">
+        <Input
+          ref={inputRef}
+          id={id}
+          name={name}
+          type="text"
+          inputMode="numeric"
+          role="spinbutton"
+          autoComplete="off"
+          className="text-center tabular-nums"
+          aria-label={ariaLabelledBy ? undefined : ownName}
+          aria-labelledby={ariaLabelledBy}
+          aria-describedby={ariaDescribedBy}
+          aria-valuenow={value}
+          aria-valuemin={min}
+          aria-valuemax={max}
+          disabled={disabled}
+          invalid={invalid}
+          required={required}
+          value={draft ?? String(value)}
+          onChange={(event) => {
+            const text = event.target.value
+            setDraft(text)
+            if (INTEGER.test(text.trim())) commit(Number(text.trim()))
+          }}
+          onBlur={() => setDraft(null)}
+          onKeyDown={onKeyDown}
+        />
+      </div>
       <Button
         variant="secondary"
         size="md"
